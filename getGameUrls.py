@@ -2,6 +2,7 @@ import urllib2
 import sys
 from Queue import *
 from threading import Thread
+
 def chunks(l, n): #cuts the work into blocks
     	return [l[i:i+n] for i in range(0, len(l), n)]
 

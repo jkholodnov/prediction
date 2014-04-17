@@ -147,7 +147,7 @@ public:
 		out << fgm << "-" << fga << " " << tpm << "-" << tpa << " " << ftm << "-" << fta << " " << orebound << " " << drebound << " " << rebound<< " " << assist << " " << steal << " " << block << " " <<turnover << " " << fouls << " " << pts << " " << percentFG << " " <<percent3PT << " " << percentFT;
 	}
 	void printGame(){
-		string outputtingFile = "massGameData.txt";
+		string outputtingFile = "textdatabases/massGameData.txt";
 		ofstream out(outputtingFile.c_str(),ios::app);
 		out << fgm << "-" << fga << " " << tpm << "-" << tpa << " " << ftm << "-" << fta << " " << orebound << " " << drebound << " " << rebound<< " " << assist << " " << steal << " " << block << " " <<turnover << " " << fouls << " " << pts << " " << percentFG << " " <<percent3PT << " " << percentFT;
 		
