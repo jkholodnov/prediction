@@ -32,7 +32,7 @@ def getAllGamesHtml():
 	for t in threads:
 		t.join()
 	
-	f = open("textdatabases/websitedata1.txt",'a')
+	f = open("textdatabases/websitedata.txt",'w')
 
 	while not result.empty():
 		x = result.get()
