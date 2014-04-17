@@ -108,7 +108,6 @@ int main(int argc, char** argv) {
 	ofstream out2("textdatabases/gameUrlsParsed.txt",ios::app);
 	ofstream out3("textdatabases/massGameData.txt",ios::app);
 	ofstream out4("textdatabases/massDataAverages.txt",ios::app);
-	ofstream out5("debug.txt");
 	ofstream out6("textdatabases/massDataAverages.txt",ios::app);
 	
 	//IFSTREAM DECLARATIONS//
@@ -369,7 +368,6 @@ int main(int argc, char** argv) {
 	if(getTeamAverages=="1"){//GET SEASON AVERAGES FOR EACH TEAM, AND PRINT TO MASSGAMEAVERAGE.TXT
 		for(i=0; i < teamNames.size();i++){
 			tempteamname = teamNames[i];
-			out5 << tempteamname << endl;
 			tempdelim = " ";
 			size_t poss;
 			poss = tempteamname.find(tempdelim);
