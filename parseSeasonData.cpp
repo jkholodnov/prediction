@@ -18,6 +18,133 @@
 
 using namespace std;
 
+void getRecap_boxScore_pbp(string option){
+		cout << option << endl;
+			string action;
+			size_t pos;
+			string temp;
+			string str;
+			int i;
+			string delim;
+			ifstream in;
+			if(option=="recap"){
+
+				vector<string> gameUrls;
+				action = "textdatabases/recapurls.txt";
+				ofstream recap("textdatabases/recapurlsparsed.txt");
+				in.open(action.c_str());
+				if(in.is_open()){ 
+					in.seekg(0,ios::end);  
+					str.reserve(in.tellg());
+					in.seekg(0,ios::beg);
+					 
+					str.assign((istreambuf_iterator<char>(in)),
+							istreambuf_iterator<char>());
+				}
+				in.close();
+
+
+				delim = "\n";
+				i=0;
+				while(str.length()>0){
+					bool invector=false;
+					pos = str.find(delim);
+					temp = str.substr(0,pos);
+					str.erase(0,pos+delim.length());
+					for(i=0;i<gameUrls.size();i++){
+						if(gameUrls[i]==temp){
+							invector = true;
+						}
+					}
+					if (invector==false){
+						gameUrls.push_back(temp);
+					}
+					//cout << gameUrls.size()<<endl;
+				}
+				for(i=0;i<gameUrls.size();i++){
+					recap << gameUrls[i] << endl;
+				}
+				recap.close();
+			}
+			else if(option=="box"){
+				vector<string> gameUrls;
+				action="textdatabases/gameurls.txt";
+				ofstream gg("textdatabases/gameurlsparsed.txt");
+				in.open(action.c_str());
+				if(in.is_open()){ 
+					in.seekg(0,ios::end);  
+					str.reserve(in.tellg());
+					in.seekg(0,ios::beg);
+					 
+					str.assign((istreambuf_iterator<char>(in)),
+							istreambuf_iterator<char>());
+				}
+				in.close();
+
+
+				delim = "\n";
+				i=0;
+				while(str.length()>0){
+					bool invector=false;
+					pos = str.find(delim);
+					temp = str.substr(0,pos);
+					str.erase(0,pos+delim.length());
+					for(i=0;i<gameUrls.size();i++){
+						if(gameUrls[i]==temp){
+							invector = true;
+						}
+					}
+					if (invector==false){
+						gameUrls.push_back(temp);
+					}
+					//cout << gameUrls.size()<<endl;
+				}
+				for(i=0;i<gameUrls.size();i++){
+					gg << gameUrls[i] << endl;
+				}
+				gg.close();
+			}
+			else if(option=="pbp"){
+				vector<string> gameUrls;
+				action="textdatabases/pbpurls.txt";
+				ofstream pbp("textdatabases/pbpurlsparsed.txt");
+				in.open(action.c_str());
+				if(in.is_open()){ 
+					in.seekg(0,ios::end);  
+					str.reserve(in.tellg());
+					in.seekg(0,ios::beg);
+					 
+					str.assign((istreambuf_iterator<char>(in)),
+							istreambuf_iterator<char>());
+				}
+				in.close();
+
+
+				delim = "\n";
+				i=0;
+				while(str.length()>0){
+					bool invector=false;
+					pos = str.find(delim);
+					temp = str.substr(0,pos);
+					str.erase(0,pos+delim.length());
+					for(i=0;i<gameUrls.size();i++){
+						if(gameUrls[i]==temp){
+							invector = true;
+						}
+					}
+					if (invector==false){
+						gameUrls.push_back(temp);
+					}
+					//cout << gameUrls.size()<<endl;
+				}
+				for(i=0;i<gameUrls.size();i++){
+					pbp << gameUrls[i] << endl;
+				}
+				pbp.close();
+			}
+		}
+
+
 int main(int argc, char** argv) {
 	size_t pos;
 	if(argc==0 || argc ==1){
@@ -41,7 +168,9 @@ int main(int argc, char** argv) {
 	if(getGameUrls=="1"){
 		remove("textdatabases/games.txt");
 		remove("textdatabases/gameurls.txt");
-		remove("textdatabases/gameUrlsParsed.txt");
+		remove("textdatabases/gameurlsparsed.txt");
+		remove("textdatabases/pbpurlsparsed.txt");
+		remove("textdatabases/recapurlsparsed.txt");
 	}
 	if(getBpi=="1"){
 		remove("textdatabases/bpi.txt");
@@ -92,7 +221,7 @@ int main(int argc, char** argv) {
 	string teamstxt = "textdatabases/teams.txt";
 	string gamestxt = "textdatabases/games.txt";
 	string massgamefile = "textdatabases/massGameData.txt";
-	string gamesparsed = "textdatabases/gameUrlsParsed.txt";
+	string gamesparsed = "textdatabases/gameurlsparsed.txt";
 	string bpitxt = "textdatabases/bpi.txt";
 	string gamedata = "textdatabases/websitedata.txt";
 
@@ -105,7 +234,7 @@ int main(int argc, char** argv) {
 	teamData temp1;
 	teamData temp2;
 	//OFSTREAM DECLARATIONS//
-	ofstream out2("textdatabases/gameUrlsParsed.txt",ios::app);
+	ofstream out2("textdatabases/gameurlsparsed.txt",ios::app);
 	ofstream out3("textdatabases/massGameData.txt",ios::app);
 	ofstream out4("textdatabases/massDataAverages.txt",ios::app);
 	ofstream out6("textdatabases/massDataAverages.txt",ios::app);
@@ -185,39 +314,11 @@ int main(int argc, char** argv) {
 		}
 		//GAMEURLS.TXT IS NOW POPULATED//
 
-		action="textdatabases/gameurls.txt";
-		in.open(action.c_str());
-		if(in.is_open()){ 
-			in.seekg(0,ios::end);  
-			str.reserve(in.tellg());
-			in.seekg(0,ios::beg);
-			 
-			str.assign((istreambuf_iterator<char>(in)),
-					istreambuf_iterator<char>());
-		}
-		in.close();
 
-		delim = "\n";
-		i=0;
-		while(str.length()>0){
-			bool invector=false;
-			pos = str.find(delim);
-			temp = str.substr(0,pos);
-			str.erase(0,pos+delim.length());
-			for(i=0;i<gameUrls.size();i++){
-				if(gameUrls[i]==temp){
-					invector = true;
-				}
-			}
-			if (invector==false){
-				gameUrls.push_back(temp);
-			}
-			//cout << gameUrls.size()<<endl;
-		}
-		for(i=0;i<gameUrls.size();i++){
-			out2 << gameUrls[i] << endl;
-		}
-		out2.close();
+		cout << "printing to textdb/gameurls recapurls"<<endl;
+		getRecap_boxScore_pbp("recap");
+		getRecap_boxScore_pbp("pbp");
+		getRecap_boxScore_pbp("box");
 	}
 	//ALL OF THE GAME URLS ARE NOW IN GAMEURLSPARSED.TXT//
 	
@@ -324,6 +425,7 @@ int main(int argc, char** argv) {
 
 		}
 	}
+	cout << "Done parsing websitedata.txt" << endl;
 	//====================Printing out team_name.txt files=============================//
 /*
 ###############################################################################################################
@@ -518,6 +620,7 @@ int main(int argc, char** argv) {
 		}
 	}
 }
+
 /* MAKE REVISION FOR THIS PROGRAM!
 1. GET TEAM NAMES
 2. MAKE TEAM OBJECT

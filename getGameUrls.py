@@ -32,12 +32,13 @@ def getAllGames(): #get each team's url page, put them into one single textfile
 	for t in threads:
 		t.join()
 	
-	f = open("textdatabases/games.txt",'a')
+	f = open("textdatabases/games.txt",'w')
 
 	while not result.empty():
 		x = result.get()
 		for html in x:
 			f.write(html)
+
 
 def getTeamPage(i, q,result): #Take the url, open and store the contents in games.txt
 	print "Starting Thread: " + str(i)
@@ -54,4 +55,4 @@ def getTeamPage(i, q,result): #Take the url, open and store the contents in game
 		print "Teams in queue : " + str(q.qsize() * 4)
 
 if __name__ == '__main__':
-    getAllGames()
+	getAllGames()

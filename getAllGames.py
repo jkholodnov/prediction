@@ -11,7 +11,7 @@ def getAllGamesHtml():
 	print "Generating gameurls on 30 threads..."
 	numThreads=30
 	jobs = []
-	with open("textdatabases/gameUrlsParsed.txt", "rU") as f:
+	with open("textdatabases/gameurlsparsed.txt", "rU") as f:
 		for line in f:
 			jobs.append(line)
 
@@ -40,6 +40,72 @@ def getAllGamesHtml():
 			f.write(html)
 
 
+def getAllpbps():
+	print "Generating pbpurlgames on 20 threads..."
+	numThreads=20
+	jobs = []
+	with open("textdatabases/pbpurlsparsed.txt", "rU") as f:
+		for line in f:
+			jobs.append(line)
+
+	subs = chunks(jobs,4);
+	queue = Queue()
+	result = Queue()
+
+	for i, item in enumerate(subs): #puts all of the subjobs into the queue. These subjobs get grabbed by the threads
+		queue.put(item)
+
+	threads = []
+	for i in range(numThreads):
+		t=Thread(target=getSingleGame, args=(i,queue,result))
+		t.daemon = True
+		t.start()
+		threads.append(t)
+
+	for t in threads:
+		t.join()
+	
+	i=0
+	while not result.empty():
+		f = open("textdatabases/pbps/pbp_" +str(i)+ ".txt",'w')
+		x = result.get()
+		i = i+1
+		for html in x:
+			f.write(html)
+
+def getAllrecap():
+	print "Generating gameurls on 20 threads..."
+	numThreads=20
+	jobs = []
+	with open("textdatabases/recapurlsparsed.txt", "rU") as f:
+		for line in f:
+			jobs.append(line)
+
+	subs = chunks(jobs,4);
+	queue = Queue()
+	result = Queue()
+
+	for i, item in enumerate(subs): #puts all of the subjobs into the queue. These subjobs get grabbed by the threads
+		queue.put(item)
+
+	threads = []
+	for i in range(numThreads):
+		t=Thread(target=getSingleGame, args=(i,queue,result))
+		t.daemon = True
+		t.start()
+		threads.append(t)
+
+	for t in threads:
+		t.join()
+	
+	i=0
+	while not result.empty():
+		f = open("textdatabases/recaps/recap_" +str(i)+ ".txt",'w')
+		x = result.get()
+		i = i+1
+		for html in x:
+			f.write(html)
+
 def getSingleGame(i, q,result):
 	print "Starting Thread: " + str(i)
 	def doWork(jobs,result):
@@ -65,3 +131,5 @@ def getSingleGame(i, q,result):
 
 if __name__ == '__main__':
     getAllGamesHtml()
+    getAllrecap()
+    getAllpbps()
