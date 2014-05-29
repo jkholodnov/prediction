@@ -11,9 +11,9 @@ parse: parseSeasonData.cpp
 ##
 compare: compareTeams.cpp
 	$(CC) $(CFLAGS) compare compareTeams.cpp $(libs)
-##
+
 clean:
 	\rm compare parse
-##
+
 tar:
 	tar cfv BasketballPredictor.tar Makefile compareTeams.cpp parseSeasonData.cpp
