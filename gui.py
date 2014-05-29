@@ -5,6 +5,7 @@ import ttk
 import subprocess
 import sys
 import os
+import atexit
 
 # include c++ cout syntax
 class ostream:
@@ -144,8 +145,14 @@ class Predictor(Frame):
 		cout << args << endl
 		os.system(args)
 if __name__ == '__main__':
-	process = subprocess.Popen('./compare',shell=True,
+	process = subprocess.Popen(['./compare'],
 							stdin=subprocess.PIPE,
 							stdout=subprocess.PIPE,
 							stderr=subprocess.PIPE)
-	Predictor().mainloop()
+Predictor().mainloop()
+def cleanup():
+	process.terminate()
+	cout << process.pid
+	print "killed"
+atexit.register(cleanup)
+sys.exit()

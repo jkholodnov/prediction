@@ -104,4 +104,5 @@ int main(int argc, char** argv){//Takes arguments from STDIN to compare. This is
 		cin >> toCompare1;
 		cin >> toCompare2;
 	}
+	exit(0);
 }
