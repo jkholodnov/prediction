@@ -11,7 +11,7 @@ player::~player()
 }
 
 void player::get_player_scores(){
-    Database* predict_db = new Database("../predict.db");
+    Database* predict_db = new Database("predict.db");
 
     string _query1 = "SELECT count(*) FROM gamedata WHERE Name = '" + player_name + "';";
 
