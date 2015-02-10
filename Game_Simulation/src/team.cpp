@@ -27,7 +27,7 @@ team::team(team&& other) :
 void team::generate_team_parallel(){
     size_t i;
 
-    Database* predict_db = new Database("../predict.db");
+    Database* predict_db = new Database("predict.db");
     auto player_names = predict_db->query("SELECT DISTINCT Name FROM gamedata WHERE teamid = '" + team_name + "' ORDER BY Name;");
     //std::cout << player_names.size() << std::endl;
 
