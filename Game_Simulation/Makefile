@@ -6,7 +6,7 @@ SRC = src/
 OBJ = obj/
 
 ALL: main
-	$(CC) -o ../Game_Simulation $(OBJ)main.o $(OBJ)player.o $(OBJ)simulation.o $(OBJ)statistics.o $(OBJ)team.o $(LIBS)
+	$(CC) -o Game_Simulation_Executable $(OBJ)main.o $(OBJ)player.o $(OBJ)simulation.o $(OBJ)statistics.o $(OBJ)team.o $(LIBS)
 main: main.o player.o simulation.o statistics.o team.o
 	$
 main.o:
