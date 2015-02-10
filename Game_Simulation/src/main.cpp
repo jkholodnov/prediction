@@ -3,7 +3,7 @@
 #include <chrono>
 #include <thread>
 
-#include "team.h"
+#include "../include/team.h"
 
 using namespace std;
 
