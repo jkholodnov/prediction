@@ -1,4 +1,4 @@
-#include "statistics.h"
+#include "../include/statistics.h"
 
 statistics::statistics(vector<double>& data_vector)
 {

@@ -1,4 +1,4 @@
-#include "player.h"
+#include "../include/player.h"
 
 player::player(const string& name)
 {
