@@ -1,21 +1,21 @@
 CC = g++
 CFLAGS = -pedantic -std=c++11 -Wall -g -O3 -pipe
-SEARCH_DIRS = -I/home/jason/Dropbox/current_Projects/predict/Game_Simulation/src -I/home/jason/Dropbox/current_Projects/predict/Game_Simulation/include -I/home/jason/Dropbox/current_Projects/predict/Game_Simulation -I/usr/share/R/include -I/home/jason/R/x86_64-pc-linux-gnu-library/3.0/Rcpp/include -I/home/jason/R/x86_64-pc-linux-gnu-library/3.0/RInside/include -Iinclude
-LIBS = -lsqlite3 -lpthread -L/usr/lib/R/lib -lR  -lblas -llapack  -L/home/jason/R/x86_64-pc-linux-gnu-library/3.0/RInside/lib -lRInside -Wl,-rpath,/home/jason/R/x86_64-pc-linux-gnu-library/3.0/RInside/lib
-SRC = /home/jason/Dropbox/current_Projects/predict/Game_Simulation/src/
-DEST = /home/jason/Dropbox/current_Projects/predict/Game_Simulation/obj/Debug/src/
+SEARCH_DIRS = -I/src -I/include -I/R/include -I/R/x86_64-pc-linux-gnu-library/3.1/Rcpp/include -I/R/x86_64-pc-linux-gnu-library/3.1/RInside/include
+LIBS = -lsqlite3 -lpthread -L/usr/lib/R/lib -lR  -lblas -llapack  -L/R/x86_64-pc-linux-gnu-library/3.1/RInside/lib -lRInside -Wl,-rpath,/R/x86_64-pc-linux-gnu-library/3.1/RInside/lib
+SRC = src/
+OBJ = obj/
 
 ALL: main
-	$(CC) -o /home/jason/Dropbox/current_Projects/predict/Game_Simulation/bin/Debug/Game_Simulation $(DEST)main.o $(DEST)player.o $(DEST)simulation.o $(DEST)statistics.o $(DEST)team.o $(LIBS)
+	$(CC) -o ../Game_Simulation $(OBJ)main.o $(OBJ)player.o $(OBJ)simulation.o $(OBJ)statistics.o $(OBJ)team.o $(LIBS)
 main: main.o player.o simulation.o statistics.o team.o
 	$
 main.o:
-	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)main.cpp -o $(DEST)main.o
+	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)main.cpp -o $(OBJ)main.o
 player.o:
-	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)player.cpp -o $(DEST)player.o
+	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)player.cpp -o $(OBJ)player.o
 simulation.o:
-	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)simulation.cpp -o $(DEST)simulation.o
+	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)simulation.cpp -o $(OBJ)simulation.o
 statistics.o:
-	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)statistics.cpp -o $(DEST)statistics.o
+	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)statistics.cpp -o $(OBJ)statistics.o
 team.o:
-	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)team.cpp -o $(DEST)team.o
+	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)team.cpp -o $(OBJ)team.o
