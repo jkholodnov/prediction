@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char** argv){
     RInside R(argc, argv);
 
-    r.parseEval("print('hello')");
+    R.parseEval("print('hello')");
 
 
 
