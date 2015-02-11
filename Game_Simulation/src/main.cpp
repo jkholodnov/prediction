@@ -10,9 +10,7 @@
 using namespace std;
 
 int main(int argc, char** argv){
-
-	shared_ptr<RInside> R = make_shared<RInside>();
-    Database* predict_db = new Database("predict.db");
+    unique_ptr<Database> predict_db(new Database("predict.db"));
 
     auto teamnames = predict_db->query("SELECT DISTINCT team1Abbr from games ORDER BY team1Abbr");
     cout << "Team Abbreviations:" << endl;
@@ -44,13 +42,15 @@ int main(int argc, char** argv){
     cout << "Beginning team thread allocations." << endl;
     vector<std::thread> generate_team_workers;
     size_t i;
+
+    shared_ptr<RInside> R(new RInside);
     for(i=0; i<teams.size();i++){
         generate_team_workers.emplace_back(&team::generate_team_parallel, teams[i], R);
     }
+    R.reset();
     cout << "Waiting for team threads to return." << endl;
     for(i=0; i<generate_team_workers.size();i++){
         generate_team_workers[i].join();
     }
     cout << "Team threads returned." << endl;
-    delete predict_db;
 }
