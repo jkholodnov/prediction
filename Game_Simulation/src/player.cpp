@@ -129,7 +129,7 @@ void player::simulate_performance(){
     cout << performance_p_value << endl;
     //GET ACCESS TO R HERE.. CALL qnorm
 
-	RInside R(argc, argv);
+	RInside R{};
     double value = Rcpp::as<double>(R.parseEval("qnorm(.65, mean=0,sd=1)"));
     cout << value << endl;
 }
