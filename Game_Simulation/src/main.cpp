@@ -39,11 +39,12 @@ int main(int argc, char** argv){
     cout << team1 << endl;
     cout << "Beginning team thread allocations." << endl;
     vector<std::thread> generate_team_workers;
-    for(int i=0; i<teams.size();i++){
+    size_t i;
+    for(i=0; i<teams.size();i++){
         generate_team_workers.emplace_back(&team::generate_team_parallel, teams[i]);
     }
     cout << "Waiting for team threads to return." << endl;
-    for(int i=0; i<generate_team_workers.size();i++){
+    for(i=0; i<generate_team_workers.size();i++){
         generate_team_workers[i].join();
     }
     cout << "Team threads returned." << endl;
