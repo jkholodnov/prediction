@@ -2,25 +2,12 @@
 #include <string>
 #include <chrono>
 #include <thread>
-#include <RInside.h>  
 
 #include "../include/team.h"
 
 using namespace std;
 
 int main(int argc, char** argv){
-    RInside R(argc, argv);
-
-    double value = Rcpp::as<double>(R.parseEval("qnorm(.65, mean=0,sd=1)"));
-    cout << value << endl;
-
-
-
-
-
-
-
-
     Database* predict_db = new Database("predict.db");
 
     auto teamnames = predict_db->query("SELECT DISTINCT team1Abbr from games ORDER BY team1Abbr");

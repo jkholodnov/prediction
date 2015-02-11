@@ -125,5 +125,11 @@ void player::simulate_performance(){
     auto thread_Hash = std::hash<std::thread::id>()(threadID);
     srand(thread_Hash);
     int performance = rand() % 100;
+    double performance_p_value = performance / 100;
+    cout << performance_p_value << endl;
     //GET ACCESS TO R HERE.. CALL qnorm
+
+	RInside R(argc, argv);
+    double value = Rcpp::as<double>(R.parseEval("qnorm(.65, mean=0,sd=1)"));
+    cout << value << endl;
 }

@@ -9,6 +9,7 @@
 #include <thread>
 #include <functional>
 
+#include <RInside.h>  
 #include "Database.h"
 #include "statistics.h"
 #include "simulation.h"
