@@ -2,6 +2,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <RInside.h>  
 
 #include "../include/team.h"
 
