@@ -11,7 +11,8 @@ using namespace std;
 int main(int argc, char** argv){
     RInside R(argc, argv);
 
-    R.parseEval("print('hello')");
+    double value = Rcpp::as<double>(R.parseEval("qnorm(.65, mean=0,sd=1)"));
+    cout << value << endl;
 
 
 
