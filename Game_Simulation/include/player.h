@@ -9,7 +9,7 @@
 #include <thread>
 #include <functional>
 
-#include <RInside.h>  
+#include "global_RInside.h"
 #include "Database.h"
 #include "statistics.h"
 #include "simulation.h"
