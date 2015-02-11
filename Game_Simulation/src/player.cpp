@@ -126,7 +126,7 @@ void player::simulate_performance(shared_ptr<RInside> R){
     srand(thread_Hash);
     int performance = rand() % 100;
     double performance_p_value = performance / 100;
-    cout << performance_p_value << endl;
+    cout << "perf" << performance << "p_val" << performance_p_value << endl;
     //GET ACCESS TO R HERE.. CALL qnorm
     double value = Rcpp::as<double>(R->parseEval("qnorm(.65, mean=0,sd=1)"));
     cout << value << endl;
