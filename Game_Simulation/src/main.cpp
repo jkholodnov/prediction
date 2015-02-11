@@ -2,12 +2,15 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <RInside.h>
 
 #include "../include/team.h"
 
 using namespace std;
 
 int main(int argc, char** argv){
+
+	RInside R();
     Database* predict_db = new Database("predict.db");
 
     auto teamnames = predict_db->query("SELECT DISTINCT team1Abbr from games ORDER BY team1Abbr");
@@ -41,7 +44,7 @@ int main(int argc, char** argv){
     vector<std::thread> generate_team_workers;
     size_t i;
     for(i=0; i<teams.size();i++){
-        generate_team_workers.emplace_back(&team::generate_team_parallel, teams[i]);
+        generate_team_workers.emplace_back(&team::generate_team_parallel, teams[i], R);
     }
     cout << "Waiting for team threads to return." << endl;
     for(i=0; i<generate_team_workers.size();i++){

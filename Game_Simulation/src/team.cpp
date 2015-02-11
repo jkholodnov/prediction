@@ -24,7 +24,7 @@ team::team(team&& other) :
     //MOVE CONSTRUCTOR//
 }
 
-void team::generate_team_parallel(){
+void team::generate_team_parallel(RInside& R){
     size_t i;
 
     Database* predict_db = new Database("predict.db");
@@ -38,7 +38,7 @@ void team::generate_team_parallel(){
 
     vector<thread> worker_threads;
     for(i=0;i<players.size();i++){
-        worker_threads.emplace_back(&player::get_player_scores, players[i]);
+        worker_threads.emplace_back(&player::get_player_scores, players[i], R);
     }
     cout << "Player threads created for team " << team_name << ". Waiting for them to join." << endl;
     for(i=0;i<worker_threads.size();i++){

@@ -4,6 +4,8 @@
 #include <math.h>
 #include <vector>
 #include <string>
+#include <RInside.h>
+
 
 using namespace std;
 

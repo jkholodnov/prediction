@@ -10,7 +10,7 @@ player::~player()
     //dtor
 }
 
-void player::get_player_scores(){
+void player::get_player_scores(RInside& R){
     Database* predict_db = new Database("predict.db");
 
     string _query1 = "SELECT count(*) FROM gamedata WHERE Name = '" + player_name + "';";
@@ -117,10 +117,10 @@ void player::get_player_scores(){
         cout << the_thing->first << "~" << the_thing->second.mean << endl;
     }
     */
-    simulate_performance();
+    simulate_performance(R);
 }
 
-void player::simulate_performance(){
+void player::simulate_performance(RInside& R){
     auto threadID = std::this_thread::get_id();
     auto thread_Hash = std::hash<std::thread::id>()(threadID);
     srand(thread_Hash);

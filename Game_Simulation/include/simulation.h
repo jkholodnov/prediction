@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <RInside.h>
 
 using namespace std;
 
