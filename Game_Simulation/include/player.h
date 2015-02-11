@@ -23,7 +23,7 @@ class player
     public:
         player(const string& name);
         virtual ~player();
-        void get_player_scores();
+        void get_player_scores(shared_ptr<RInside> R);
         void simulate_performance(shared_ptr<RInside> R);
     protected:
     private:
