@@ -25,7 +25,6 @@ class team
     private:
         string team_name{""};
         vector<player> players;
-        shared_ptr
 };
 
 #endif // TEAM_H
