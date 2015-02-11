@@ -9,6 +9,8 @@
 #include <thread>
 #include <functional>
 #include <RInside.h>
+#include <memory>
+
 
 #include "Database.h"
 #include "statistics.h"
@@ -22,7 +24,7 @@ class player
         player(const string& name);
         virtual ~player();
         void get_player_scores();
-        void simulate_performance(RInside& R);
+        void simulate_performance(shared_ptr<RInside> R);
     protected:
     private:
         string player_name{};

@@ -5,6 +5,7 @@
 #include <string>
 #include <thread>
 #include <mutex>
+#include <memory>
 
 #include <RInside.h>
 #include "Database.h"
@@ -19,11 +20,12 @@ class team
         virtual ~team();
         team(const team& other);
         team(team&& other);
-        void generate_team_parallel(RInside& R);
+        void generate_team_parallel(shared_ptr<RInside> R);
     protected:
     private:
         string team_name{""};
         vector<player> players;
+        shared_ptr
 };
 
 #endif // TEAM_H

@@ -10,7 +10,7 @@ player::~player()
     //dtor
 }
 
-void player::get_player_scores(RInside& R){
+void player::get_player_scores(shared_ptr<RInside> R){
     Database* predict_db = new Database("predict.db");
 
     string _query1 = "SELECT count(*) FROM gamedata WHERE Name = '" + player_name + "';";
@@ -120,7 +120,7 @@ void player::get_player_scores(RInside& R){
     simulate_performance(R);
 }
 
-void player::simulate_performance(RInside& R){
+void player::simulate_performance(shared_ptr<RInside> R){
     auto threadID = std::this_thread::get_id();
     auto thread_Hash = std::hash<std::thread::id>()(threadID);
     srand(thread_Hash);
@@ -128,6 +128,6 @@ void player::simulate_performance(RInside& R){
     double performance_p_value = performance / 100;
     cout << performance_p_value << endl;
     //GET ACCESS TO R HERE.. CALL qnorm
-    double value = Rcpp::as<double>(R.parseEval("qnorm(.65, mean=0,sd=1)"));
+    double value = Rcpp::as<double>(R->parseEval("qnorm(.65, mean=0,sd=1)"));
     cout << value << endl;
 }

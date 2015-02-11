@@ -24,7 +24,7 @@ team::team(team&& other) :
     //MOVE CONSTRUCTOR//
 }
 
-void team::generate_team_parallel(RInside& R){
+void team::generate_team_parallel(shared_ptr<RInside> R){
     size_t i;
 
     Database* predict_db = new Database("predict.db");
