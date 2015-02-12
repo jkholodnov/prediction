@@ -17,4 +17,5 @@ class RInside_Container{
 	RInside R{};
 	std::mutex mtx;
 };
+
 #endif // RINSIDE_CONTAINER_H
