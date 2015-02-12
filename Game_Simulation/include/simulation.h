@@ -1,10 +1,15 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#include <string>
-#include <vector>
-#include <memory>
 #include <unordered_map>
+#include <vector>
+#include <thread>
+#include <string>
+#include <memory>
+#include <iostream>
+#include <utility>
+#include <functional>
+
 
 #include <RInside.h>
 #include "../include/statistics.h"

@@ -35,11 +35,10 @@ class statistics
         double get_mean(const vector<double>& data_vector);
         double get_stdev(double mean_value, const vector<double>& data_vector);
 
-    protected:
-    private:
         double mean;
         double stdev;
-
+    protected:
+    private:
 };
 
 #endif // STATISTICS_H
