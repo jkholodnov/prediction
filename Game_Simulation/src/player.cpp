@@ -26,7 +26,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
             minutes.emplace_back(atoi(data_vector[0].c_str()));
             fga.emplace_back(atoi(data_vector[1].c_str()));
             fgm.emplace_back(atoi(data_vector[2].c_str()));
-            if(atoi(data_vector[2].c_str()) == 0){
+            if(atoi(data_vector[2].c_str()) <= 0){
                 fg_percent.emplace_back(0);
             }
             else{
@@ -34,19 +34,19 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
             }
             tpa.emplace_back(atoi(data_vector[3].c_str()));
             tpm.emplace_back(atoi(data_vector[4].c_str()));
-            if(atoi(data_vector[4].c_str()) == 0){
-                fg_percent.emplace_back(0);
+            if(atoi(data_vector[4].c_str()) <= 0){
+                tp_percent.emplace_back(0);
             }
             else{
-                fg_percent.emplace_back(atoi(data_vector[3].c_str())/atoi(data_vector[4].c_str()));
+                tp_percent.emplace_back(atoi(data_vector[3].c_str())/atoi(data_vector[4].c_str()));
             }
             fta.emplace_back(atoi(data_vector[5].c_str()));
             ftm.emplace_back(atoi(data_vector[6].c_str()));
-            if(atoi(data_vector[6].c_str()) == 0){
-                fg_percent.emplace_back(0);
+            if(atoi(data_vector[6].c_str()) <= 0){
+                ft_percent.emplace_back(0);
             }
             else{
-                fg_percent.emplace_back(atoi(data_vector[5].c_str())/atoi(data_vector[6].c_str()));
+                ft_percent.emplace_back(atoi(data_vector[5].c_str())/atoi(data_vector[6].c_str()));
             }
             oreb.emplace_back(atoi(data_vector[7].c_str()));
             dreb.emplace_back(atoi(data_vector[8].c_str()));
