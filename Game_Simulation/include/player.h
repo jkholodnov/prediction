@@ -23,7 +23,7 @@ class player
     public:
         player(const string& name);
         virtual ~player();
-        void get_player_scores(shared_ptr<RInside> R);
+        void get_player_scores(shared_ptr<RInside_Container> R_Inside_Container);
     protected:
     private:
         string player_name{};
