@@ -1,6 +1,9 @@
 #ifndef RINSIDE_CONTAINER_H
 #define RINSIDE_CONTAINER_H
 
+#include <string>
+#include <mutex>
+
 class RInside_Container{
 	double use(string command_to_execute){
 		mtx.lock();
