@@ -10,7 +10,7 @@ player::~player()
     //dtor
 }
 
-void player::get_player_scores(shared_ptr<RInside> R){
+void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container){
     Database* predict_db = new Database("predict.db");
 
     string _query1 = "SELECT count(*) FROM gamedata WHERE Name = '" + player_name + "';";
@@ -117,16 +117,7 @@ void player::get_player_scores(shared_ptr<RInside> R){
         cout << the_thing->first << "~" << the_thing->second.mean << endl;
     }
     */
-    simulate_performance(R);
+    simulate_performance(R_Inside_Container);
+    //maybe multithread this? I need 100 simulations.. would it be stepping over the RInside's lock's toes?//
 }
 
-void player::simulate_performance(shared_ptr<RInside> R){
-    auto threadID = std::this_thread::get_id();
-    auto thread_Hash = std::hash<std::thread::id>()(threadID);
-    srand(thread_Hash);
-    int performance = rand() % 100;
-    cout << "Perf " << performance << endl;
-    //GET ACCESS TO R HERE.. CALL qnorm
-    //double value = Rcpp::as<double>(R->parseEval("qnorm(.65, mean=0,sd=1)"));
-    //cout << value << endl;
-}

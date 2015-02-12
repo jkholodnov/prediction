@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "../include/team.h"
+#include "../include/RInside_Container.h"
 
 using namespace std;
 
@@ -43,9 +44,9 @@ int main(int argc, char** argv){
     vector<std::thread> generate_team_workers;
     size_t i;
 
-    std::shared_ptr<RInside> R = std::make_shared<RInside>();
+    std::shared_ptr<RInside_Container> RInside_Container = std::make_shared<RInside_Container>();
     for(i=0; i<teams.size();i++){
-        generate_team_workers.emplace_back(&team::generate_team_parallel, teams[i], R);
+        generate_team_workers.emplace_back(&team::generate_team_parallel, teams[i], RInside_Container);
     }
     R.reset();
     cout << "Waiting for team threads to return." << endl;

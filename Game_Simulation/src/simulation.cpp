@@ -1,8 +1,35 @@
 #include "../include/simulation.h"
 
-simulation::simulation()
+simulation::simulation(const unordered_map<string, statistics>& mean_and_stdevs, const vector<string>& keys_to_map, shared_ptr<RInside_Container> R_Inside_Container)
 {
-    //ctor
+	auto threadID = std::this_thread::get_id();
+    auto thread_Hash = std::hash<std::thread::id>()(threadID);
+    srand(thread_Hash);
+    int performance = rand() %100;
+
+    //TODO: Check if the performance in top 10% or bottom 10%
+    /*
+    int performance = rand() % 120;
+    if(performance < 10){
+
+	}
+   	else if(performance > 110){
+
+   	}
+   	else{
+		performance -= 10;
+   	}
+   	*/
+
+    for(auto key: keys_to_map){
+    	auto statistics_mean_and_stdev =  mean_and_stdevs.find(key);
+    	double mean = (statistics_mean_and_stdev.second).mean;
+    	double stdev = (statistics_mean_and_stdev.second).stdev;
+    	string RInside_Query = "qnorm(." + to_string(performance) + ", mean = " + to_string(mean) + ", stdev = " + to_string(stdev) + ")";
+    	cout << RInside_Query << endl;
+    	auto predicted_value = R_Inside_Container->use(RInside_Query);
+    	simulated_performance.emplace(key,predicted_value);
+    }
 }
 
 simulation::~simulation()
