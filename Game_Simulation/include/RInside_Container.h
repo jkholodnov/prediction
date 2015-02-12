@@ -1,5 +1,5 @@
-#ifndef RINSIDE__CONTAINER_H
-#define RINSIDE__CONTAINER_H
+#ifndef RINSIDE_CONTAINER_H
+#define RINSIDE_CONTAINER_H
 
 class RInside_Container{
 	double use(string command_to_execute){
@@ -11,4 +11,4 @@ class RInside_Container{
 	Rinside R{};
 	std::mutex mtx;
 };
-#endif // RINSIDE__CONTAINER_H
+#endif // RINSIDE_CONTAINER_H
