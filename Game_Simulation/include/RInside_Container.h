@@ -5,6 +5,8 @@
 #include <mutex>
 #include <RInside.h>
 
+using namespace std;
+
 class RInside_Container{
 	double use(string command_to_execute){
 		mtx.lock();
