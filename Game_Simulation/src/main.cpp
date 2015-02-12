@@ -48,7 +48,7 @@ int main(int argc, char** argv){
     for(i=0; i<teams.size();i++){
         generate_team_workers.emplace_back(&team::generate_team_parallel, teams[i], R_Inside_Container);
     }
-    R.reset();
+    R_Inside_Container.reset();
     cout << "Waiting for team threads to return." << endl;
     for(i=0; i<generate_team_workers.size();i++){
         generate_team_workers[i].join();
