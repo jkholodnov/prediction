@@ -127,6 +127,6 @@ void player::simulate_performance(shared_ptr<RInside> R){
     int performance = rand() % 100;
     cout << "Perf " << performance << endl;
     //GET ACCESS TO R HERE.. CALL qnorm
-    double value = Rcpp::as<double>(R->parseEval("qnorm(.65, mean=0,sd=1)"));
-    cout << value << endl;
+    //double value = Rcpp::as<double>(R->parseEval("qnorm(.65, mean=0,sd=1)"));
+    //cout << value << endl;
 }
