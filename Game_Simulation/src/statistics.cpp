@@ -17,6 +17,9 @@ double statistics::get_mean(const vector<double>& data_vector){
         if(i!=-1){
             mean += i;
         }
+        else{
+        	cout << "Player did not play this game" << endl;
+        }
     }
     mean /= data_vector.size();
     return mean;
