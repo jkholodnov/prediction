@@ -125,6 +125,13 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     	game_simulations.emplace_back();
     }
 
+    //Sequential version//
+    for(auto simulation: game_simulations){
+    	simulation.simulate_players_performance(mean_and_stdevs, keys_to_map, R_Inside_Container);
+    }
+
+    //Multithreaded version//
+    /*
     for(i=0;i<game_simulations.size();i++){
     	worker_threads.emplace_back(&simulation::simulate_players_performance, game_simulations[i], mean_and_stdevs, keys_to_map, R_Inside_Container);
     }
@@ -132,5 +139,6 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     for(i=0;i<worker_threads.size();i++){
     	worker_threads[i].join();
     }
+    */
 }
 
