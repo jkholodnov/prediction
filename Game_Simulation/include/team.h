@@ -8,9 +8,9 @@
 #include <memory>
 
 #include <RInside.h>
-#include "RInside_Container.h"
-#include "Database.h"
-#include "player.h"
+#include "../include/RInside_Container.h"
+#include "../include/Database.h"
+#include "../include/player.h"
 
 using namespace std;
 

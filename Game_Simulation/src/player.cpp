@@ -117,7 +117,20 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
         cout << the_thing->first << "~" << the_thing->second.mean << endl;
     }
     */
-    simulate_performance(R_Inside_Container);
-    //maybe multithread this? I need 100 simulations.. would it be stepping over the RInside's lock's toes?//
+
+    //spin up 100 threads to simulate each player's games. This might be slower than sequential. Need to test.//
+    vector<thread> worker_threads;
+    size_t i;
+    for(i=0;i<100;i++){
+    	game_simulations.emplace_back();
+    }
+
+    for(i=0;i<game_simulations.size();i++){
+    	worker_threads.emplace_back(&simulation::simulate_players_performance, game_simulations[i], mean_and_stdevs, keys_to_map, R_Inside_Container);
+    }
+
+    for(i=0;i<worker_threads.size();i++){
+    	worker_threads[i].join();
+    }
 }
 

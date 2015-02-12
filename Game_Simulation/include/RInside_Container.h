@@ -12,7 +12,7 @@ class RInside_Container{
 		mtx.unlock();
 		return value;
 	}
-	Rinside R{};
+	RInside R{};
 	std::mutex mtx;
 };
 #endif // RINSIDE_CONTAINER_H

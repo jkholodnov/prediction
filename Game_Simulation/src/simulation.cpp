@@ -1,6 +1,15 @@
 #include "../include/simulation.h"
 
-simulation::simulation(const unordered_map<string, statistics>& mean_and_stdevs, const vector<string>& keys_to_map, shared_ptr<RInside_Container> R_Inside_Container)
+simulation::simulation(){
+	//ctor
+}
+
+simulation::~simulation()
+{
+    //dtor
+}
+
+void simulation::simulate_players_performance(const unordered_map<string, statistics>& mean_and_stdevs, const vector<string>& keys_to_map, shared_ptr<RInside_Container> R_Inside_Container)
 {
 	auto threadID = std::this_thread::get_id();
     auto thread_Hash = std::hash<std::thread::id>()(threadID);
@@ -30,9 +39,6 @@ simulation::simulation(const unordered_map<string, statistics>& mean_and_stdevs,
     	auto predicted_value = R_Inside_Container->use(RInside_Query);
     	simulated_performance.emplace(key,predicted_value);
     }
-}
 
-simulation::~simulation()
-{
-    //dtor
+    cout << "Simulated all performances. The size is now: " << simulated_performance.size() << endl;
 }

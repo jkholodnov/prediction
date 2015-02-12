@@ -12,9 +12,9 @@
 #include <memory>
 
 
-#include "Database.h"
-#include "statistics.h"
-#include "simulation.h"
+#include "../include/Database.h"
+#include "../include/statistics.h"
+#include "../include/simulation.h"
 
 using namespace std;
 
