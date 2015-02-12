@@ -36,7 +36,7 @@ void simulation::simulate_players_performance(const unordered_map<string, statis
     	double mean = (statistics_mean_and_stdev->second).mean;
     	double stdev = (statistics_mean_and_stdev->second).stdev;
     	string RInside_Query = "qnorm(." + to_string(performance) + ", mean = " + to_string(mean) + ", sd = " + to_string(stdev) + ")";
-    	cout << "Container uses " << R_Inside_Container.use_count() <<" Mean " << mean << " Stdev " << stdev << " Query " << RInside_Query << endl;
+    	cout << "Number of container uses: " << R_Inside_Container.use_count() <<" Key: " << key << " " << statistics_mean_and_stdev->first << " Mean: " << mean << " Stdev: " << stdev << " Query: " << RInside_Query << endl;
     	auto predicted_value = R_Inside_Container->use(RInside_Query);
     	simulated_performance.emplace(key,predicted_value);
     }
