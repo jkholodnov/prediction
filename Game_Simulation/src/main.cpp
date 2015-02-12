@@ -44,7 +44,7 @@ int main(int argc, char** argv){
     vector<std::thread> generate_team_workers;
     size_t i;
 
-    std::shared_ptr<RInside_Container> RInside_Container = std::make_shared<RInside_Container>();
+    std::shared_ptr<RInside_Container> RInside_Container = new RInside_Container;
     for(i=0; i<teams.size();i++){
         generate_team_workers.emplace_back(&team::generate_team_parallel, teams[i], RInside_Container);
     }

@@ -1,7 +1,7 @@
 #ifndef RINSIDE__CONTAINER_H
 #define RINSIDE__CONTAINER_H
 
-struct RInside_Container{
+class RInside_Container{
 	double use(string command_to_execute){
 		mtx.lock();
 		double value = Rcpp::as<double>(R.parseEval(command_to_execute));
