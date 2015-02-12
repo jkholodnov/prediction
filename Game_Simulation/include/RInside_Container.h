@@ -3,6 +3,7 @@
 
 #include <string>
 #include <mutex>
+#include <RInside.h>
 
 class RInside_Container{
 	double use(string command_to_execute){
