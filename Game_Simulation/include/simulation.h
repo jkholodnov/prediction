@@ -22,7 +22,7 @@ class simulation
     public:
         simulation();
         virtual ~simulation();
-        void simulate_players_performance(const unordered_map<string, statistics>& mean_and_stdevs, const vector<string>& keys_to_map, shared_ptr<RInside_Container> R_Inside_Container);
+        void simulate_players_performance(const unordered_map<string, statistics>& mean_and_stdevs, const vector<string>& keys_to_map, shared_ptr<RInside_Container> R_Inside_Container, string playname);
 
     protected:
     private:

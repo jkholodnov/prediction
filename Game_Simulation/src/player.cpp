@@ -127,7 +127,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
 
     //Sequential version//
     for(auto simulation: game_simulations){
-    	simulation.simulate_players_performance(mean_and_stdevs, keys_to_map, R_Inside_Container);
+    	simulation.simulate_players_performance(mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
     }
 
     //Multithreaded version//
