@@ -1,9 +1,5 @@
-#include <vector>
-#include <string>
-#include <chrono>
-#include <thread>
-#include <RInside.h>
-#include <memory>
+#include "../include/dependencies.h"
+
 
 #include "../include/team.h"
 #include "../include/RInside_Container.h"
@@ -15,7 +11,6 @@ int main(int argc, char** argv){
 
     auto teamnames = predict_db->query("SELECT DISTINCT team1Abbr from games ORDER BY team1Abbr");
     cout << "Team Abbreviations:" << endl;
-
     for(auto team:teamnames){
         cout << team[0] << "\t";
     }
@@ -46,7 +41,7 @@ int main(int argc, char** argv){
 
     std::shared_ptr<RInside_Container> R_Inside_Container(new RInside_Container);
     for(i=0; i<teams.size();i++){
-        generate_team_workers.emplace_back(&team::generate_team_parallel, teams[i], R_Inside_Container);
+        generate_team_workers.emplace_back(&team::generate_team_simulations, teams[i], R_Inside_Container);
     }
     R_Inside_Container.reset();
     cout << "Waiting for team threads to return." << endl;

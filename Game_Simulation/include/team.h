@@ -1,13 +1,8 @@
 #ifndef TEAM_H
 #define TEAM_H
 
-#include <vector>
-#include <string>
-#include <thread>
-#include <mutex>
-#include <memory>
+#include "../include/dependencies.h"
 
-#include <RInside.h>
 #include "../include/RInside_Container.h"
 #include "../include/Database.h"
 #include "../include/player.h"
@@ -21,7 +16,8 @@ class team
         virtual ~team();
         team(const team& other);
         team(team&& other);
-        void generate_team_parallel(shared_ptr<RInside_Container> R_Inside_Container);
+        void generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Container);
+        double aggregate_player_scores();
     protected:
     private:
         string team_name{""};

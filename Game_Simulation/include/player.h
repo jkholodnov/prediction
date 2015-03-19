@@ -1,16 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <vector>
-#include <string>
-#include <iostream>
-#include <unordered_map>
-#include <utility>
-#include <thread>
-#include <functional>
-#include <RInside.h>
-#include <memory>
-
+#include "../include/dependencies.h"
 
 #include "../include/Database.h"
 #include "../include/statistics.h"

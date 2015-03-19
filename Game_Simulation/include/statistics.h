@@ -1,11 +1,7 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
-#include <math.h>
-#include <vector>
-#include <string>
-#include <RInside.h>
-
+#include "../include/dependencies.h"
 
 using namespace std;
 

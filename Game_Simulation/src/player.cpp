@@ -110,14 +110,6 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     mean_and_stdevs.emplace("plus_minus",plus_minus_stats);
     mean_and_stdevs.emplace("points",points_stats);
 
-
-    //auto the_thing = mean_and_stdevs.find("minutes");
-    /*
-    if(the_thing!= mean_and_stdevs.end()){
-        cout << the_thing->first << "~" << the_thing->second.mean << endl;
-    }
-    */
-
     //spin up 100 threads to simulate each player's games. This might be slower than sequential. Need to test.//
     vector<thread> worker_threads;
     size_t i;
@@ -126,7 +118,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     }
 
     //Sequential version//
-    for(auto simulation: game_simulations){
+    for(auto& simulation: game_simulations){
     	simulation.simulate_players_performance(mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
     }
 
@@ -140,5 +132,6 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     	worker_threads[i].join();
     }
     */
+    //each player has simulations, each simulation contains the simulated performances 
 }
 
