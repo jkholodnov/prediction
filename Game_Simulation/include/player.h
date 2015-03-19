@@ -15,8 +15,7 @@ class player
         player(const string& name);
         virtual ~player();
         void get_player_scores(shared_ptr<RInside_Container> R_Inside_Container);
-    protected:
-    private:
+    
         string player_name{};
         vector<double> minutes;
         vector<double> fga;
@@ -44,6 +43,8 @@ class player
 
         volatile int simulation_count{0};
         vector<simulation> game_simulations{};
+    protected:
+    private:
 };
 
 #endif // PLAYER_H

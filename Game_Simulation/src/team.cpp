@@ -58,7 +58,7 @@ double team::aggregate_player_scores(){
             score = scoree;
         }
         ~minutes_and_score(){}
-        bool operator<(const &minutes_and_score other){
+        bool operator<(const minutes_and_score& other){
             return minutes < other.minutes;
         }
         double minutes;

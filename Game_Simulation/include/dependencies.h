@@ -11,6 +11,7 @@
 #include <iostream>
 #include <utility>
 #include <functional>
+#include <chrono>
 #include <mutex>
 
 #include <RInside.h>
