@@ -50,7 +50,7 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
     delete predict_db;
 }
 
-double team::aggregate_player_scores(){
+vector<double> team::aggregate_player_scores(){
     size_t i,j;
     struct minutes_and_score{
         minutes_and_score(double mins, double scoree){
@@ -105,7 +105,10 @@ double team::aggregate_player_scores(){
         for(j=0; j<5; j++){
             sum_of_top_5_scores += mins_and_scores_vector[j].score;
         }
+        simulation_scores.push_back(sum_of_top_5_scores);
+        cout << "###" << sum_of_top_5_scores << "###" << endl;
     }
+    return simulation_scores;
 }
 
    
