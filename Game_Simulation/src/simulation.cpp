@@ -32,8 +32,9 @@ void simulation::simulate_players_performance(const unordered_map<string, statis
 
 int simulation::get_simulated_value(string key){
     auto simulated_entity = simulated_performance.find(key);
+    int simulated_value;
     if(simulated_entity != simulated_performance.end()){
-      int simulated_value = round(simulated_entity->second);
+      simulated_value = round(simulated_entity->second);
     }
     return simulated_value;
 }
