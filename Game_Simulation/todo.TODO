@@ -1,0 +1,15 @@
+ ☐ Scheduler do not context switch until a thread completes its course of execution. EG:
+  int x=0;
+   x = thread->execute(somefunction);
+
+   int somefunction(someparams){
+     asdf;
+     return 1;
+   }
+
+   while(x =0){
+    continue to allow thread to use the core. //will this cause performance hit due to IO bound process?
+   }
+
+
+   

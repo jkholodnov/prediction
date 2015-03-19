@@ -50,7 +50,7 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
     delete predict_db;
 }
 
-void team::aggregate_player_scores(){
+double team::aggregate_player_scores(){
     size_t i,j;
     struct minutes_and_score{
         minutes_and_score(double mins, double scoree){
