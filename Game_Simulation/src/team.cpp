@@ -100,7 +100,7 @@ double team::aggregate_player_scores(){
             mins_and_scores_vector.emplace_back(minutes_value, predicted_score);
         }
 
-        sort(mins_and_scores_vector);
+        sort(mins_and_scores_vector.begin(), mins_and_scores_vector.end());
         double sum_of_top_5_scores{0.0};
         for(j=0; j<5; j++){
             sum_of_top_5_scores += mins_and_scores_vector[j].score;
