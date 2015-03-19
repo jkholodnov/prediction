@@ -49,4 +49,9 @@ int main(int argc, char** argv){
         generate_team_workers[i].join();
     }
     cout << "Team threads returned." << endl;
+
+
+
+    auto team1simulated_values = teams[0].aggregate_player_scores();
+    auto team2simulated_values = teams[1].aggregate_player_scores();
 }
