@@ -26,8 +26,6 @@ void simulation::simulate_players_performance(const unordered_map<string, statis
     	auto predicted_value = R_Inside_Container->use(RInside_Query);
     	simulated_performance.emplace(key,predicted_value);
     }
-
-    cout << "Simulated all variables. The size is now: " << simulated_performance.size() << endl;
 }
 
 int simulation::get_simulated_value(string key){
