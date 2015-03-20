@@ -101,13 +101,19 @@ vector<double> team::aggregate_player_scores(){
             mins_and_scores_vector.emplace_back(minutes_value, predicted_score);
         }
 
-        sort(mins_and_scores_vector.begin(), mins_and_scores_vector.end());
+
+        auto cmp = [](minutes_and_score const & a, minutes_and_score const & b) 
+        { 
+             return a.score < b.score;
+        };
+
+        sort(mins_and_scores_vector.begin(), mins_and_scores_vector.end(), cmp);
 
         for(auto i:mins_and_scores_vector){
             cout << i.score << "~";
         }
         cout << endl;
-        
+
         double sum_of_top_5_scores{0.0};
 
         for(j=0; j<5; j++){
