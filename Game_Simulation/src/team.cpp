@@ -70,7 +70,25 @@ vector<double> team::aggregate_player_scores(){
         vector<minutes_and_score> mins_and_scores_vector;
         //calculate the players' points based on lm output.//
         //find the top 5 minutes predicted, sum up their points, return that as the value. 
-        for(j=0;j<players.size();j++){
+        auto cmp_players = [](player const & a, player const & b) 
+        {
+            auto the_simulation = a.game_simulations[i];
+            auto map_of_performances = the_simulation.simulated_performance;
+            auto minutes = map_of_performances.find("minutes");
+            auto a_minutes_value = minutes->second;
+
+            auto bthe_simulation = b.game_simulations[i];
+            auto bmap_of_performances = bthe_simulation.simulated_performance;
+            auto bminutes = bmap_of_performances.find("minutes");
+            auto b_minutes_value = bminutes->second;
+            return a_minutes_value > b_minutes_value;
+        };
+
+        sort(players.begin(), players.end(), cmp_players);
+
+        //only look at top 5 predicted minutes players//
+        for(j=0;j<5;j++){
+            
             auto the_simulation = players[j].game_simulations[i];
             auto map_of_performances = the_simulation.simulated_performance;
 
@@ -102,26 +120,25 @@ vector<double> team::aggregate_player_scores(){
             mins_and_scores_vector.emplace_back(minutes_value, predicted_score);
         }
 
-
+        /*
         auto cmp = [](minutes_and_score const & a, minutes_and_score const & b) 
         { 
              return a.score > b.score;
         };
 
         sort(mins_and_scores_vector.begin(), mins_and_scores_vector.end(), cmp);
+        */
 
         for(auto i:mins_and_scores_vector){
+            SUM_OF_TOP_5_MINUTES_SCORES += i.score;
             cout << i.score << "~";
         }
         cout << endl;
 
-        double sum_of_top_5_scores{0.0};
+        double SUM_OF_TOP_5_MINUTES_SCORES{0.0};
 
-        for(j=0; j<5; j++){
-            sum_of_top_5_scores += mins_and_scores_vector[j].score;
-        }
-        simulation_scores.push_back(sum_of_top_5_scores);
-        cout << "Simulated score of : " << sum_of_top_5_scores << " for team " << team_name << endl;
+        simulation_scores.push_back(sum_of_top_8_scores);
+        cout << "Simulated score of : " << sum_of_top_8_scores << " for team " << team_name << endl;
     }
     return simulation_scores;
 }
