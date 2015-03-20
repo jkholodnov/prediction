@@ -45,7 +45,7 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
         worker_threads[i].join();
     }
 
-    cout << "Done simulating player scores. Time to combine the team values." << endl;
+    cout << "Done simulating player scores. Time to combine the team values."  << players.size() << endl;
 
     delete predict_db;
 }
