@@ -96,6 +96,7 @@ vector<double> team::aggregate_player_scores(){
             auto fouls_value = fouls->second;
             auto plus_minus_value = plus_minus->second;
 
+            cout << minutes_value << " " << fga_value << " " << tpa_value<< " " <<fta_value<< " " <<oreb_value<< " " <<assist_value<< " " <<<< " " <<turnover_value<< " " <<fouls_value<< " " <<plus_minus_value<<endl;
             double predicted_score = -0.58433440 + 0.03139078*minutes_value + 0.95074756*fga_value + 0.20738638*tpa_value + 0.78631074*fta_value - 0.07971875*oreb_value - 0.15509996*assist_value - 0.09794145*steal_value + 0.10168076*turnover_value + 0.03700077*fouls_value + 0.08231120*plus_minus_value; 
         
             mins_and_scores_vector.emplace_back(minutes_value, predicted_score);
