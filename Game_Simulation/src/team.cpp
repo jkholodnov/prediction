@@ -73,7 +73,6 @@ vector<double> team::aggregate_player_scores(){
         //calculate the players' points based on lm output.//
         //find the top 5 minutes predicted, sum up their points, return that as the value. 
         for(j=0;j<players.size();j++){
-            cout << players[j].simulation_count << endl;
             auto the_simulation = players[j].game_simulations[i];
             auto map_of_performances = the_simulation.simulated_performance;
 
@@ -110,7 +109,7 @@ vector<double> team::aggregate_player_scores(){
             sum_of_top_5_scores += mins_and_scores_vector[j].score;
         }
         simulation_scores.push_back(sum_of_top_5_scores);
-        cout << "###" << sum_of_top_5_scores << "###" << endl;
+        cout << "Simulated score of : " << sum_of_top_5_scores << " for team " << team_name << endl;
     }
     return simulation_scores;
 }
