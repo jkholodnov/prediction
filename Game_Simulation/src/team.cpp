@@ -128,6 +128,8 @@ vector<double> team::aggregate_player_scores(){
 
         sort(mins_and_scores_vector.begin(), mins_and_scores_vector.end(), cmp);
         */
+        
+        double SUM_OF_TOP_5_MINUTES_SCORES{0.0};
 
         for(auto i:mins_and_scores_vector){
             SUM_OF_TOP_5_MINUTES_SCORES += i.score;
@@ -135,10 +137,8 @@ vector<double> team::aggregate_player_scores(){
         }
         cout << endl;
 
-        double SUM_OF_TOP_5_MINUTES_SCORES{0.0};
-
-        simulation_scores.push_back(sum_of_top_8_scores);
-        cout << "Simulated score of : " << sum_of_top_8_scores << " for team " << team_name << endl;
+        simulation_scores.push_back(SUM_OF_TOP_5_MINUTES_SCORES);
+        cout << "Simulated score of : " << SUM_OF_TOP_5_MINUTES_SCORES << " for team " << team_name << endl;
     }
     return simulation_scores;
 }
