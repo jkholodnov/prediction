@@ -38,7 +38,7 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
 
     vector<thread> worker_threads;
     for(i=0;i<players.size();i++){
-        worker_threads.emplace_back(&player::get_player_scores, players[i], R_Inside_Container);
+        worker_threads.emplace_back(&player::get_player_scores, &players[i], R_Inside_Container);
     }
 
     for(i=0;i<worker_threads.size();i++){
