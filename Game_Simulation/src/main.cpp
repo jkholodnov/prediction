@@ -45,11 +45,14 @@ int main(int argc, char** argv){
     }
     R_Inside_Container.reset();
     cout << "Waiting for team threads to return." << endl;
+
     for(i=0; i<generate_team_workers.size();i++){
         generate_team_workers[i].join();
     }
     cout << "Team threads returned." << endl;
-
+    for(auto team: teams){
+        cout << (team.players).size() << endl;
+    }
 
 
     auto team1simulated_values = teams[0].aggregate_player_scores();
