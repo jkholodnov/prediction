@@ -71,9 +71,9 @@ vector<double> team::aggregate_player_scores(){
         vector<minutes_and_score> mins_and_scores_vector;
         //calculate the players' points based on lm output.//
         //find the top 5 minutes predicted, sum up their points, return that as the value. 
-        for(auto& playerr: players){
-            cout << playerr.simulation_count << endl;
-            auto the_simulation = playerr.game_simulations[i];
+        for(j=0;j<players.size();j++){
+            cout << players[j].simulation_count << endl;
+            auto the_simulation = players[j].game_simulations[i];
             auto map_of_performances = the_simulation.simulated_performance;
 
             auto minutes = map_of_performances.find("minutes");
