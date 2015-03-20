@@ -41,7 +41,7 @@ int main(int argc, char** argv){
 
     std::shared_ptr<RInside_Container> R_Inside_Container(new RInside_Container);
     for(i=0; i<teams.size();i++){
-        generate_team_workers.emplace_back(&team::generate_team_simulations, teams[i], R_Inside_Container);
+        generate_team_workers.emplace_back(&team::generate_team_simulations, &teams[i], R_Inside_Container);
     }
     R_Inside_Container.reset();
     cout << "Waiting for team threads to return." << endl;
