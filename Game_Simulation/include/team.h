@@ -18,10 +18,12 @@ class team
         team(team&& other);
         void generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Container);
         vector<double> aggregate_player_scores();
-    protected:
-    private:
+        
         string team_name{""};
         vector<player> players;
+    protected:
+    private:
+        
 };
 
 #endif // TEAM_H
