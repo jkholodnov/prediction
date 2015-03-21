@@ -70,7 +70,7 @@ vector<double> team::aggregate_player_scores(){
         vector<minutes_and_score> mins_and_scores_vector;
         //calculate the players' points based on lm output.//
         //find the top 5 minutes predicted, sum up their points, return that as the value. 
-        auto cmp_players = [](player const & a, player const & b) 
+        auto cmp_players = [&i](player const & a, player const & b) 
         {
             auto the_simulation = a.game_simulations[i];
             auto map_of_performances = the_simulation.simulated_performance;
@@ -128,7 +128,7 @@ vector<double> team::aggregate_player_scores(){
 
         sort(mins_and_scores_vector.begin(), mins_and_scores_vector.end(), cmp);
         */
-        
+
         double SUM_OF_TOP_5_MINUTES_SCORES{0.0};
 
         for(auto i:mins_and_scores_vector){
@@ -143,4 +143,3 @@ vector<double> team::aggregate_player_scores(){
     return simulation_scores;
 }
 
-   
