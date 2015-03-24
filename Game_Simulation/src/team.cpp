@@ -60,8 +60,27 @@ vector<double> team::aggregate_player_scores(){
     Database* predict_db = new Database("predict.db");
     auto last_game_played = predict_db->query("select max(day),id from games where team1abbr = '" + team_name + "' or team2abbr = '" + team_name + "';");
     auto player_information = predict_db->query("select name,injury from gamedata where gameid = '" + last_game_played[0][1] + "';");
+    
+    vector<player> active_players;
+
     for(auto& player:player_information){
-        
+        if(player[1] == "NULL"){
+            //the player did play last game
+            for(auto& _player: players){
+                if(_player.player_name == player[0]){
+                    active_players.emplace_back(_player);
+                }
+            }
+        }
+        else{
+            if(player[1].find("DNP COACH'S DECISION") == string::npos){
+                //the player was injured. Find out how many games he has been out. Do a check to find avg number of games missed for that injury.
+                
+            }
+            else{
+                //the player was scratched
+            }
+        }
     }
 
     for(i=0; i<1; i++){
