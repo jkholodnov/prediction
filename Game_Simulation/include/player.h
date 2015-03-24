@@ -17,8 +17,6 @@ class player
         void get_player_scores(shared_ptr<RInside_Container> R_Inside_Container);
         pair<int,int> simulate_game_scores(int i);
 
-
-
         string player_name{};
         vector<double> minutes;
         vector<double> fga;

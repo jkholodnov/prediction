@@ -59,9 +59,10 @@ vector<double> team::aggregate_player_scores(){
 
     Database* predict_db = new Database("predict.db");
     auto last_game_played = predict_db->query("select max(day),id from games where team1abbr = '" + team_name + "' or team2abbr = '" + team_name + "';");
-
-    cout << last_game_played[0][1] << endl;
-
+    auto player_information = predict_db->query("select name,injury from gamedata where gameid = '" + last_game_played[0][1] + "';");
+    for(auto& player:player_information){
+        
+    }
 
     for(i=0; i<1; i++){
         vector<pair<int, int>> mins_and_scores_vector;
