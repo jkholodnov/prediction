@@ -51,7 +51,7 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
 }
 
 vector<double> team::aggregate_player_scores(){
-    size_t i,j;
+    size_t i;
 
     cout << "Starting loop" << endl;
     vector<double> simulation_scores;
@@ -94,8 +94,8 @@ vector<double> team::aggregate_player_scores(){
         double SUM_OF_TOP_12_MINUTES_SCORES{0.0};
 
         for(auto& pair : mins_and_scores_vector){
-            SUM_OF_TOP_12_MINUTES_SCORES += i.second;
-            cout << i.second<< "~";
+            SUM_OF_TOP_12_MINUTES_SCORES += pair.second;
+            cout << pair.second<< "~";
         }
         cout << endl;
 
