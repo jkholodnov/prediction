@@ -58,7 +58,7 @@ vector<double> team::aggregate_player_scores(){
     //TODO : LOOK THROUGH ALL PLAYERS, DETERMINE WHICH ONES WILL MOST LIKELY NOT PLAY NEXT GAME.//
 
     Database* predict_db = new Database("predict.db");
-    auto last_game_played = predict_db->query("select max(day),id from games where team1abbr = " + team_name + " or team2abbr = " + team_name + ";");
+    auto last_game_played = predict_db->query("select max(day),id from games where team1abbr = '" + team_name + "' or team2abbr = '" + team_name + "';");
 
     cout << last_game_played[0][1] << endl;
 
