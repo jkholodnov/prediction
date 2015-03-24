@@ -135,7 +135,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     //each player has simulations, each simulation contains the simulated performances 
 }
 
-pair player::simulate_game_scores(int i){
+pair<int,int> player::simulate_game_scores(int i){
     auto the_simulation = game_simulations[i];
     auto map_of_performances = the_simulation.simulated_performance;
 
