@@ -52,22 +52,19 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
 
 vector<double> team::aggregate_player_scores(){
     size_t i,j;
-    struct minutes_and_score{
-        minutes_and_score(double mins, double scoree){
-            minutes = mins;
-            score = scoree;
-        }
-        ~minutes_and_score(){}
-        bool operator<(const minutes_and_score& other){
-            return minutes < other.minutes;
-        }
-        double minutes;
-        double score;
-    };
+
     cout << "Starting loop" << endl;
     vector<double> simulation_scores;
+    //TODO : LOOK THROUGH ALL PLAYERS, DETERMINE WHICH ONES WILL MOST LIKELY NOT PLAY NEXT GAME.//
+
+    Database* predict_db = new Database("predict.db");
+    auto last_game_played = predict_db->query("select max(day),id from games where team1abbr = " + team_name + " or team2abbr = " + team_name + ";");
+
+    cout << last_game_played[0][1] << endl;
+
+
     for(i=0; i<1; i++){
-        vector<minutes_and_score> mins_and_scores_vector;
+        vector<pair<int, int>> mins_and_scores_vector;
         //calculate the players' points based on lm output.//
         //find the top 5 minutes predicted, sum up their points, return that as the value. 
         auto cmp_players = [&i](player const & a, player const & b) 
@@ -86,60 +83,24 @@ vector<double> team::aggregate_player_scores(){
 
         sort(players.begin(), players.end(), cmp_players);
 
-        //only look at top 5 predicted minutes players//
-        for(j=0;j<5;j++){
-            
-            auto the_simulation = players[j].game_simulations[i];
-            auto map_of_performances = the_simulation.simulated_performance;
 
-            auto minutes = map_of_performances.find("minutes");
-            auto fga = map_of_performances.find("fga");
-            auto tpa = map_of_performances.find("tpa");
-            auto fta = map_of_performances.find("fta");
-            auto oreb = map_of_performances.find("oreb");
-            auto assist = map_of_performances.find("assist");
-            auto steal = map_of_performances.find("steal");
-            auto turnover = map_of_performances.find("turnover");
-            auto fouls = map_of_performances.find("fouls");
-            auto plus_minus = map_of_performances.find("plus_minus");
 
-            auto minutes_value = minutes->second;
-            auto fga_value = fga->second;
-            auto tpa_value = tpa->second;
-            auto fta_value = fta->second;
-            auto oreb_value = oreb->second;
-            auto assist_value = assist->second;
-            auto steal_value = steal->second;
-            auto turnover_value = turnover->second;
-            auto fouls_value = fouls->second;
-            auto plus_minus_value = plus_minus->second;
-
-            cout << players[j].player_name << " mins: " << minutes_value << " fga: " << fga_value << " tpa: " << tpa_value<< " fta: " <<fta_value<< " oreb: " <<oreb_value<< " ast: " <<assist_value<< " stl: " <<steal_value<< " to: " <<turnover_value<< " fl: " <<fouls_value<< " +-: " <<plus_minus_value<<endl;
-            double predicted_score = -0.58433440 + 0.03139078*minutes_value + 0.95074756*fga_value + 0.20738638*tpa_value + 0.78631074*fta_value - 0.07971875*oreb_value - 0.15509996*assist_value - 0.09794145*steal_value + 0.10168076*turnover_value + 0.03700077*fouls_value + 0.08231120*plus_minus_value; 
-        
-            mins_and_scores_vector.emplace_back(minutes_value, predicted_score);
+        //ONLY LOOK AT THE PLAYERS WHICH WE THINK WILL PLAY NEXT GAME//
+        for(auto& _player : players){
+            auto simulated_value = _player.simulate_game_scores(i);
+            mins_and_scores_vector.emplace_back(simulated_value);
         }
 
-        /*
-        auto cmp = [](minutes_and_score const & a, minutes_and_score const & b) 
-        { 
-             return a.score > b.score;
-        };
+        double SUM_OF_TOP_12_MINUTES_SCORES{0.0};
 
-        sort(mins_and_scores_vector.begin(), mins_and_scores_vector.end(), cmp);
-        */
-
-        double SUM_OF_TOP_5_MINUTES_SCORES{0.0};
-
-        for(auto i:mins_and_scores_vector){
-            SUM_OF_TOP_5_MINUTES_SCORES += i.score;
-            cout << i.score << "~";
+        for(auto& pair : mins_and_scores_vector){
+            SUM_OF_TOP_12_MINUTES_SCORES += i.second;
+            cout << i.second<< "~";
         }
         cout << endl;
 
-        simulation_scores.push_back(SUM_OF_TOP_5_MINUTES_SCORES);
-        cout << "Simulated score of : " << SUM_OF_TOP_5_MINUTES_SCORES << " for team " << team_name << endl;
+        simulation_scores.push_back(SUM_OF_TOP_12_MINUTES_SCORES);
+        cout << "Simulated score of : " << SUM_OF_TOP_12_MINUTES_SCORES << " for team " << team_name << endl;
     }
     return simulation_scores;
 }
-
