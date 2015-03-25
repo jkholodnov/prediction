@@ -1,6 +1,8 @@
 #ifndef TEAM_H
 #define TEAM_H
 
+#include "Database.h"
+
 #include <fstream>
 #include <vector>
 #include <string>
@@ -12,10 +14,10 @@ class team
 {
     public:
         team(string abbr);
-        virtual ~team();
+        ~team();
         void init(string abbr);
         double get_Rating();
-        void update_Rating(double update_by,double t1Rating,double t2Rating, string t1abbr, string t2abbr);
+        void update_Rating(Database* the_db, string gameid, double update_by,double t1Rating,double t2Rating, string t1abbr, string t2abbr);
         string getAbbr();
     protected:
     private:

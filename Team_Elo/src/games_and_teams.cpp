@@ -2,58 +2,50 @@
 
 games_and_teams::games_and_teams()
 {
-
+    the_db = new Database("../predict.db");
 }
 
 games_and_teams::~games_and_teams()
 {
-
+    delete the_db;
 }
 
 void games_and_teams::initialize_teams(){
-    Database* the_db = new Database("../../predict.db");
-    
     string _query = "SELECT distinct Team1Abbr FROM games;";
     auto team_abbreviations = the_db->query(_query);
+
 
     for(auto& team_abbreviation : team_abbreviations){
         the_teams.emplace_back(team_abbreviation[0]);
     }
-
-    delete the_db;
 }
 void games_and_teams::get_games()
 {
-    Database* the_db = new Database("../../predict.db");
-    string _query = "SELECT Id, day, Team1Abbr, Team2Abbr, Team1Score, Team2Score FROM games ORDER BY day ASC;";
+    string _query = "SELECT gameId, Team1Abbr, Team2Abbr, Team1Score, Team2Score FROM games ORDER BY day ASC;";
 
     auto games_info = the_db->query(_query);
-    int _gameid, _score1, _score2;
+    int _score1, _score2;
 
     for(auto& game: games_info)
     {
-        _gameid = atoi(game[0].c_str());
-        //find team by searching thru the_teams
-
         team* team1;
         team* team2;
 
         for(auto& team : the_teams){
-            if(team.getAbbr == game[2]){
+            if(team.getAbbr() == game[1]){
                 team1 = &team;
             }
-            else if(team.geTAbbr == game[3]){
+            else if(team.getAbbr() == game[2]){
                 team2 = &team;
             }
         }
         
-        _score1 = atoi(game[4].c_str());
-        _score2 = atoi(game[5].c_str());
+        _score1 = atoi(game[3].c_str());
+        _score2 = atoi(game[4].c_str());
 
-        the_games.emplace_back(_gameid, team1, team2, _score1, _score2);
+        the_games.emplace_back(game[0], team1, team2, _score1, _score2);
     }
-
-    delete the_db;
+    cout << "Pulled all games. There are " << the_games.size() << " games to parse." << endl;
 }
 
 void games_and_teams::parseGames()
@@ -62,7 +54,7 @@ void games_and_teams::parseGames()
 
     for(auto& game:the_games)
     {
-        Number_Correct_Ranking += game.update_Team_Ratings();
+        Number_Correct_Ranking += game.update_Team_Ratings(the_db);
     }
     cout << Number_Correct_Ranking << endl;
 }
