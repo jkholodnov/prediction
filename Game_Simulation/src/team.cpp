@@ -78,49 +78,31 @@ vector<double> team::aggregate_player_scores(){
                 
             }
             else{
-                //the player was scratched
+                //the player was scratched. 
+                //figure out the chance that the scratched player will return the next game.
             }
         }
     }
 
     for(i=0; i<1; i++){
         vector<pair<int, int>> mins_and_scores_vector;
-        //calculate the players' points based on lm output.//
-        //find the top 5 minutes predicted, sum up their points, return that as the value. 
-        auto cmp_players = [&i](player const & a, player const & b) 
-        {
-            auto the_simulation = a.game_simulations[i];
-            auto map_of_performances = the_simulation.simulated_performance;
-            auto minutes = map_of_performances.find("minutes");
-            auto a_minutes_value = minutes->second;
-
-            auto bthe_simulation = b.game_simulations[i];
-            auto bmap_of_performances = bthe_simulation.simulated_performance;
-            auto bminutes = bmap_of_performances.find("minutes");
-            auto b_minutes_value = bminutes->second;
-            return a_minutes_value > b_minutes_value;
-        };
-
-        sort(players.begin(), players.end(), cmp_players);
-
-
 
         //ONLY LOOK AT THE PLAYERS WHICH WE THINK WILL PLAY NEXT GAME//
-        for(auto& _player : players){
+        for(auto& _player : active_players){
             auto simulated_value = _player.simulate_game_scores(i);
             mins_and_scores_vector.emplace_back(simulated_value);
         }
 
-        double SUM_OF_TOP_12_MINUTES_SCORES{0.0};
-
+        int team_predicted_points{0};
+        int team_predicted_turnovers{0};
         for(auto& pair : mins_and_scores_vector){
-            SUM_OF_TOP_12_MINUTES_SCORES += pair.second;
+            team_predicted_points += pair.second;
             cout << pair.second<< "~";
         }
         cout << endl;
 
-        simulation_scores.push_back(SUM_OF_TOP_12_MINUTES_SCORES);
-        cout << "Simulated score of : " << SUM_OF_TOP_12_MINUTES_SCORES << " for team " << team_name << endl;
+        simulation_scores.push_back(team_predicted_points);
+        cout << "Simulated score of : " << team_predicted_points << " for team " << team_name << endl;
     }
     return simulation_scores;
 }

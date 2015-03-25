@@ -143,7 +143,13 @@ pair<int,int> player::simulate_game_scores(int i){
     auto fga = map_of_performances.find("fga");
     auto tpa = map_of_performances.find("tpa");
     auto fta = map_of_performances.find("fta");
+
+    auto fgm = map_of_performances.find("fgm");
+    auto tpm = map_of_performances.find("tpm");
+    auto ftm = map_of_performances.find("ftm");
+
     auto oreb = map_of_performances.find("oreb");
+    auto dreb = map_of_performances.find("dreb");
     auto assist = map_of_performances.find("assist");
     auto steal = map_of_performances.find("steal");
     auto turnover = map_of_performances.find("turnover");
@@ -154,7 +160,13 @@ pair<int,int> player::simulate_game_scores(int i){
     double fga_value = fga->second;
     double tpa_value = tpa->second;
     double fta_value = fta->second;
+
+    double fgm_value = fgm->second;
+    double tpm_value = tpm->second;
+    double ftm_value = ftm->second;
+
     double oreb_value = oreb->second;
+    double dreb_value = dreb->second;
     double assist_value = assist->second;
     double steal_value = steal->second;
     double turnover_value = turnover->second;
@@ -165,6 +177,10 @@ pair<int,int> player::simulate_game_scores(int i){
     
     //These values are hard coded from my lm(Score ~ .) output. Need to figure out a way to route RInside to here.
     double predicted_score = -0.520640 + 0.027873*minutes_value + 0.959890*fga_value + 0.206571*tpa_value + 0.793915*fta_value - 0.115459*oreb_value - 0.153142*assist_value - 0.077242*steal_value + 0.107611*turnover_value + 0.027402*fouls_value + 0.087565*plus_minus_value; 
+    double predicted_turnovers = turnover_value + fouls_value - steal_value - dreb_value;
     
-    return make_pair(round(minutes_value), round(predicted_score));
+    int shots = round(fga_value + tpa_value + (fta_value/2));
+    int number_possessions = 
+    auto predicted_points_per_possession = (fgm_value / fga_value) + 
+    return make_pair(round(predicted_turnovers), round(predicted_score));
 }
