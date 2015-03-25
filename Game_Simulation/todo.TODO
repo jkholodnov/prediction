@@ -8,8 +8,8 @@
    }
 
    while(x =0){
-    continue to allow thread to use the core. //will this cause performance hit due to IO bound process?
+    continue to allow thread to use the ore. //will this cause performance hit due to IO bound process?
    }
 
 
-   
+ ☐ 
