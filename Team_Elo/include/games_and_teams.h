@@ -5,12 +5,15 @@
 #include "team.h"
 #include "Database.h"
 
+#include <future>
+#include <functional>
 #include <vector>
 #include <string>
 #include <set>
 #include <cstdlib>
 #include <iostream>
 #include <thread>
+#include <utility>
 
 using namespace std;
 
@@ -24,7 +27,7 @@ class games_and_teams
         void parseGames();
     protected:
     private:
-        vector<game> the_games{};
+        vector<vector<game>> the_games{};
         //this is the only copy of teams//
         vector<team> the_teams{};
         Database* the_db;

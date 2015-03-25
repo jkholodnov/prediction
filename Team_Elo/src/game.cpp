@@ -15,7 +15,7 @@ game::~game()
 }
 
 //parallelize this call//
-int game::update_Team_Ratings(Database* the_db)
+pair<int,string> game::update_Team_Ratings()
 {
     auto t1_Rating = team1->get_Rating();
     auto t2_Rating = team2->get_Rating();
@@ -26,32 +26,40 @@ int game::update_Team_Ratings(Database* the_db)
     //cout << t1_Rating << "~" << team1Expected << "##" << t2_Rating << "~" << team2Expected << endl;
     if(team1Score > team2Score)
     {
-        team1 -> update_Rating(the_db, gameid, 50*(1 - team1Expected),t1_Rating,t2_Rating, team1->getAbbr(), team2->getAbbr());
-        team2 -> update_Rating(the_db, gameid, 50*(0 - team2Expected),t1_Rating,t2_Rating, team1->getAbbr(), team2->getAbbr());
+        team1 -> update_Rating(50*(1 - team1Expected));
+        team2 -> update_Rating(50*(0 - team2Expected));
+
+        string _query = "UPDATE games SET team1ELO = " + to_string(t1_Rating) + ", team2ELO = " + to_string(t2_Rating) + " WHERE gameid = '" + gameid + "';";
 
         if(t1_Rating > t2_Rating)
         {
             //number_correct++;
-            return 1;
+            auto pair = make_pair(1,_query);
+            return pair;
         }
         else
         {
-            return 0;
+            auto pair = make_pair(0,_query);
+            return pair;
         }
     }
     else
     {
-        team1 -> update_Rating(the_db, gameid, 50*(0 - team1Expected),t1_Rating,t2_Rating, team1->getAbbr(), team2->getAbbr());
-        team2 -> update_Rating(the_db, gameid, 50*(1 - team2Expected),t1_Rating,t2_Rating, team1->getAbbr(), team2->getAbbr());
+        team1 -> update_Rating(50*(0 - team1Expected));
+        team2 -> update_Rating(50*(1 - team2Expected));
+
+        string _query = "UPDATE games SET team1ELO = " + to_string(t1_Rating) + ", team2ELO = " + to_string(t2_Rating) + " WHERE gameid = '" + gameid + "';";
 
         if(t2_Rating > t1_Rating)
         {
             //number_correct++;
-            return 1;
+            auto pair = make_pair(1,_query);
+            return pair;
         }
         else
         {
-            return 0;
+            auto pair = make_pair(0,_query);
+            return pair;
         }
     }
 }

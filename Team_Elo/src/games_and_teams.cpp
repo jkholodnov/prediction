@@ -56,15 +56,14 @@ void games_and_teams::get_games()
 void games_and_teams::parseGames()
 {
     size_t i;
-    vector<future<int>> this_days_games(game_day.size());
 
     int Number_Correct_Ranking{0};
 
     for(auto& game_day:the_games)
     {
-        vector<future<int>> this_days_games(game_day.size());
+        vector<future<pair<int,string>>> this_days_games;
         for(i=0; i<game_day.size(); i++){
-            this_days_games[i] = async( launch::async, boost::bind( &game::update_Team_Ratings, game_day[i] ));
+            this_days_games.emplace_back(async( launch::async, &game::update_Team_Ratings, &game_day[i] ));
         }
 
         /*
@@ -72,7 +71,13 @@ void games_and_teams::parseGames()
             schedule(game_parser_threads, boost::bind(&game::update_Team_Ratings, &game))
         }
         */
-        Number_Correct_Ranking += game.update_Team_Ratings(the_db);
+        //Number_Correct_Ranking += game.update_Team_Ratings(the_db);
+
+        for(auto& game: this_days_games){
+            auto returned_pair = game.get();
+            the_db->query(returned_pair.second);
+            Number_Correct_Ranking += returned_pair.first;
+        }
     }
     cout << Number_Correct_Ranking << endl;
 }

@@ -5,6 +5,7 @@
 #include "Database.h"
 
 #include <math.h>
+#include <utility>
 #include <vector>
 #include <string>
 
@@ -15,7 +16,7 @@ class game
     public:
         game(const string& id, team* _team1, team* _team2,const int& team1Points, const int& team2Points);
         ~game();
-        int update_Team_Ratings(Database* the_db);
+        pair<int,string> update_Team_Ratings();
     protected:
     private:
         int team1Score{0};

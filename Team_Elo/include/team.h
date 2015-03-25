@@ -17,7 +17,7 @@ class team
         ~team();
         void init(string abbr);
         double get_Rating();
-        void update_Rating(Database* the_db, string gameid, double update_by,double t1Rating,double t2Rating, string t1abbr, string t2abbr);
+        void update_Rating(double update_by);
         string getAbbr();
     protected:
     private:

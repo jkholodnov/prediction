@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -pedantic -std=c++11 -Wall -g -O3 -pipe -lsqlite3 -pthread
-SEARCH_DIRS = -I/src -I/include
+SEARCH_DIRS = -I/src -I/include -L"/usr/lib/x86_64-linux-gnu/"
 LIBS = -lsqlite3 -lpthread
 SRC = src/
 OBJ = obj/
