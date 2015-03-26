@@ -23,7 +23,7 @@ double team::get_Rating()
 void team::update_Rating(double update_by)
 {
     //decay the old rating//
-    bonus_Rating *= pow(2,-.066);
+    //bonus_Rating *= pow(2,-.066);
     //Add the new rating//
     bonus_Rating += update_by;
 

@@ -22,12 +22,12 @@ void games_and_teams::initialize_teams(){
 void games_and_teams::get_games()
 {
     
-    string _query = "SELECT DISTINCT day FROM games;";
+    string _query = "SELECT DISTINCT day FROM games order by day asc;";
     auto game_days = the_db->query(_query);
 
     for(auto& day : game_days){
         vector<game> games_on_this_day;
-        _query = "SELECT gameId, Team1Abbr, Team2Abbr, Team1Score, Team2Score FROM games where day = '" + day[0] + "';";
+        _query = "SELECT gameId, Team1Abbr, Team2Abbr, Team1Score, Team2Score, Team1ELO, Team2ELO FROM games where day = '" + day[0] + "';";
         auto games_on_day = the_db->query(_query);
         for(auto& game : games_on_day){
             int _score1, _score2;
@@ -47,10 +47,18 @@ void games_and_teams::get_games()
             _score2 = atoi(game[4].c_str());
 
             games_on_this_day.emplace_back(game[0], team1, team2, _score1, _score2);
+            //cout << team1->getAbbr() << "." << team2->getAbbr() << "#";
         }
+        //cout << endl;
         the_games.emplace_back(games_on_this_day);
     }
     cout << "Pulled all games. There are " << the_games.size() << " days of games to parse." << endl;
+
+    int num_games{0};
+    for(auto g : the_games){
+        num_games+=g.size();
+    }
+    cout << "Total of " << num_games << " games." << endl;
 }
 
 void games_and_teams::parseGames()

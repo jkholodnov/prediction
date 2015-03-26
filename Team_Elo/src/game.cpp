@@ -19,6 +19,7 @@ pair<int,string> game::update_Team_Ratings()
 {
     auto t1_Rating = team1->get_Rating();
     auto t2_Rating = team2->get_Rating();
+    string _query = "UPDATE games SET team1ELO = " + to_string(t1_Rating) + ", team2ELO = " + to_string(t2_Rating) + " WHERE gameid = '" + gameid + "';";
 
     team1Expected = 1/(1+pow(10,((t2_Rating-t1_Rating)/400)));
     team2Expected = 1/(1+pow(10,((t1_Rating-t2_Rating)/400)));
@@ -28,8 +29,6 @@ pair<int,string> game::update_Team_Ratings()
     {
         team1 -> update_Rating(50*(1 - team1Expected));
         team2 -> update_Rating(50*(0 - team2Expected));
-
-        string _query = "UPDATE games SET team1ELO = " + to_string(t1_Rating) + ", team2ELO = " + to_string(t2_Rating) + " WHERE gameid = '" + gameid + "';";
 
         if(t1_Rating > t2_Rating)
         {
@@ -47,8 +46,6 @@ pair<int,string> game::update_Team_Ratings()
     {
         team1 -> update_Rating(50*(0 - team1Expected));
         team2 -> update_Rating(50*(1 - team2Expected));
-
-        string _query = "UPDATE games SET team1ELO = " + to_string(t1_Rating) + ", team2ELO = " + to_string(t2_Rating) + " WHERE gameid = '" + gameid + "';";
 
         if(t2_Rating > t1_Rating)
         {
