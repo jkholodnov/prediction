@@ -57,13 +57,14 @@ int main(int argc, char** argv){
     auto team1simulated_values = teams[0].aggregate_player_scores();
     auto team2simulated_values = teams[1].aggregate_player_scores();
 
+    cout << team1simulated_values.size() << "###" << team2simulated_values.size() << endl;
     vector<int> spreads;
     int average_spread{0};
     for(unsigned i=0; i<team1simulated_values.size(); ++i){
         int spread = team1simulated_values[i] - team1simulated_values[i];
-        spreads.emplace_back(spread);
+        spreads.push_back(spread);
         average_spread+= spread;
     }
-    cout << average_spread << endl;
+    cout << spreads.size() << "~" << average_spread << endl;
     cout << *min_element(spreads.begin(), spreads.end()) << "!" << *max_element(spreads.begin(), spreads.end()) << endl;
 }

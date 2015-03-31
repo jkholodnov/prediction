@@ -105,7 +105,7 @@ vector<int> team::aggregate_player_scores(){
             //cout << pair.second<< "~";
         }
         //cout << endl;
-
+        cout << team_predicted_points
         simulation_scores.push_back(team_predicted_points);
     }
     return simulation_scores;
