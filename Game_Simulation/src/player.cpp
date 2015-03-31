@@ -17,7 +17,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
 
     auto counts = predict_db->query(_query1);
 
-    string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.reb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, a.injury, b.day FROM gameData as a JOIN games as b ON a.gameID = b.Id WHERE Name = '" + player_name + "' ORDER BY b.day;";
+    string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.reb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, a.injury, b.day FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' ORDER BY b.day;";
     auto game_datas_for_player = predict_db->query(_query);
 
     for (auto data_vector: game_datas_for_player){
