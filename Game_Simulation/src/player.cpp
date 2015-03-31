@@ -12,7 +12,7 @@ player::~player()
 }
 
 void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container){
-    Database* predict_db = new Database("predict.db");
+    Database* predict_db = new Database("../../predict.db");
 
     string _query1 = "SELECT count(*) FROM gamedata WHERE Name = '" + player_name + "';";
 

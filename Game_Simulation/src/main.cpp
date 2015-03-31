@@ -7,7 +7,7 @@
 using namespace std;
 
 int main(int argc, char** argv){
-    unique_ptr<Database> predict_db(new Database("predict.db"));
+    unique_ptr<Database> predict_db(new Database("../predict.db"));
 
     auto teamnames = predict_db->query("SELECT DISTINCT team1Abbr from games ORDER BY team1Abbr");
     cout << "Team Abbreviations:" << endl;
