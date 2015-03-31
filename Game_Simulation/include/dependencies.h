@@ -9,6 +9,7 @@
 #include <memory>
 
 #include <iostream>
+#include <algorithm>
 #include <utility>
 #include <functional>
 #include <chrono>
