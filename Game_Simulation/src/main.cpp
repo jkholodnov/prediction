@@ -34,8 +34,6 @@ int main(int argc, char** argv){
         teams.emplace_back(team1);
         teams.emplace_back(team2);
     }
-    cout << team1 << endl;
-    cout << "Beginning team thread allocations." << endl;
     vector<std::thread> generate_team_workers;
     size_t i;
 
@@ -44,16 +42,17 @@ int main(int argc, char** argv){
         generate_team_workers.emplace_back(&team::generate_team_simulations, &teams[i], R_Inside_Container);
     }
     R_Inside_Container.reset();
-    cout << "Waiting for team threads to return." << endl;
 
     for(i=0; i<generate_team_workers.size();i++){
         generate_team_workers[i].join();
     }
-    cout << "Team threads returned." << endl;
     for(auto team: teams){
         cout << (team.players).size() << endl;
     }
 
+    cout << "Completed simulations. Proceeding to aggregate values." << endl;
+
+    
 
     auto team1simulated_values = teams[0].aggregate_player_scores();
     auto team2simulated_values = teams[1].aggregate_player_scores();
