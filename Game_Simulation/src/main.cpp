@@ -52,8 +52,18 @@ int main(int argc, char** argv){
 
     cout << "Completed simulations. Proceeding to aggregate values." << endl;
 
-    
+
 
     auto team1simulated_values = teams[0].aggregate_player_scores();
     auto team2simulated_values = teams[1].aggregate_player_scores();
+
+    vector<int> spreads;
+    int average_spread;
+    for(unsigned i=0; i<team1simulated_values.size(); ++i){
+        int spread = team1simulated_values[i] - team1simulated_values[i];
+        spreads.emplace_back(spread);
+        average_spread+= spread;
+    }
+    cout << double(average_spread/100) << endl;
+
 }
