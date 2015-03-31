@@ -116,7 +116,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     size_t i;
     for(i=0;i<100;i++){
     	game_simulations.emplace_back();
-        worker_threads.emplace_back(&simulation::simulate_players_performance, game_simulations[i], mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
+        worker_threads.emplace_back(&simulation::simulate_players_performance, &game_simulations[i], mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
     }
     for(i=0; i< worker_threads.size(); i++){
         worker_threads[i].join();
@@ -133,6 +133,8 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
 int player::simulate_game_scores(int i){
     cout << "called" << endl;
     auto the_simulation = game_simulations[i];
+        cout << "called2" << endl;
+
     auto map_of_performances = the_simulation.simulated_performance;
 
     auto minutes = map_of_performances.find("minutes");
