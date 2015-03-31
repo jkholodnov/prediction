@@ -46,7 +46,7 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
     delete predict_db;
 }
 
-vector<double> team::aggregate_player_scores(){
+vector<int> team::aggregate_player_scores(){
     size_t i;
 
     cout << "Beginning simulation for " << team_name << endl;

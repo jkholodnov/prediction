@@ -17,7 +17,7 @@ class team
         team(const team& other);
         team(team&& other);
         void generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Container);
-        vector<double> aggregate_player_scores();
+        vector<int> aggregate_player_scores();
         
         string team_name{""};
         vector<player> players;
