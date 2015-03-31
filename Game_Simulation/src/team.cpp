@@ -27,7 +27,7 @@ team::team(team&& other) :
 void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Container){
     size_t i;
 
-    Database* predict_db = new Database("../../predict.db");
+    Database* predict_db = new Database("../predict.db");
     auto player_names = predict_db->query("SELECT DISTINCT Name FROM gamedata WHERE teamid = '" + team_name + "' ORDER BY Name;");
     //std::cout << player_names.size() << std::endl;
 
@@ -52,7 +52,7 @@ vector<int> team::aggregate_player_scores(){
     cout << "Beginning simulation for " << team_name << endl;
     //TODO : LOOK THRUGH ALL PLAYERS, DETERMINE WHICH ONES WILL MOST LIKELY NOT PLAY NEXT GAME.//
 
-    Database* predict_db = new Database("../../predict.db");
+    Database* predict_db = new Database("../predict.db");
     auto last_game_played = predict_db->query("select max(day),gameID from games where team1abbr = '" + team_name + "' or team2abbr = '" + team_name + "';");
     auto player_information = predict_db->query("select name,injury from gamedata where gameid = '" + last_game_played[0][1] + "';");
     
