@@ -65,5 +65,5 @@ int main(int argc, char** argv){
         average_spread+= spread;
     }
     cout << average_spread << endl;
-    cout << min_element(spreads.begin(), spreads.end()) << "!" << max_element(spreads.begin(), spreads.end()) << endl;
+    cout << *min_element(spreads.begin(), spreads.end()) << "!" << *max_element(spreads.begin(), spreads.end()) << endl;
 }
