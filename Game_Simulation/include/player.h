@@ -12,12 +12,13 @@ using namespace std;
 class player
 {
     public:
-        player(const string& name);
+        player(const string& name, const string& teamname);
         virtual ~player();
         void get_player_scores(shared_ptr<RInside_Container> R_Inside_Container);
         pair<int,int> simulate_game_scores(int i);
 
-        string player_name{};
+        string team_name{""};
+        string player_name{""};
         vector<double> minutes;
         vector<double> fga;
         vector<double> fgm;

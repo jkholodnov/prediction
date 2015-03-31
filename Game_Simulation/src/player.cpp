@@ -1,8 +1,9 @@
 #include "../include/player.h"
 
-player::player(const string& name)
+player::player(const string& name, const string& teamname)
 {
     player_name = name;
+    team_name = teamname;
 }
 
 player::~player()
@@ -170,6 +171,6 @@ pair<int,int> player::simulate_game_scores(int i){
     double predicted_turnovers = turnover_value + fouls_value - steal_value - dreb_value;
     
     int shots = round(fga_value + tpa_value + (fta_value/2));
-    int number_possessions = shots;
+    
     return make_pair(round(predicted_turnovers), round(predicted_score));
 }

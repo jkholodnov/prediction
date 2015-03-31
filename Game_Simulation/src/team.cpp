@@ -32,9 +32,8 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
     //std::cout << player_names.size() << std::endl;
 
     for(auto player: player_names){
-        players.emplace_back(player[0]);
+        players.emplace_back(player[0],team_name);
     }
-    cout << "Team " << team_name << " has fetched " << players.size() << " players. Proceeding to create player threads." << endl;
 
     vector<thread> worker_threads;
     for(i=0;i<players.size();i++){
@@ -44,9 +43,6 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
     for(i=0;i<worker_threads.size();i++){
         worker_threads[i].join();
     }
-
-    cout << "Done simulating player scores. Time to combine the team values."  << players.size() << endl;
-
     delete predict_db;
 }
 
@@ -54,8 +50,7 @@ vector<double> team::aggregate_player_scores(){
     size_t i;
 
     cout << "Beginning simulation for " << team_name << endl;
-    vector<double> simulation_scores;
-    //TODO : LOOK THROUGH ALL PLAYERS, DETERMINE WHICH ONES WILL MOST LIKELY NOT PLAY NEXT GAME.//
+    //TODO : LOOK THRUGH ALL PLAYERS, DETERMINE WHICH ONES WILL MOST LIKELY NOT PLAY NEXT GAME.//
 
     Database* predict_db = new Database("predict.db");
     auto last_game_played = predict_db->query("select max(day),gameID from games where team1abbr = '" + team_name + "' or team2abbr = '" + team_name + "';");
@@ -92,8 +87,9 @@ vector<double> team::aggregate_player_scores(){
             }
         }
     }
-
-    for(i=0; i<1; i++){
+    
+    vector<int> simulation_scores;
+    for(i=0; i<100; i++){
         vector<pair<int, int>> mins_and_scores_vector;
 
         //ONLY LOOK AT THE PLAYERS WHICH WE THINK WILL PLAY NEXT GAME//
@@ -106,12 +102,11 @@ vector<double> team::aggregate_player_scores(){
         int team_predicted_turnovers{0};
         for(auto& pair : mins_and_scores_vector){
             team_predicted_points += pair.second;
-            cout << pair.second<< "~";
+            //cout << pair.second<< "~";
         }
-        cout << endl;
+        //cout << endl;
 
         simulation_scores.push_back(team_predicted_points);
-        cout << "Simulated score of : " << team_predicted_points << " for team " << team_name << endl;
     }
     return simulation_scores;
 }
