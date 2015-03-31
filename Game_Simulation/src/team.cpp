@@ -89,7 +89,7 @@ vector<int> team::aggregate_player_scores(){
     }
     
     vector<int> simulation_scores;
-    for(i=0; i<2; i++){
+    for(i=0; i<100; i++){
         vector<int> mins_and_scores_vector;
 
         //ONLY LOOK AT THE PLAYERS WHICH WE THINK WILL PLAY NEXT GAME//
@@ -103,12 +103,8 @@ vector<int> team::aggregate_player_scores(){
         int team_predicted_turnovers{0};
         for(auto& value : mins_and_scores_vector){
             team_predicted_points += value;
-            //cout << value << "~";
         }
-        //cout << endl;
-        cout << team_predicted_points << "#";
         simulation_scores.push_back(team_predicted_points);
     }
-    cout << endl;
     return simulation_scores;
 }

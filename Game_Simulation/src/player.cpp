@@ -173,7 +173,7 @@ int player::simulate_game_scores(int i){
     double fouls_value = fouls->second;
     double plus_minus_value = plus_minus->second;
     
-    cout << minutes_value << "#" << fga_value << "#" << tpa_value << "#" << fta_value << "#" << oreb_value << "#" << assist_value << "#" << steal_value << "#" << turnover_value << "#" << fouls_value << "#" << plus_minus_value << endl;
+    //cout << minutes_value << "#" << fga_value << "#" << tpa_value << "#" << fta_value << "#" << oreb_value << "#" << assist_value << "#" << steal_value << "#" << turnover_value << "#" << fouls_value << "#" << plus_minus_value << endl;
     //These values are hard coded from my lm(Score ~ .) output. Need to figure out a way to route RInside to here.
     double predicted_score = -0.520640 + 0.027873*minutes_value + 0.959890*fga_value + 0.206571*tpa_value + 0.793915*fta_value - 0.115459*oreb_value - 0.153142*assist_value - 0.077242*steal_value + 0.107611*turnover_value + 0.027402*fouls_value + 0.087565*plus_minus_value; 
     if(predicted_score < 0){
