@@ -60,7 +60,8 @@ int main(int argc, char** argv){
     vector<int> spreads;
     int average_spread{0};
     for(unsigned i=0; i<team1simulated_values.size(); ++i){
-        int spread = team1simulated_values[i] - team1simulated_values[i];
+        cout << team1simulated_values[i] << "$$" << team2simulated_values[i] << endl;
+        int spread = team1simulated_values[i] - team2simulated_values[i];
         spreads.push_back(spread);
         average_spread+= spread;
     }

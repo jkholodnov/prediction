@@ -114,7 +114,6 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     //spin up 100 threads to simulate each player's games. This might be slower than sequential. Need to test.//
     vector<thread> worker_threads;
     size_t i;
-    cout << "got here" <<endl;
     for(i=0;i<100;i++){
     	game_simulations.emplace_back();
     }
