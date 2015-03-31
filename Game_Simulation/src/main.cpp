@@ -50,9 +50,8 @@ int main(int argc, char** argv){
         cout << (team.players).size() << endl;
     }
 
+
     cout << "Completed simulations. Proceeding to aggregate values." << endl;
-
-
 
     auto team1simulated_values = teams[0].aggregate_player_scores();
     auto team2simulated_values = teams[1].aggregate_player_scores();

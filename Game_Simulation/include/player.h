@@ -15,7 +15,7 @@ class player
         player(const string& name, const string& teamname);
         virtual ~player();
         void get_player_scores(shared_ptr<RInside_Container> R_Inside_Container);
-        pair<int,int> simulate_game_scores(int i);
+        int simulate_game_scores(int i);
 
         string team_name{""};
         string player_name{""};

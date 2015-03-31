@@ -89,20 +89,21 @@ vector<int> team::aggregate_player_scores(){
     }
     
     vector<int> simulation_scores;
-    for(i=0; i<100; i++){
-        vector<pair<int, int>> mins_and_scores_vector;
+    for(i=0; i<2; i++){
+        vector<int> mins_and_scores_vector;
 
         //ONLY LOOK AT THE PLAYERS WHICH WE THINK WILL PLAY NEXT GAME//
         for(auto& _player : active_players){
+            cout << _player.player_name << "#" << active_players.size() << "#" << endl;
             auto simulated_value = _player.simulate_game_scores(i);
             mins_and_scores_vector.emplace_back(simulated_value);
         }
 
         int team_predicted_points{0};
         int team_predicted_turnovers{0};
-        for(auto& pair : mins_and_scores_vector){
-            team_predicted_points += pair.second;
-            //cout << pair.second<< "~";
+        for(auto& value : mins_and_scores_vector){
+            team_predicted_points += value;
+            //cout << value << "~";
         }
         //cout << endl;
         cout << team_predicted_points << "#";
