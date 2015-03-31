@@ -121,18 +121,6 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     for(auto& simulation: game_simulations){
     	simulation.simulate_players_performance(mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
     }
-
-    //Multithreaded version//
-    /*
-    for(i=0;i<game_simulations.size();i++){
-    	worker_threads.emplace_back(&simulation::simulate_players_performance, game_simulations[i], mean_and_stdevs, keys_to_map, R_Inside_Container);
-    }
-
-    for(i=0;i<worker_threads.size();i++){
-    	worker_threads[i].join();
-    }
-    */
-    //each player has simulations, each simulation contains the simulated performances 
 }
 
 pair<int,int> player::simulate_game_scores(int i){

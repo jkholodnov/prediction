@@ -62,6 +62,8 @@ vector<double> team::aggregate_player_scores(){
     auto player_information = predict_db->query("select name,injury from gamedata where gameid = '" + last_game_played[0][1] + "';");
     
     vector<player> active_players;
+    vector<player> scratched_players;
+    vector<pair<player,string>> injured_players;
 
     for(auto& player:player_information){
         if(player[1] == "NULL"){
@@ -72,14 +74,21 @@ vector<double> team::aggregate_player_scores(){
                 }
             }
         }
-        else{
-            if(player[1].find("DNP COACH'S DECISION") == string::npos){
-                //the player was injured. Find out how many games he has been out. Do a check to find avg number of games missed for that injury.
-                
+        else if(player[1] == "DNP COACH'S DECISION"){
+            //the player was scratched. 
+            //figure out the chance that the scratched player will return the next game.
+            for(auto& _player: players){
+                if(_player.player_name == player[0]){
+                    scratched_players.emplace_back(_player);
+                }
             }
-            else{
-                //the player was scratched. 
-                //figure out the chance that the scratched player will return the next game.
+        }
+        else{
+            //the player was injured. Find out how many games he has been out. Do a check to find avg number of games missed for that injury.
+            for(auto& _player: players){
+                if(_player.player_name == player[0]){
+                    injured_players.emplace_back(_player,player[1]);
+                }
             }
         }
     }
