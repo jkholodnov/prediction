@@ -64,6 +64,6 @@ int main(int argc, char** argv){
         spreads.emplace_back(spread);
         average_spread+= spread;
     }
-    cout << double(average_spread/100) << endl;
-
+    cout << average_spread << endl;
+    cout << min(spreads) << "!" << max(spreads) << endl;
 }
