@@ -58,7 +58,7 @@ int main(int argc, char** argv){
     auto team2simulated_values = teams[1].aggregate_player_scores();
 
     vector<int> spreads;
-    int average_spread;
+    int average_spread{0};
     for(unsigned i=0; i<team1simulated_values.size(); ++i){
         int spread = team1simulated_values[i] - team1simulated_values[i];
         spreads.emplace_back(spread);
