@@ -131,6 +131,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
 }
 
 int player::simulate_game_scores(int i){
+    cout << "called" << endl;
     auto the_simulation = game_simulations[i];
     auto map_of_performances = the_simulation.simulated_performance;
 
