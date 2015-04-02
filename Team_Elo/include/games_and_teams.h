@@ -23,8 +23,8 @@ class games_and_teams
         games_and_teams();
         ~games_and_teams();
         void initialize_teams();
-        void get_games();
-        void parseGames();
+        void load_in_games();
+        void generate_ELO();
     protected:
     private:
         vector<vector<game>> the_games{};

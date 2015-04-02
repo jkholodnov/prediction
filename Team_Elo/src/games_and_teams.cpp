@@ -10,7 +10,8 @@ games_and_teams::~games_and_teams()
     delete the_db;
 }
 
-void games_and_teams::initialize_teams(){
+void games_and_teams::initialize_teams()
+{
     string _query = "SELECT distinct Team1Abbr FROM games;";
     auto team_abbreviations = the_db->query(_query);
 
@@ -19,7 +20,7 @@ void games_and_teams::initialize_teams(){
         the_teams.emplace_back(team_abbreviation[0]);
     }
 }
-void games_and_teams::get_games()
+void games_and_teams::load_in_games()
 {
     
     string _query = "SELECT DISTINCT day FROM games order by day asc;";
@@ -61,7 +62,7 @@ void games_and_teams::get_games()
     cout << "Total of " << num_games << " games." << endl;
 }
 
-void games_and_teams::parseGames()
+void games_and_teams::generate_ELO()
 {
     size_t i;
 
