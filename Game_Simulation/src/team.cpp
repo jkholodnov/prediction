@@ -37,13 +37,16 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
         players.emplace_back(player[0],team_name);
     }
 
-    vector<thread> worker_threads;
+    vector<future<vector<string>>> game_performance_updates;
     for(i=0;i<players.size();i++){
-        worker_threads.emplace_back(&player::get_player_scores, &players[i], R_Inside_Container);
+        game_performance_updates..emplace_back(async( launch::async, &player::get_player_scores, &players[i], R_Inside_Container ));
     }
 
-    for(i=0;i<worker_threads.size();i++){
-        worker_threads[i].join();
+    for(i=0;i<game_performance_updates.size();i++){
+        auto game_performances_to_update = game_performance_updates[i].get();
+        for(auto game_performance: game_performances_to_update){
+            predict_db->query(game_performance);
+        }
     }
     delete predict_db;
 }

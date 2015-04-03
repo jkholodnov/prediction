@@ -9,6 +9,8 @@
 #include <memory>
 
 #include <iostream>
+#include <future>
+#include <cstdlib>
 #include <algorithm>
 #include <utility>
 #include <functional>

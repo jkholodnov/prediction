@@ -11,8 +11,9 @@ player::~player()
     //dtor
 }
 
-void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container){
+vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container){
     Database* predict_db = new Database("../predict.db");
+    vector<string> game_performance_updates{};
 
     string _query1 = "SELECT count(*) FROM gamedata WHERE Name = '" + player_name + "';";
 
@@ -72,9 +73,8 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
                 game_performance += variable_performance;
             }
             string gameid = Single_Game[17];
-
-            auto update_db_query = "UPDATE gamedata SET performance_rating = '" + to_string(game_performance) + "' WHERE gameid = " + gameid + " AND name = '" + player_name + "';";
-            predict_db->query(update_db_query);
+            string update_db_query = "UPDATE gamedata SET performance_rating = '" + to_string(game_performance) + "' WHERE gameid = " + gameid + " AND name = '" + player_name + "';";
+            game_performance_updates.emplace_back(update_db_query);
         }
     }
     delete predict_db;
@@ -143,6 +143,8 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     	simulation.simulate_players_performance(mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
     }
     */
+
+    return game_performance_updates;
 }
 
 int player::simulate_game_scores(int i)
