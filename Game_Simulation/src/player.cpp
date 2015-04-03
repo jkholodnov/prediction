@@ -125,18 +125,19 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
     mean_and_stdevs.emplace("points",points_stats);
 
     //spin up 100 threads to simulate each player's games. This might be slower than sequential. Need to test.//
+    
     vector<thread> worker_threads;
     size_t i;
     for(i=0;i<100;i++){
     	game_simulations.emplace_back();
     }
     for(i=0;i<100;i++){
-        worker_threads.emplace_back(&simulation::simulate_players_performance, &game_simulations[i], mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
+        worker_threads.emplace_back(&simulation::simulate_players_performance, &game_simulations[i], &mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
     }
     for(i=0; i < worker_threads.size(); i++){
         worker_threads[i].join();
     }
-
+    
     //Sequential version//
     /*
     for(auto& simulation: game_simulations){

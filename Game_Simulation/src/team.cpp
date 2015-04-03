@@ -51,6 +51,7 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
     delete predict_db;
 }
 
+//This function combines each players simulated scores. The result is a 100-element vector with predicted team scores.//
 vector<int> team::aggregate_player_scores()
 {
     size_t i;
@@ -106,7 +107,6 @@ vector<int> team::aggregate_player_scores()
         }
 
         int team_predicted_points{0};
-        int team_predicted_turnovers{0};
         for(auto& value : mins_and_scores_vector){
             team_predicted_points += value;
         }
