@@ -41,7 +41,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
             steal.emplace_back(atoi(Single_Game[10].c_str()));
             block.emplace_back(atoi(Single_Game[11].c_str()));
             turnover.emplace_back(atoi(Single_Game[12].c_str()));
-            fouls.emplace_back(atoi(Single_Game[13.c_str()));
+            fouls.emplace_back(atoi(Single_Game[13].c_str()));
 
             plus_minus.emplace_back(atoi(Single_Game[14].c_str()));
             points.emplace_back(atoi(Single_Game[15].c_str()));
@@ -68,7 +68,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
             for(unsigned i=0;i<statistics_up_to_this_game.size(); i++){
                 statistics &current_stats = statistics_up_to_this_game[i];
                 string RInside_Query = "pnorm(" + Single_Game[i] + ", mean = " + to_string(current_stats.mean) + ", sd = " + to_string(current_stats.stdev) + ")";
-                double variable_performance = R_Inside_Container.use(RInside_Query)
+                double variable_performance = R_Inside_Container->use(RInside_Query)
                 game_performance += game_performance;
             }
             string gameid = Single_Game[18];
@@ -87,13 +87,13 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     statistics minute_stats{minutes};
     statistics fga_stats{fga};
     statistics fgm_stats{fgm};
-    statistics fg_percent_stats{fg_percent};
+
     statistics tpa_stats{tpa};
     statistics tpm_stats{tpm};
-    statistics tp_percent_stats{tp_percent};
+
     statistics fta_stats{fta};
     statistics ftm_stats{ftm};
-    statistics ft_percent_stats{ft_percent};
+
     statistics oreb_stats{oreb};
     statistics dreb_stats{dreb};
     statistics reb_stats{reb};
@@ -109,13 +109,13 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     mean_and_stdevs.emplace("minutes",minute_stats);
     mean_and_stdevs.emplace("fga", fga_stats);
     mean_and_stdevs.emplace("fgm", fgm_stats);
-    mean_and_stdevs.emplace("fg_percent_stats", fg_percent);
+
     mean_and_stdevs.emplace("tpa", tpa_stats);
     mean_and_stdevs.emplace("tpm", tpm_stats);
-    mean_and_stdevs.emplace("tp_percent_stats", tp_percent);
+
     mean_and_stdevs.emplace("fta", fta_stats);
     mean_and_stdevs.emplace("ftm", ftm_stats);
-    mean_and_stdevs.emplace("ft_percent_stats", ft_percent);
+
     mean_and_stdevs.emplace("oreb",oreb_stats);
     mean_and_stdevs.emplace("dreb",dreb_stats);
     mean_and_stdevs.emplace("reb",reb_stats);
