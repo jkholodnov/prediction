@@ -36,7 +36,7 @@ class player
         vector<double> plus_minus;
         vector<double> points;
         vector<string> injury_status;
-        vector<string> keys_to_map{"minutes","fga","fgm","tpa","tpm","fta","ftm","oreb","dreb","reb","assist","steal","block","turnover","fouls","plus_minus","points"};
+        vector<string> keys_to_map{"minutes","fga","fgm","tpa","tpm","fta","ftm","oreb","dreb","assist","steal","block","turnover","fouls","plus_minus","points"};
         unordered_map<string, statistics> mean_and_stdevs{};
 
         volatile int simulation_count{0};

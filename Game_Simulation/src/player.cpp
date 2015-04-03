@@ -96,7 +96,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
 
     statistics oreb_stats{oreb};
     statistics dreb_stats{dreb};
-    statistics reb_stats{reb};
+
     statistics assist_stats{assist};
     statistics steal_stats{steal};
     statistics block_stats{block};
@@ -118,7 +118,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
 
     mean_and_stdevs.emplace("oreb",oreb_stats);
     mean_and_stdevs.emplace("dreb",dreb_stats);
-    mean_and_stdevs.emplace("reb",reb_stats);
+
     mean_and_stdevs.emplace("assist",assist_stats);
     mean_and_stdevs.emplace("steal",steal_stats);
     mean_and_stdevs.emplace("block",block_stats);
