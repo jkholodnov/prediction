@@ -71,7 +71,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
                 double variable_performance = R_Inside_Container->use(RInside_Query);
                 game_performance += variable_performance;
             }
-            string gameid = Single_Game[17]
+            string gameid = Single_Game[17];
 
             auto update_db_query = "UPDATE gamedata SET performance_rating = '" + to_string(game_performance) + "' WHERE gameid = " + gameid + " AND name = '" + player_name + "';";
             predict_db->query(update_db_query);
