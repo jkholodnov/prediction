@@ -68,8 +68,8 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
             for(unsigned i=0;i<statistics_up_to_this_game.size(); i++){
                 statistics &current_stats = statistics_up_to_this_game[i];
                 string RInside_Query = "pnorm(" + Single_Game[i] + ", mean = " + to_string(current_stats.mean) + ", sd = " + to_string(current_stats.stdev) + ")";
-                double variable_performance = R_Inside_Container->use(RInside_Query)
-                game_performance += game_performance;
+                double variable_performance = R_Inside_Container->use(RInside_Query);
+                game_performance += variable_performance;
             }
             string gameid = Single_Game[18];
 
