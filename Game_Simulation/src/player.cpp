@@ -18,7 +18,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
 
     auto counts = predict_db->query(_query1);
 
-    string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, a.injury, b.day, a.gameID FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' and a.injury = 'NULL' ORDER BY b.day;";
+    string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, b.day, a.gameID FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' and a.injury = 'NULL' ORDER BY b.day;";
     auto All_Games = predict_db->query(_query);
 
     for (auto& Single_Game: All_Games){
@@ -71,9 +71,9 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
                 double variable_performance = R_Inside_Container->use(RInside_Query);
                 game_performance += variable_performance;
             }
-            string gameid = Single_Game[18];
+            string gameid = Single_Game[17]
 
-            auto update_db_query = "UPDATE gamedata SET Performance = '" + to_string(game_performance) + "' WHERE gameid = " + gameid + " AND name = '" + player_name + "';";
+            auto update_db_query = "UPDATE gamedata SET performance_rating = '" + to_string(game_performance) + "' WHERE gameid = " + gameid + " AND name = '" + player_name + "';";
             predict_db->query(update_db_query);
         }
     }
