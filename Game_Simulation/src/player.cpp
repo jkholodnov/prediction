@@ -18,47 +18,63 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
 
     auto counts = predict_db->query(_query1);
 
-    string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.reb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, a.injury, b.day FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' ORDER BY b.day;";
-    auto game_datas_for_player = predict_db->query(_query);
+    string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, a.injury, b.day, a.gameID FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' ORDER BY b.day;";
+    auto All_Games = predict_db->query(_query);
 
-    for (auto data_vector: game_datas_for_player){
+    for (auto& Single_Game: All_Games){
         //The player was NOT injured or scratched for this game.//
-        if(data_vector[data_vector.size()-1] != "-1"){
-            minutes.emplace_back(atoi(data_vector[0].c_str()));
-            fga.emplace_back(atoi(data_vector[1].c_str()));
-            fgm.emplace_back(atoi(data_vector[2].c_str()));
-            if(atoi(data_vector[2].c_str()) <= 0){
-                fg_percent.emplace_back(0);
+        if(Single_Game[16] != "-1"){
+            minutes.emplace_back(atoi(Single_Game[0].c_str()));
+            fga.emplace_back(atoi(Single_Game[1].c_str()));
+            fgm.emplace_back(atoi(Single_Game[2].c_str()));
+
+            tpa.emplace_back(atoi(Single_Game[3].c_str()));
+            tpm.emplace_back(atoi(Single_Game[4].c_str()));
+
+            fta.emplace_back(atoi(Single_Game[5].c_str()));
+            ftm.emplace_back(atoi(Single_Game[6].c_str()));
+
+            oreb.emplace_back(atoi(Single_Game[7].c_str()));
+            dreb.emplace_back(atoi(Single_Game[8].c_str()));
+
+            assist.emplace_back(atoi(Single_Game[9].c_str()));
+            steal.emplace_back(atoi(Single_Game[10].c_str()));
+            block.emplace_back(atoi(Single_Game[11].c_str()));
+            turnover.emplace_back(atoi(Single_Game[12].c_str()));
+            fouls.emplace_back(atoi(Single_Game[13.c_str()));
+
+            plus_minus.emplace_back(atoi(Single_Game[14].c_str()));
+            points.emplace_back(atoi(Single_Game[15].c_str()));
+
+            vector<statistics> statistics_up_to_this_game{};
+            statistics_up_to_this_game.emplace_back(minutes);
+            statistics_up_to_this_game.emplace_back(fga);
+            statistics_up_to_this_game.emplace_back(fgm);
+            statistics_up_to_this_game.emplace_back(tpa);
+            statistics_up_to_this_game.emplace_back(tpm);
+            statistics_up_to_this_game.emplace_back(fta);
+            statistics_up_to_this_game.emplace_back(ftm);
+            statistics_up_to_this_game.emplace_back(oreb);
+            statistics_up_to_this_game.emplace_back(dreb);
+            statistics_up_to_this_game.emplace_back(assist);
+            statistics_up_to_this_game.emplace_back(steal);
+            statistics_up_to_this_game.emplace_back(block);
+            statistics_up_to_this_game.emplace_back(turnover);
+            statistics_up_to_this_game.emplace_back(fouls);
+            statistics_up_to_this_game.emplace_back(plus_minus);
+            statistics_up_to_this_game.emplace_back(points);
+
+            double game_performance = {0.0};
+            for(unsigned i=0;i<statistics_up_to_this_game.size(); i++){
+                statistics &current_stats = statistics_up_to_this_game[i];
+                string RInside_Query = "pnorm(" + Single_Game[i] + ", mean = " + to_string(current_stats.mean) + ", sd = " + to_string(current_stats.stdev) + ")";
+                double variable_performance = R_Inside_Container.use(RInside_Query)
+                game_performance += game_performance;
             }
-            else{
-                fg_percent.emplace_back(atoi(data_vector[1].c_str())/atoi(data_vector[2].c_str()));
-            }
-            tpa.emplace_back(atoi(data_vector[3].c_str()));
-            tpm.emplace_back(atoi(data_vector[4].c_str()));
-            if(atoi(data_vector[4].c_str()) <= 0){
-                tp_percent.emplace_back(0);
-            }
-            else{
-                tp_percent.emplace_back(atoi(data_vector[3].c_str())/atoi(data_vector[4].c_str()));
-            }
-            fta.emplace_back(atoi(data_vector[5].c_str()));
-            ftm.emplace_back(atoi(data_vector[6].c_str()));
-            if(atoi(data_vector[6].c_str()) <= 0){
-                ft_percent.emplace_back(0);
-            }
-            else{
-                ft_percent.emplace_back(atoi(data_vector[5].c_str())/atoi(data_vector[6].c_str()));
-            }
-            oreb.emplace_back(atoi(data_vector[7].c_str()));
-            dreb.emplace_back(atoi(data_vector[8].c_str()));
-            reb.emplace_back(atoi(data_vector[9].c_str()));
-            assist.emplace_back(atoi(data_vector[10].c_str()));
-            steal.emplace_back(atoi(data_vector[11].c_str()));
-            block.emplace_back(atoi(data_vector[12].c_str()));
-            turnover.emplace_back(atoi(data_vector[13].c_str()));
-            fouls.emplace_back(atoi(data_vector[14].c_str()));
-            plus_minus.emplace_back(atoi(data_vector[15].c_str()));
-            points.emplace_back(atoi(data_vector[16].c_str()));
+            string gameid = Single_Game[18];
+
+            auto update_db_query = "UPDATE gamedata SET Performance = '" + to_string(game_performance) + "' WHERE gameid = " + gameid + " AND name = '" + player_name + "';";
+            predict_db->query(update_db_query);
         }
         else{
             cout << "PLAYER WAS INJURED THIS GAME." << endl;
@@ -132,7 +148,8 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
     */
 }
 
-int player::simulate_game_scores(int i){
+int player::simulate_game_scores(int i)
+{
     //cout << "called" << endl;
     auto the_simulation = game_simulations[i];
        // cout << "called2" << endl;

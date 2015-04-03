@@ -22,16 +22,12 @@ class player
         vector<double> minutes;
         vector<double> fga;
         vector<double> fgm;
-        vector<double> fg_percent;
         vector<double> tpa;
         vector<double> tpm;
-        vector<double> tp_percent;
         vector<double> fta;
         vector<double> ftm;
-        vector<double> ft_percent;
         vector<double> oreb;
         vector<double> dreb;
-        vector<double> reb;
         vector<double> assist;
         vector<double> steal;
         vector<double> block;

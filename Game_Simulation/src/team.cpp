@@ -11,7 +11,8 @@ team::~team()
     //dtor
 }
 
-team::team(const team& other){
+team::team(const team& other)
+{
     //copy ctor
     team_name = other.team_name;
     players = other.players;
@@ -24,7 +25,8 @@ team::team(team&& other) :
     //MOVE CONSTRUCTOR//
 }
 
-void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Container){
+void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Container)
+{
     size_t i;
 
     Database* predict_db = new Database("../predict.db");
@@ -46,7 +48,8 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
     delete predict_db;
 }
 
-vector<int> team::aggregate_player_scores(){
+vector<int> team::aggregate_player_scores()
+{
     size_t i;
 
     cout << "Beginning simulation for " << team_name << endl;

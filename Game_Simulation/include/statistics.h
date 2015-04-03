@@ -30,7 +30,7 @@ class statistics
         //WORKFLOW: GET MEAN OF THE INT VECTOR -> GET GET SSR VALUES -> GET MEAN OF SSR -> SQRT FOR STDEV//
         double get_mean(const vector<double>& data_vector);
         double get_stdev(double mean_value, const vector<double>& data_vector);
-
+        
         double mean;
         double stdev;
     protected:
