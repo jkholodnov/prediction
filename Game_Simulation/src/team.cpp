@@ -39,7 +39,7 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
 
     vector<future<vector<string>>> game_performance_updates;
     for(i=0;i<players.size();i++){
-        game_performance_updates..emplace_back(async( launch::async, &player::get_player_scores, &players[i], R_Inside_Container ));
+        game_performance_updates.emplace_back(async( launch::async, &player::get_player_scores, &players[i], R_Inside_Container ));
     }
 
     for(i=0;i<game_performance_updates.size();i++){
