@@ -23,7 +23,7 @@ void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container)
 
     for (auto& Single_Game: All_Games){
         //The player was NOT injured or scratched for this game.//
-        if(Single_Game[16] != "-1"){
+        if(Single_Game[16] != "NULL"){
             minutes.emplace_back(atoi(Single_Game[0].c_str()));
             fga.emplace_back(atoi(Single_Game[1].c_str()));
             fgm.emplace_back(atoi(Single_Game[2].c_str()));
