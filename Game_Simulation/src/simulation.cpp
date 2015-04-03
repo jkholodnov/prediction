@@ -13,6 +13,7 @@ void simulation::simulate_players_performance(const unordered_map<string, statis
 {
 	auto threadID = std::this_thread::get_id();
     auto thread_Hash = std::hash<std::thread::id>()(threadID);
+    cout << "THREAD ID!!" << thread_Hash << endl;
     srand(thread_Hash);
     int performance = rand() % 100;
     //TODO: Check if the performance in top 10% or bottom 10%
