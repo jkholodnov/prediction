@@ -20,6 +20,7 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
 
     for (auto& Single_Game: All_Games){
         auto injury_status = Single_Game[18];
+        cout << "INJURY STATUS: " << injury_status << endl;
         if(injury_status == "NULL"){
             //The player was NOT injured or scratched for this game.//
             minutes.emplace_back(atoi(Single_Game[0].c_str()));
