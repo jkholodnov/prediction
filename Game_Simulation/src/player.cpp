@@ -18,11 +18,14 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
     string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, b.day, a.gameID, a.injury FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' and a.injury = 'NULL' ORDER BY b.day;";
     auto All_Games = predict_db->query(_query);
 
+    int games_counted{0};
+
     for (auto& Single_Game: All_Games){
         cout << Single_Game.size() << "#####" << endl;
         auto injury_status = Single_Game[18];
         cout << "INJURY STATUS: " << injury_status << endl;
         if(injury_status == "NULL"){
+            games_counted++;
             //The player was NOT injured or scratched for this game.//
             minutes.emplace_back(atoi(Single_Game[0].c_str()));
             fga.emplace_back(atoi(Single_Game[1].c_str()));
@@ -81,62 +84,69 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
     /*SKIPPING FG, 3PT, FT FOR NOW COME BACK.//*/
 
     //initialize statistics objects for all data vectors.//
-    statistics minute_stats{minutes};
-    statistics fga_stats{fga};
-    statistics fgm_stats{fgm};
 
-    statistics tpa_stats{tpa};
-    statistics tpm_stats{tpm};
+    if(games_counted != 0){
+        statistics minute_stats{minutes};
+        statistics fga_stats{fga};
+        statistics fgm_stats{fgm};
 
-    statistics fta_stats{fta};
-    statistics ftm_stats{ftm};
+        statistics tpa_stats{tpa};
+        statistics tpm_stats{tpm};
 
-    statistics oreb_stats{oreb};
-    statistics dreb_stats{dreb};
+        statistics fta_stats{fta};
+        statistics ftm_stats{ftm};
 
-    statistics assist_stats{assist};
-    statistics steal_stats{steal};
-    statistics block_stats{block};
-    statistics turnover_stats{turnover};
-    statistics fouls_stats{fouls};
-    statistics plus_minus_stats{plus_minus};
-    statistics points_stats{points};
+        statistics oreb_stats{oreb};
+        statistics dreb_stats{dreb};
 
-    //place statistics objects into std::unordered_map//
-    mean_and_stdevs.emplace("minutes",minute_stats);
-    mean_and_stdevs.emplace("fga", fga_stats);
-    mean_and_stdevs.emplace("fgm", fgm_stats);
+        statistics assist_stats{assist};
+        statistics steal_stats{steal};
+        statistics block_stats{block};
+        statistics turnover_stats{turnover};
+        statistics fouls_stats{fouls};
+        statistics plus_minus_stats{plus_minus};
+        statistics points_stats{points};
 
-    mean_and_stdevs.emplace("tpa", tpa_stats);
-    mean_and_stdevs.emplace("tpm", tpm_stats);
+        //place statistics objects into std::unordered_map//
+        mean_and_stdevs.emplace("minutes",minute_stats);
+        mean_and_stdevs.emplace("fga", fga_stats);
+        mean_and_stdevs.emplace("fgm", fgm_stats);
 
-    mean_and_stdevs.emplace("fta", fta_stats);
-    mean_and_stdevs.emplace("ftm", ftm_stats);
+        mean_and_stdevs.emplace("tpa", tpa_stats);
+        mean_and_stdevs.emplace("tpm", tpm_stats);
 
-    mean_and_stdevs.emplace("oreb",oreb_stats);
-    mean_and_stdevs.emplace("dreb",dreb_stats);
+        mean_and_stdevs.emplace("fta", fta_stats);
+        mean_and_stdevs.emplace("ftm", ftm_stats);
 
-    mean_and_stdevs.emplace("assist",assist_stats);
-    mean_and_stdevs.emplace("steal",steal_stats);
-    mean_and_stdevs.emplace("block",block_stats);
-    mean_and_stdevs.emplace("turnover",turnover_stats);
-    mean_and_stdevs.emplace("fouls",fouls_stats);
-    mean_and_stdevs.emplace("plus_minus",plus_minus_stats);
-    mean_and_stdevs.emplace("points",points_stats);
+        mean_and_stdevs.emplace("oreb",oreb_stats);
+        mean_and_stdevs.emplace("dreb",dreb_stats);
+
+        mean_and_stdevs.emplace("assist",assist_stats);
+        mean_and_stdevs.emplace("steal",steal_stats);
+        mean_and_stdevs.emplace("block",block_stats);
+        mean_and_stdevs.emplace("turnover",turnover_stats);
+        mean_and_stdevs.emplace("fouls",fouls_stats);
+        mean_and_stdevs.emplace("plus_minus",plus_minus_stats);
+        mean_and_stdevs.emplace("points",points_stats);
+    
+        vector<thread> worker_threads;
+        size_t i;
+        for(i=0;i<100;i++){
+            game_simulations.emplace_back();
+        }
+        for(i=0;i<100;i++){
+            worker_threads.emplace_back(&simulation::simulate_players_performance, &game_simulations[i], mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
+        }
+        for(i=0; i < worker_threads.size(); i++){
+            worker_threads[i].join();
+        }
+
+    }
+    
 
     //spin up 100 threads to simulate each player's games. This might be slower than sequential. Need to test.//
     
-    vector<thread> worker_threads;
-    size_t i;
-    for(i=0;i<100;i++){
-    	game_simulations.emplace_back();
-    }
-    for(i=0;i<100;i++){
-        worker_threads.emplace_back(&simulation::simulate_players_performance, &game_simulations[i], mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
-    }
-    for(i=0; i < worker_threads.size(); i++){
-        worker_threads[i].join();
-    }
+    
     
     //Sequential version//
     /*
