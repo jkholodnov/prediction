@@ -131,7 +131,7 @@ vector<int> team::aggregate_player_scores()
             cout << "There are no scratched players. All players from the last game will play." << endl;
         }
         if(injured_players.size() == 0){
-            cout << "There were no injured players in this team's previous game." << endl;
+            cout << "There were no injured players in " << team_name << "'s previous game." << endl;
         }
     #endif
 

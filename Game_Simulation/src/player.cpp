@@ -188,7 +188,7 @@ int player::simulate_game_scores(int i)
     //double ftm_value = ftm->second;
 
     double oreb_value = oreb->second;
-    double dreb_value = dreb->second;
+    //double dreb_value = dreb->second;
     double assist_value = assist->second;
     double steal_value = steal->second;
     double turnover_value = turnover->second;

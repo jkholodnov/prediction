@@ -62,12 +62,7 @@ int main(int argc, char** argv){
     for(i=0; i<generate_team_workers.size();i++){
         generate_team_workers[i].join();
     }
-    for(auto team: teams){
-        cout << (team.players).size() << endl;
-    }
 
-
-    cout << "Completed simulations. Proceeding to aggregate values." << endl;
 
     auto team1simulated_values = teams[0].aggregate_player_scores();
     auto team2simulated_values = teams[1].aggregate_player_scores();
@@ -91,6 +86,6 @@ int main(int argc, char** argv){
         spreads.push_back(spread);
         average_spread+= spread;
     }
-    cout << "Team 1 Average Spread size: " << average_spread/100 << endl;
+    cout << "Average Spread in favor of " << teams[0] << ": " << average_spread/100 << endl;
     cout << "Minimum Spread: " << *min_element(spreads.begin(), spreads.end()) << "\tMaximum Spread: " << *max_element(spreads.begin(), spreads.end()) << endl;
 }
