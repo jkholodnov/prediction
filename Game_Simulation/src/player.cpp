@@ -146,7 +146,7 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
     }
 
     #if TEST == 1
-        if(game_performance.size() == 0){
+        if(game_performance_updates.size() == 0){
             cout << "Did not generate any performance_Rating update queries." << endl;
         }
     #endif
