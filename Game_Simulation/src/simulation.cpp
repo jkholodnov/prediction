@@ -13,7 +13,6 @@ void simulation::simulate_players_performance(const unordered_map<string, statis
 {
 	auto threadID = std::this_thread::get_id();
     auto thread_Hash = std::hash<std::thread::id>()(threadID);
-    cout << "THREAD ID!!" << thread_Hash << endl;
     srand(thread_Hash);
     int performance = rand() % 100;
     //TODO: Check if the performance in top 10% or bottom 10%
@@ -22,7 +21,6 @@ void simulation::simulate_players_performance(const unordered_map<string, statis
     	auto statistics_mean_and_stdev =  mean_and_stdevs.find(key);
     	double mean = (statistics_mean_and_stdev->second).mean;
     	double stdev = (statistics_mean_and_stdev->second).stdev;
-        cout << key << "~" << statistics_mean_and_stdev->first << "#" << playname << "#" << mean << "$" << stdev << endl;
     	string RInside_Query = "qnorm(." + to_string(performance) + ", mean = " + to_string(mean) + ", sd = " + to_string(stdev) + ")";
     	//cout << playname << " Number of container uses: " << R_Inside_Container.use_count() <<" Key: " << key << " " << statistics_mean_and_stdev->first << " Mean: " << mean << " Stdev: " << stdev << " Query: " << RInside_Query << endl;
     	auto predicted_value = R_Inside_Container->use(RInside_Query);

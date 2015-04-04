@@ -15,70 +15,72 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
     Database* predict_db = new Database("../predict.db");
     vector<string> game_performance_updates{};
 
-    string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, b.day, a.gameID, a.injury FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' and a.injury = 'NULL' ORDER BY b.day;";
+    string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, b.day, a.gameID FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' and a.injury = 'NULL' ORDER BY b.day;";
     auto All_Games = predict_db->query(_query);
+
+    #if TEST == 1
+        if(All_Games.size() == 0){
+            cout << "Did not retrieve any game records from database." << endl;
+        }
+    #endif
 
     int games_counted{0};
 
     for (auto& Single_Game: All_Games){
-        cout << Single_Game.size() << "#####" << endl;
-        auto injury_status = Single_Game[18];
-        cout << "INJURY STATUS: " << injury_status << endl;
-        if(injury_status == "NULL"){
-            games_counted++;
-            //The player was NOT injured or scratched for this game.//
-            minutes.emplace_back(atoi(Single_Game[0].c_str()));
-            fga.emplace_back(atoi(Single_Game[1].c_str()));
-            fgm.emplace_back(atoi(Single_Game[2].c_str()));
+        games_counted++;
+        //The player was NOT injured or scratched for this game.//
+        minutes.emplace_back(atoi(Single_Game[0].c_str()));
+        fga.emplace_back(atoi(Single_Game[1].c_str()));
+        fgm.emplace_back(atoi(Single_Game[2].c_str()));
 
-            tpa.emplace_back(atoi(Single_Game[3].c_str()));
-            tpm.emplace_back(atoi(Single_Game[4].c_str()));
+        tpa.emplace_back(atoi(Single_Game[3].c_str()));
+        tpm.emplace_back(atoi(Single_Game[4].c_str()));
 
-            fta.emplace_back(atoi(Single_Game[5].c_str()));
-            ftm.emplace_back(atoi(Single_Game[6].c_str()));
+        fta.emplace_back(atoi(Single_Game[5].c_str()));
+        ftm.emplace_back(atoi(Single_Game[6].c_str()));
 
-            oreb.emplace_back(atoi(Single_Game[7].c_str()));
-            dreb.emplace_back(atoi(Single_Game[8].c_str()));
+        oreb.emplace_back(atoi(Single_Game[7].c_str()));
+        dreb.emplace_back(atoi(Single_Game[8].c_str()));
 
-            assist.emplace_back(atoi(Single_Game[9].c_str()));
-            steal.emplace_back(atoi(Single_Game[10].c_str()));
-            block.emplace_back(atoi(Single_Game[11].c_str()));
-            turnover.emplace_back(atoi(Single_Game[12].c_str()));
-            fouls.emplace_back(atoi(Single_Game[13].c_str()));
+        assist.emplace_back(atoi(Single_Game[9].c_str()));
+        steal.emplace_back(atoi(Single_Game[10].c_str()));
+        block.emplace_back(atoi(Single_Game[11].c_str()));
+        turnover.emplace_back(atoi(Single_Game[12].c_str()));
+        fouls.emplace_back(atoi(Single_Game[13].c_str()));
 
-            plus_minus.emplace_back(atoi(Single_Game[14].c_str()));
-            points.emplace_back(atoi(Single_Game[15].c_str()));
+        plus_minus.emplace_back(atoi(Single_Game[14].c_str()));
+        points.emplace_back(atoi(Single_Game[15].c_str()));
 
-            vector<statistics> statistics_up_to_this_game{};
-            statistics_up_to_this_game.emplace_back(minutes);
-            statistics_up_to_this_game.emplace_back(fga);
-            //statistics_up_to_this_game.emplace_back(fgm);
-            statistics_up_to_this_game.emplace_back(tpa);
-            //statistics_up_to_this_game.emplace_back(tpm);
-            statistics_up_to_this_game.emplace_back(fta);
-            //statistics_up_to_this_game.emplace_back(ftm);
-            statistics_up_to_this_game.emplace_back(oreb);
-            statistics_up_to_this_game.emplace_back(dreb);
-            statistics_up_to_this_game.emplace_back(assist);
-            statistics_up_to_this_game.emplace_back(steal);
-            statistics_up_to_this_game.emplace_back(block);
-            statistics_up_to_this_game.emplace_back(turnover);
-            statistics_up_to_this_game.emplace_back(fouls);
-            statistics_up_to_this_game.emplace_back(plus_minus);
-            statistics_up_to_this_game.emplace_back(points);
+        vector<statistics> statistics_up_to_this_game{};
+        statistics_up_to_this_game.emplace_back(minutes);
+        statistics_up_to_this_game.emplace_back(fga);
+        //statistics_up_to_this_game.emplace_back(fgm);
+        statistics_up_to_this_game.emplace_back(tpa);
+        //statistics_up_to_this_game.emplace_back(tpm);
+        statistics_up_to_this_game.emplace_back(fta);
+        //statistics_up_to_this_game.emplace_back(ftm);
+        statistics_up_to_this_game.emplace_back(oreb);
+        statistics_up_to_this_game.emplace_back(dreb);
+        statistics_up_to_this_game.emplace_back(assist);
+        statistics_up_to_this_game.emplace_back(steal);
+        statistics_up_to_this_game.emplace_back(block);
+        statistics_up_to_this_game.emplace_back(turnover);
+        statistics_up_to_this_game.emplace_back(fouls);
+        statistics_up_to_this_game.emplace_back(plus_minus);
+        statistics_up_to_this_game.emplace_back(points);
 
-            double game_performance = {0.0};
-            for(unsigned i=0;i<statistics_up_to_this_game.size(); i++){
-                statistics &current_stats = statistics_up_to_this_game[i];
-                string RInside_Query = "pnorm(" + Single_Game[i] + ", mean = " + to_string(current_stats.mean) + ", sd = " + to_string(current_stats.stdev) + ")";
-                double variable_performance = R_Inside_Container->use(RInside_Query);
-                game_performance += variable_performance;
-            }
-            string gameid = Single_Game[17];
-            string update_db_query = "UPDATE gamedata SET performance_rating = '" + to_string(game_performance) + "' WHERE gameid = " + gameid + " AND name = '" + player_name + "';";
-            game_performance_updates.emplace_back(update_db_query);
-            cout << update_db_query << endl;
+        double game_performance = {0.0};
+        for(unsigned i=0;i<statistics_up_to_this_game.size(); i++){
+            statistics &current_stats = statistics_up_to_this_game[i];
+            string RInside_Query = "pnorm(" + Single_Game[i] + ", mean = " + to_string(current_stats.mean) + ", sd = " + to_string(current_stats.stdev) + ")";
+            double variable_performance = R_Inside_Container->use(RInside_Query);
+            game_performance += variable_performance;
         }
+        string gameid = Single_Game[17];
+        string update_db_query = "UPDATE gamedata SET performance_rating = '" + to_string(game_performance) + "' WHERE gameid = " + gameid + " AND name = '" + player_name + "';";
+        game_performance_updates.emplace_back(update_db_query);
+
+
     }
     delete predict_db;
     /*SKIPPING FG, 3PT, FT FOR NOW COME BACK.//*/
@@ -143,18 +145,11 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
 
     }
 
-
-    //spin up 100 threads to simulate each player's games. This might be slower than sequential. Need to test.//
-    
-    
-    
-    //Sequential version//
-    /*
-    for(auto& simulation: game_simulations){
-    	simulation.simulate_players_performance(mean_and_stdevs, keys_to_map, R_Inside_Container, player_name);
-    }
-    */
-
+    #if
+        if(game_performance.size() == 0){
+            cout << "Did not generate any performance_Rating update queries." << endl;
+        }
+    #endif
     return game_performance_updates;
 }
 
@@ -207,9 +202,5 @@ int player::simulate_game_scores(int i)
         predicted_score = 0;
     }
 
-    //double predicted_turnovers = turnover_value + fouls_value - steal_value - dreb_value;
-    
-    //int shots = round(fga_value + tpa_value + (fta_value/2));
-    
     return round(predicted_score);
 }

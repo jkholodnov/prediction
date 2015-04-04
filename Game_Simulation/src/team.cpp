@@ -31,23 +31,47 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
 
     Database* predict_db = new Database("../predict.db");
     auto player_names = predict_db->query("SELECT DISTINCT Name FROM gamedata WHERE teamid = '" + team_name + "' ORDER BY Name;");
-    //std::cout << player_names.size() << std::endl;
+    
+    #if TEST == 1
+    if(player_names.size() == 0){
+        cout << "No player information was retrieved." << endl;
+    }
+    #endif
 
     for(auto player: player_names){
         players.emplace_back(player[0],team_name);
     }
+
+    #if TEST == 1
+        if(players.size() != player_names.size()){
+            cout << "Did not create enough player objects for team: " << team_name << endl;
+        }
+    #endif
 
     vector<future<vector<string>>> game_performance_updates;
     for(i=0;i<players.size();i++){
         game_performance_updates.emplace_back(async( launch::async, &player::get_player_scores, &players[i], R_Inside_Container ));
     }
 
+    #if TEST == 1
+        if(game_performance_updates.size() != players.size()){
+            cout << "Did not launch enough get_player_scores threads asynchronously." << endl;
+        }
+    #endif
+
+
+    vector<string> performance_updates{};
+
     for(i=0;i<game_performance_updates.size();i++){
         auto game_performances_to_update = game_performance_updates[i].get();
-        for(auto game_performance: game_performances_to_update){
-            predict_db->query(game_performance);
-        }
+        performance_updates.insert(performance_updates.end(),game_performances_to_update.begin(), game_performances_to_update.end());
     }
+
+    #if TEST == 1
+        if(performance_updates.size() == 0){
+            cout << "Did not generate any performance updates." << endl;
+        }
+    #endif
     delete predict_db;
 }
 
@@ -63,6 +87,12 @@ vector<int> team::aggregate_player_scores()
     auto last_game_played = predict_db->query("select max(day),gameID from games where team1abbr = '" + team_name + "' or team2abbr = '" + team_name + "';");
     auto player_information = predict_db->query("select name,injury from gamedata where gameid = '" + last_game_played[0][1] + "';");
     
+    #if TEST == 1
+        if(player_information.size() == 0){
+            cout << "Did not select any players from the last game played. Check database status." << endl;
+        }
+    #endif
+
     vector<player> active_players;
     vector<player> scratched_players;
     vector<pair<player,string>> injured_players;
@@ -95,21 +125,35 @@ vector<int> team::aggregate_player_scores()
         }
     }
     
+    #if TEST == 1
+        if(active_players.size() == 0){
+            cout << "There are no active players... Something is wrong.";
+        }
+        if(scratched_players.size() == 0){
+            cout << "There are no scratched players. All players from the last game will play." << endl;
+        }
+        if(injured_players.size() == 0){
+            cout << "There were no injured players in this team's previous game." << endl;
+        }
+    #endif
+
+
     vector<int> simulation_scores;
     for(i=0; i<100; i++){
-        vector<int> mins_and_scores_vector;
+        int team_predicted_points{0};
 
         //ONLY LOOK AT THE PLAYERS WHICH WE THINK WILL PLAY NEXT GAME//
         for(auto& _player : active_players){
-            cout << _player.player_name << "#" << active_players.size() << "#" << endl;
             auto simulated_value = _player.simulate_game_scores(i);
-            mins_and_scores_vector.emplace_back(simulated_value);
+            team_predicted_points += simulated_value;
         }
 
-        int team_predicted_points{0};
-        for(auto& value : mins_and_scores_vector){
-            team_predicted_points += value;
-        }
+        #if TEST == 1
+            if(team_predicted_points == 0){
+                cout << "Did not simulate any points scored. Something is wrong with simulate_game_scores." << endl;
+            }
+        #endif
+            
         simulation_scores.push_back(team_predicted_points);
     }
     return simulation_scores;

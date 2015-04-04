@@ -27,8 +27,12 @@ int main(int argc, char** argv){
     auto is_t2_valid = predict_db->query("SELECT count(*) FROM games WHERE Team1Abbr = '" + team2 + "'");
 
     #if TEST == 1
-    assert(is_t1_valid[0][0] != "0", "Team 1 abbreviation failed.");
-    assert(is_t2_valid[0][0] != "0", "Team 2 abbreviation failed.");
+    if(is_t1_valid[0][0] == "0"){
+        cout << "Team 1 abbreviation failed." << endl;
+    }
+    if(is_t2_valid[0][0] == "0"){
+        cout << "Team 2 abbreviation failed." << endl;
+    }
     #endif
 
     if((is_t1_valid[0][0] == "0") || (is_t2_valid[0][0] == "0")){
@@ -48,7 +52,9 @@ int main(int argc, char** argv){
     }
 
     #if TEST == 1
-    assert(generate_team_workers.size() == teams.size(), "Did not generate enough team workers.");
+    if(generate_team_workers.size() != teams.size()){
+        cout << "Did not generate enough team workers." << endl;
+    }
     #endif
 
     R_Inside_Container.reset();
