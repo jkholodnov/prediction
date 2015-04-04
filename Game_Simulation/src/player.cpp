@@ -145,7 +145,7 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
 
     }
 
-    #if
+    #if TEST == 1
         if(game_performance.size() == 0){
             cout << "Did not generate any performance_Rating update queries." << endl;
         }
@@ -166,9 +166,9 @@ int player::simulate_game_scores(int i)
     auto tpa = map_of_performances.find("tpa");
     auto fta = map_of_performances.find("fta");
 
-    auto fgm = map_of_performances.find("fgm");
-    auto tpm = map_of_performances.find("tpm");
-    auto ftm = map_of_performances.find("ftm");
+    //auto fgm = map_of_performances.find("fgm");
+    //auto tpm = map_of_performances.find("tpm");
+    //auto ftm = map_of_performances.find("ftm");
 
     auto oreb = map_of_performances.find("oreb");
     auto dreb = map_of_performances.find("dreb");
@@ -183,9 +183,9 @@ int player::simulate_game_scores(int i)
     double tpa_value = tpa->second;
     double fta_value = fta->second;
 
-    double fgm_value = fgm->second;
-    double tpm_value = tpm->second;
-    double ftm_value = ftm->second;
+    //double fgm_value = fgm->second;
+    //double tpm_value = tpm->second;
+    //double ftm_value = ftm->second;
 
     double oreb_value = oreb->second;
     double dreb_value = dreb->second;
