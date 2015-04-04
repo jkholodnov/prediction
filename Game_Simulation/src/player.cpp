@@ -19,12 +19,13 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
 
     auto counts = predict_db->query(_query1);
 
-    string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, b.day, a.gameID FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' and a.injury = 'NULL' ORDER BY b.day;";
+    string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, b.day, a.gameID, a.injury FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' and a.injury = 'NULL' ORDER BY b.day;";
     auto All_Games = predict_db->query(_query);
 
     for (auto& Single_Game: All_Games){
-        //The player was NOT injured or scratched for this game.//
-        if(Single_Game[16] != "NULL"){
+        auto injury_status = Single_Game[18];
+        if(injury_status == "NULL"){
+            //The player was NOT injured or scratched for this game.//
             minutes.emplace_back(atoi(Single_Game[0].c_str()));
             fga.emplace_back(atoi(Single_Game[1].c_str()));
             fgm.emplace_back(atoi(Single_Game[2].c_str()));
@@ -50,11 +51,11 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
             vector<statistics> statistics_up_to_this_game{};
             statistics_up_to_this_game.emplace_back(minutes);
             statistics_up_to_this_game.emplace_back(fga);
-            statistics_up_to_this_game.emplace_back(fgm);
+            //statistics_up_to_this_game.emplace_back(fgm);
             statistics_up_to_this_game.emplace_back(tpa);
-            statistics_up_to_this_game.emplace_back(tpm);
+            //statistics_up_to_this_game.emplace_back(tpm);
             statistics_up_to_this_game.emplace_back(fta);
-            statistics_up_to_this_game.emplace_back(ftm);
+            //statistics_up_to_this_game.emplace_back(ftm);
             statistics_up_to_this_game.emplace_back(oreb);
             statistics_up_to_this_game.emplace_back(dreb);
             statistics_up_to_this_game.emplace_back(assist);

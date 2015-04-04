@@ -34,6 +34,7 @@ int main(int argc, char** argv){
         teams.emplace_back(team1);
         teams.emplace_back(team2);
     }
+    
     vector<std::thread> generate_team_workers;
     size_t i;
 
