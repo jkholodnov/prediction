@@ -25,7 +25,7 @@ team::team(team&& other) :
     //MOVE CONSTRUCTOR//
 }
 
-void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Container)
+vector<string> team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Container)
 {
     size_t i;
 
@@ -77,10 +77,12 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
         predict_db -> query(update_query);
     }
     delete predict_db;
+
+    return performance_updates;
 }
 
 //This function combines each players simulated scores. The result is a 100-element vector with predicted team scores.//
-pair<vector<int>,vector<string>> team::aggregate_player_scores()
+vector<int> team::aggregate_player_scores()
 {
     size_t i;
     //TODO : LOOK THRUGH ALL PLAYERS, DETERMINE WHICH ONES WILL MOST LIKELY NOT PLAY NEXT GAME.//
