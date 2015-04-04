@@ -20,8 +20,7 @@ int main(int argc, char** argv){
     cout << "Please enter the teams you wish to run simulations on." << endl;
 
     string team1, team2;
-    cin >> team1;
-    cin >> team2;
+    cin >> team1 >> team2;
 
     auto is_t1_valid = predict_db->query("SELECT count(*) FROM games WHERE Team1Abbr = '" + team1 + "'");
     auto is_t2_valid = predict_db->query("SELECT count(*) FROM games WHERE Team1Abbr = '" + team2 + "'");
@@ -86,6 +85,6 @@ int main(int argc, char** argv){
         spreads.push_back(spread);
         average_spread+= spread;
     }
-    cout << "Average Spread in favor of " << teams[0] << ": " << average_spread/100 << endl;
+    cout << "Average Spread in favor of " << team1 << ": " << average_spread/100 << endl;
     cout << "Minimum Spread: " << *min_element(spreads.begin(), spreads.end()) << "\tMaximum Spread: " << *max_element(spreads.begin(), spreads.end()) << endl;
 }
