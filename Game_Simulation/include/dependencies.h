@@ -1,6 +1,6 @@
 #ifndef __DEPENDENCIES_H__
 #define __DEPENDENCIES_H__
-#define TEST = 1
+#define TEST 1
 #include <unordered_map>
 #include <vector>
 
