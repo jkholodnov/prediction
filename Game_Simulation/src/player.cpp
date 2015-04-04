@@ -20,7 +20,7 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
 
     #if TEST == 1
         if(All_Games.size() == 0){
-            cout << "Did not retrieve any game records from database." << endl;
+            cout << "Did not retrieve any game records from database for player: " << player_name << endl;
         }
     #endif
 
@@ -147,7 +147,7 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
 
     #if TEST == 1
         if(game_performance_updates.size() == 0){
-            cout << "Did not generate any performance_Rating update queries." << endl;
+            cout << "Did not generate any performance_Rating update queries for player: " << player_name << endl;
         }
     #endif
     return game_performance_updates;

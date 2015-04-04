@@ -79,8 +79,6 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
 vector<int> team::aggregate_player_scores()
 {
     size_t i;
-
-    cout << "Beginning simulation for " << team_name << endl;
     //TODO : LOOK THRUGH ALL PLAYERS, DETERMINE WHICH ONES WILL MOST LIKELY NOT PLAY NEXT GAME.//
 
     Database* predict_db = new Database("../predict.db");
@@ -153,7 +151,7 @@ vector<int> team::aggregate_player_scores()
                 cout << "Did not simulate any points scored. Something is wrong with simulate_game_scores." << endl;
             }
         #endif
-            
+
         simulation_scores.push_back(team_predicted_points);
     }
     return simulation_scores;

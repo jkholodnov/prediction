@@ -72,15 +72,25 @@ int main(int argc, char** argv){
     auto team1simulated_values = teams[0].aggregate_player_scores();
     auto team2simulated_values = teams[1].aggregate_player_scores();
 
-    cout << team1simulated_values.size() << "###" << team2simulated_values.size() << endl;
+    #if TEST == 1
+        if(team1simulated_values.size() != 100){
+            cout << "Did not simulate 100 games for team1." << endl;
+        }
+        if(team2simulated_values.size() != 100){
+            cout << "Did not simulate 100 games for team2." << endl;
+        }
+        if(team1simulated_values.size() != team2simulated_values.size()){
+            cout << "Did not simulate the same number of games for each team." << endl;
+        }
+    #endif
+
     vector<int> spreads;
-    int average_spread{0};
+    double average_spread{0};
     for(unsigned i=0; i<team1simulated_values.size(); ++i){
-        cout << team1simulated_values[i] << "$$" << team2simulated_values[i] << endl;
         int spread = team1simulated_values[i] - team2simulated_values[i];
         spreads.push_back(spread);
         average_spread+= spread;
     }
-    cout << spreads.size() << "~" << average_spread << endl;
-    cout << *min_element(spreads.begin(), spreads.end()) << "!" << *max_element(spreads.begin(), spreads.end()) << endl;
+    cout << "Team 1 Average Spread size: " << average_spread/100 << endl;
+    cout << "Minimum Spread: " << *min_element(spreads.begin(), spreads.end()) << "\tMaximum Spread: " << *max_element(spreads.begin(), spreads.end()) << endl;
 }
