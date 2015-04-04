@@ -133,7 +133,7 @@ vector<int> team::aggregate_player_scores()
         }
         if(scratched_players.size() == 0){
             cout << "There were no scratched players in " << team_name << "'s previous game." << endl;
-        }simulation_scores
+        }
         if(injured_players.size() == 0){
             cout << "There were no injured players in " << team_name << "'s previous game." << endl;
         }
