@@ -69,10 +69,10 @@ int main(int argc, char** argv){
     auto team2_simulated_values = team2_simulations_and_update.first;
 
     vector<string> update_queries{};
-    update_queries.insert(update_queries.end(), team1_simulations_and_update.second.begin(), team1_simulations_and_update.end());
-    update_queries.insert(update_queries.end(), team2_simulations_and_update.second.begin(), team2_simulations_and_update.end());
+    update_queries.insert(update_queries.end(), team1_simulations_and_update.second.begin(), team1_simulations_and_update.second.end());
+    update_queries.insert(update_queries.end(), team2_simulations_and_update.second.begin(), team2_simulations_and_update.second.end());
 
-    cout << "There are " << update_queries.size() << " updates that need to be ran." <<3 endl;
+    cout << "There are " << update_queries.size() << " updates that need to be ran." << endl;
 
     #if TEST == 1
         if(team1_simulated_values.size() != 100){
