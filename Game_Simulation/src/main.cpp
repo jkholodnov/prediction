@@ -27,10 +27,10 @@ int main(int argc, char** argv){
     auto is_t2_valid = predict_db->query("SELECT count(*) FROM games WHERE Team1Abbr = '" + team2 + "'");
 
     #if TEST == 1
-    static_assert(is_t1_valid[0][0] != "0", "Team 1 abbreviation failed.");
-    static_assert(is_t2_valid[0][0] != "0", "Team 2 abbreviation failed.");
+    assert(is_t1_valid[0][0] != "0", "Team 1 abbreviation failed.");
+    assert(is_t2_valid[0][0] != "0", "Team 2 abbreviation failed.");
     #endif
-    
+
     if((is_t1_valid[0][0] == "0") || (is_t2_valid[0][0] == "0")){
         return 0;
     }
@@ -48,7 +48,7 @@ int main(int argc, char** argv){
     }
 
     #if TEST == 1
-    static_assert(generate_team_workers.size() == teams.size(), "Did not generate enough team workers.");
+    assert(generate_team_workers.size() == teams.size(), "Did not generate enough team workers.");
     #endif
 
     R_Inside_Container.reset();
