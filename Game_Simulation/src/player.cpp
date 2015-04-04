@@ -19,6 +19,7 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
     auto All_Games = predict_db->query(_query);
 
     for (auto& Single_Game: All_Games){
+        cout << Single_Game.size() << "#####" << endl;
         auto injury_status = Single_Game[18];
         cout << "INJURY STATUS: " << injury_status << endl;
         if(injury_status == "NULL"){
