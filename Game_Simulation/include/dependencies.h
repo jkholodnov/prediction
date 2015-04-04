@@ -1,6 +1,6 @@
 #ifndef __DEPENDENCIES_H__
 #define __DEPENDENCIES_H__
-
+#define TEST = 1
 #include <unordered_map>
 #include <vector>
 
@@ -19,6 +19,7 @@
 
 #include <RInside.h>
 #include <math.h>
+#include <assert.h>
 
 
 #endif

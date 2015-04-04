@@ -142,7 +142,7 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
         }
 
     }
-    
+
 
     //spin up 100 threads to simulate each player's games. This might be slower than sequential. Need to test.//
     
