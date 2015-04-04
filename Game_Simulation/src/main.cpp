@@ -63,25 +63,33 @@ int main(int argc, char** argv){
     }
 
 
-    auto team1simulated_values = teams[0].aggregate_player_scores();
-    auto team2simulated_values = teams[1].aggregate_player_scores();
+    auto team1_simulations_and_update = teams[0].aggregate_player_scores();
+    auto team2_simulations_and_update = teams[1].aggregate_player_scores();
+    auto team1_simulated_values = team1_simulations_and_update.first
+    auto team2_simulated_values = team2_simulations_and_update.first
+
+    vector<string> update_queries{};
+    update_queries.insert(update_queries.end(), team1_simulations_and_update.second.begin(), team1_simulations_and_update.end());
+    update_queries.insert(update_queries.end(), team2_simulations_and_update.second.begin(), team2_simulations_and_update.end());
+
+    cout << "There are " << update_queries.size() << " updates that need to be ran." <<3 endl;
 
     #if TEST == 1
-        if(team1simulated_values.size() != 100){
+        if(team1_simulated_values.size() != 100){
             cout << "Did not simulate 100 games for team1." << endl;
         }
-        if(team2simulated_values.size() != 100){
+        if(team2_simulated_values.size() != 100){
             cout << "Did not simulate 100 games for team2." << endl;
         }
-        if(team1simulated_values.size() != team2simulated_values.size()){
+        if(team1_simulated_values.size() != team2_simulated_values.size()){
             cout << "Did not simulate the same number of games for each team." << endl;
         }
     #endif
 
     vector<int> spreads;
     double average_spread{0};
-    for(unsigned i=0; i<team1simulated_values.size(); ++i){
-        int spread = team1simulated_values[i] - team2simulated_values[i];
+    for(unsigned i=0; i<team1_simulated_values.size(); ++i){
+        int spread = team1_simulated_values[i] - team2_simulated_values[i];
         spreads.push_back(spread);
         average_spread+= spread;
     }
