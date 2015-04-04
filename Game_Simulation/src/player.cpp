@@ -15,10 +15,6 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
     Database* predict_db = new Database("../predict.db");
     vector<string> game_performance_updates{};
 
-    string _query1 = "SELECT count(*) FROM gamedata WHERE Name = '" + player_name + "';";
-
-    auto counts = predict_db->query(_query1);
-
     string _query = "SELECT a.minutes, a.fgm, a.fga, a.tpm, a.tpa, a.ftm, a.fta, a.oreb, a.dreb, a.assist, a.steal, a.block, a.turnover, a.fouls, a.plus_minus, a.points, b.day, a.gameID, a.injury FROM gameData as a JOIN games as b ON a.gameID = b.gameID WHERE Name = '" + player_name + "' and a.injury = 'NULL' ORDER BY b.day;";
     auto All_Games = predict_db->query(_query);
 
@@ -76,6 +72,7 @@ vector<string> player::get_player_scores(shared_ptr<RInside_Container> R_Inside_
             string gameid = Single_Game[17];
             string update_db_query = "UPDATE gamedata SET performance_rating = '" + to_string(game_performance) + "' WHERE gameid = " + gameid + " AND name = '" + player_name + "';";
             game_performance_updates.emplace_back(update_db_query);
+            cout << update_db_query << endl;
         }
     }
     delete predict_db;
