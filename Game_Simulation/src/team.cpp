@@ -72,6 +72,10 @@ void team::generate_team_simulations(shared_ptr<RInside_Container> R_Inside_Cont
             cout << "Did not generate any performance updates." << endl;
         }
     #endif
+
+    for(auto& update_query: performance_updates){
+        predict_db -> query(update_query);
+    }
     delete predict_db;
 }
 
@@ -129,7 +133,7 @@ vector<int> team::aggregate_player_scores()
         }
         if(scratched_players.size() == 0){
             cout << "There were no scratched players in " << team_name << "'s previous game." << endl;
-        }
+        }simulation_scores
         if(injured_players.size() == 0){
             cout << "There were no injured players in " << team_name << "'s previous game." << endl;
         }
