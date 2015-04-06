@@ -4,33 +4,25 @@
 #include "game.h"
 #include "team.h"
 #include "Database.h"
-
-#include <future>
-#include <functional>
-#include <vector>
-#include <string>
-#include <set>
-#include <cstdlib>
-#include <iostream>
-#include <thread>
-#include <utility>
+#include "dependencies.h"
 
 using namespace std;
 
-class games_and_teams 
-{
-    public:
-        games_and_teams();
-        ~games_and_teams();
-        void initialize_teams();
-        void load_in_games();
-        void generate_ELO();
-    protected:
-    private:
-        vector<vector<game>> the_games{};
-        //this is the only copy of teams//
-        vector<team> the_teams{};
-        Database* the_db;
+class games_and_teams {
+   public:
+    games_and_teams();
+    ~games_and_teams();
+    void initialize_teams();
+    void load_in_games();
+    void generate_ELO();
+    void generate_Performance_Rating();
+
+   protected:
+   private:
+    vector<vector<game>> the_games{};
+    vector<team> the_teams{};
+    vector<player> the_players{};
+    Database* the_db;
 };
 
-#endif // GAMES_H
+#endif  // GAMES_H
