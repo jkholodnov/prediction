@@ -31,7 +31,7 @@ vector<string> team::generate_team_simulations(shared_ptr<RInside_Container> R_I
 
     Database* predict_db = new Database("../predict.db");
     auto player_names = predict_db->query("SELECT DISTINCT Name FROM gamedata WHERE teamid = '" + team_name + "' ORDER BY Name;");
-    
+    delete predict_db;
     #if TEST == 1
     if(player_names.size() == 0){
         cout << "No player information was retrieved." << endl;
@@ -59,7 +59,6 @@ vector<string> team::generate_team_simulations(shared_ptr<RInside_Container> R_I
         }
     #endif
 
-
     vector<string> performance_updates{};
 
     for(i=0;i<game_performance_updates.size();i++){
@@ -71,8 +70,10 @@ vector<string> team::generate_team_simulations(shared_ptr<RInside_Container> R_I
         if(performance_updates.size() == 0){
             cout << "Did not generate any performance updates." << endl;
         }
+        
     #endif
 
+    predict_db = new Database("../predict.db");
     for(auto& update_query: performance_updates){
         predict_db -> query(update_query);
     }
