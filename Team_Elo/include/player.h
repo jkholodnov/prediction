@@ -10,7 +10,7 @@ class player {
    public:
     player(string playname);
     ~player();
-    void add_game_record(vector<double> data_to_add);
+    void add_record(vector<double> data_to_add);
     pair<double, double> get_mean_sd(const vector<double>& data_vector);
 
     string name{};
