@@ -9,8 +9,7 @@ player::~player() {
     // dtor
 }
 
-vector<string> player::get_player_scores(
-    shared_ptr<RInside_Container> R_Inside_Container) {
+void player::get_player_scores(shared_ptr<RInside_Container> R_Inside_Container) {
     Database *predict_db = new Database("../predict.db");
 
     string _query =
@@ -118,62 +117,62 @@ vector<string> player::get_player_scores(
             worker_threads[i].join();
         }
     }
+}
+int player::simulate_game_scores(int i) {
+    // cout << "called" << endl;
+    auto the_simulation = game_simulations[i];
+    // cout << "called2" << endl;
 
-    int player::simulate_game_scores(int i) {
-        // cout << "called" << endl;
-        auto the_simulation = game_simulations[i];
-        // cout << "called2" << endl;
+    auto map_of_performances = the_simulation.simulated_performance;
 
-        auto map_of_performances = the_simulation.simulated_performance;
+    auto minutes = map_of_performances.find("minutes");
+    auto fga = map_of_performances.find("fga");
+    auto tpa = map_of_performances.find("tpa");
+    auto fta = map_of_performances.find("fta");
 
-        auto minutes = map_of_performances.find("minutes");
-        auto fga = map_of_performances.find("fga");
-        auto tpa = map_of_performances.find("tpa");
-        auto fta = map_of_performances.find("fta");
+    // auto fgm = map_of_performances.find("fgm");
+    // auto tpm = map_of_performances.find("tpm");
+    // auto ftm = map_of_performances.find("ftm");
 
-        // auto fgm = map_of_performances.find("fgm");
-        // auto tpm = map_of_performances.find("tpm");
-        // auto ftm = map_of_performances.find("ftm");
+    auto oreb = map_of_performances.find("oreb");
+    auto dreb = map_of_performances.find("dreb");
+    auto assist = map_of_performances.find("assist");
+    auto steal = map_of_performances.find("steal");
+    auto turnover = map_of_performances.find("turnover");
+    auto fouls = map_of_performances.find("fouls");
+    auto plus_minus = map_of_performances.find("plus_minus");
 
-        auto oreb = map_of_performances.find("oreb");
-        auto dreb = map_of_performances.find("dreb");
-        auto assist = map_of_performances.find("assist");
-        auto steal = map_of_performances.find("steal");
-        auto turnover = map_of_performances.find("turnover");
-        auto fouls = map_of_performances.find("fouls");
-        auto plus_minus = map_of_performances.find("plus_minus");
+    double minutes_value = minutes->second;
+    double fga_value = fga->second;
+    double tpa_value = tpa->second;
+    double fta_value = fta->second;
 
-        double minutes_value = minutes->second;
-        double fga_value = fga->second;
-        double tpa_value = tpa->second;
-        double fta_value = fta->second;
+    // double fgm_value = fgm->second;
+    // double tpm_value = tpm->second;
+    // double ftm_value = ftm->second;
 
-        // double fgm_value = fgm->second;
-        // double tpm_value = tpm->second;
-        // double ftm_value = ftm->second;
+    double oreb_value = oreb->second;
+    // double dreb_value = dreb->second;
+    double assist_value = assist->second;
+    double steal_value = steal->second;
+    double turnover_value = turnover->second;
+    double fouls_value = fouls->second;
+    double plus_minus_value = plus_minus->second;
 
-        double oreb_value = oreb->second;
-        // double dreb_value = dreb->second;
-        double assist_value = assist->second;
-        double steal_value = steal->second;
-        double turnover_value = turnover->second;
-        double fouls_value = fouls->second;
-        double plus_minus_value = plus_minus->second;
-
-        // cout << minutes_value << "#" << fga_value << "#" << tpa_value << "#" <<
-        // fta_value << "#" << oreb_value << "#" << assist_value << "#" << steal_value
-        // << "#" << turnover_value << "#" << fouls_value << "#" << plus_minus_value
-        // << endl;
-        // These values are hard coded from my lm(Score ~ .) output. Need to figure
-        // out a way to route RInside to here.
-        double predicted_score =
-            -0.520640 + 0.027873 * minutes_value + 0.959890 * fga_value +
-            0.206571 * tpa_value + 0.793915 * fta_value - 0.115459 * oreb_value -
-            0.153142 * assist_value - 0.077242 * steal_value + 0.107611 * turnover_value +
-            0.027402 * fouls_value + 0.087565 * plus_minus_value;
-        if (predicted_score < 0) {
-            predicted_score = 0;
-        }
-
-        return round(predicted_score);
+    // cout << minutes_value << "#" << fga_value << "#" << tpa_value << "#" <<
+    // fta_value << "#" << oreb_value << "#" << assist_value << "#" << steal_value
+    // << "#" << turnover_value << "#" << fouls_value << "#" << plus_minus_value
+    // << endl;
+    // These values are hard coded from my lm(Score ~ .) output. Need to figure
+    // out a way to route RInside to here.
+    double predicted_score = -0.520640 + 0.027873 * minutes_value + 0.959890 * fga_value +
+                             0.206571 * tpa_value + 0.793915 * fta_value -
+                             0.115459 * oreb_value - 0.153142 * assist_value -
+                             0.077242 * steal_value + 0.107611 * turnover_value +
+                             0.027402 * fouls_value + 0.087565 * plus_minus_value;
+    if (predicted_score < 0) {
+        predicted_score = 0;
     }
+
+    return round(predicted_score);
+}

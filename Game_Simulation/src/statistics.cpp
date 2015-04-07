@@ -26,7 +26,6 @@ double statistics::get_stdev(double mean_value, const vector<double>& data_vecto
     double value_minus_mean{0.0};
     vector<double> residuals{};
     for (auto& i : data_vector) {
-        value_minus_mean = 0.0;
         value_minus_mean = i - mean;
         residuals.emplace_back(pow(value_minus_mean, 2));
     }
