@@ -1,12 +1,9 @@
 #ifndef TEAM_H
 #define TEAM_H
 
+#include "player.h"
 #include "Database.h"
-
-#include <fstream>
-#include <vector>
-#include <string>
-#include <math.h>
+#include "dependencies.h"
 
 using namespace std;
 

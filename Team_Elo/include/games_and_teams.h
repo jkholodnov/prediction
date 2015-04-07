@@ -1,8 +1,8 @@
 #ifndef GAMES_H
 #define GAMES_H
 
-#include "game.h"
 #include "team.h"
+#include "game.h"
 #include "Database.h"
 #include "dependencies.h"
 

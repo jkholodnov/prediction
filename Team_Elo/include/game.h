@@ -2,8 +2,8 @@
 #define GAME_H
 
 #include "team.h"
-#include "Database.h"
 #include "player.h"
+#include "Database.h"
 #include "dependencies.h"
 
 using namespace std;
