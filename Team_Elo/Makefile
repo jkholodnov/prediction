@@ -6,15 +6,17 @@ SRC = src/
 OBJ = obj/
 
 ALL: main
-	$(CC) -o Team_Elo_Executable $(OBJ)main.o $(OBJ)games_and_teams.o $(OBJ)game.o $(OBJ)team.o $(LIBS)
+	$(CC) -o Team_Elo_Executable $(OBJ)main.o $(OBJ)games_and_teams.o $(OBJ)team.o $(OBJ)game.o $(OBJ)player.o $(LIBS)
 
-main: main.o games_and_teams.o game.o team.o
+main: main.o games_and_teams.o team.o game.o player.o
 	$
 main.o:
 	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c main.cpp -o $(OBJ)main.o
 games_and_teams.o:
 	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)games_and_teams.cpp -o $(OBJ)games_and_teams.o
-game.o:
-	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)game.cpp -o $(OBJ)game.o
 team.o:
 	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)team.cpp -o $(OBJ)team.o
+game.o:
+	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)game.cpp -o $(OBJ)game.o
+player.o:
+	$(CC) $(CFLAGS) $(SEARCH_DIRS) -c $(SRC)player.cpp -o $(OBJ)player.o
