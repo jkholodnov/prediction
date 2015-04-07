@@ -13,8 +13,6 @@ class player {
     void add_game_record(vector<double> data_to_add);
     pair<double, double> get_mean_and_stdevs();
 
-   protected:
-   private:
     string name{};
     vector<double> minutes;
 
@@ -33,6 +31,9 @@ class player {
     vector<double> fouls;
     vector<double> plus_minus;
     vector<double> points;
+
+   protected:
+   private:
 };
 
 #endif  // PLAYER_H

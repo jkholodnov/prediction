@@ -29,26 +29,9 @@ double player::add_record(vector<string> data_to_add) {
     fouls.emplace_back(data_to_add[14]);
     plus_minus.emplace_back(data_to_add[15]);
     points.emplace_back(data_to_add[16]);
-
-    auto mins_mean_stdev = get_mean_and_stdevs(minutes);
-    auto fgm_mean_stdev = get_mean_and_stdevs(fgm);
-    auto fga_mean_stdev = get_mean_and_stdevs(fga);
-    auto tpm_mean_stdev = get_mean_and_stdevs(tpm);
-    auto tpa_mean_stdev = get_mean_and_stdevs(tpa);
-    auto ftm_mean_stdev = get_mean_and_stdevs(ftm);
-    auto fta_mean_stdev = get_mean_and_stdevs(fta);
-    auto oreb_mean_stdev = get_mean_and_stdevs(oreb);
-    auto dreb_mean_stdev = get_mean_and_stdevs(dreb);
-    auto assist_mean_stdev = get_mean_and_stdevs(assist);
-    auto steal_mean_stdev = get_mean_and_stdevs(steal);
-    auto block_mean_stdev = get_mean_and_stdevs(block);
-    auto turnover_mean_stdev = get_mean_and_stdevs(turnover);
-    auto fouls_mean_stdev = get_mean_and_stdevs(fouls);
-    auto plus_minus_mean_stdev = get_mean_and_stdevs(plus_minus);
-    auto points_mean_stdev = get_mean_and_stdevs(points);
 }
 
-pair<double, double> player::get_mean_and_stdevs(const vector<double>& data_vector) {
+pair<double, double> player::get_mean_sd(const vector<double>& data_vector) {
     auto get_mean = [](const vector<double>& data) -> double {
         for (auto& i : data) {
             mean += i;

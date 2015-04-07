@@ -68,35 +68,32 @@ vector<string> game::generate_performance_ratings(
 
         current_player.add_record(single_game_data);
 
-        vector<pair<double, double>> mean_and_stdev_pairs{};
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(minutes));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(fgm));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(fga));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(tpm));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(tpa));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(ftm));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(fta));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(oreb));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(dreb));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(assist));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(steal));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(block));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(turnover));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(fouls));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(plus_minus));
-        mean_and_stdev_pairs.emplace_back(current_player.get_mean_and_stdevs(points));
+        vector<pair<double, double>> mean_sd_pairs{};
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.minutes));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.fgm));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.fga));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.tpm));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.tpa));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.ftm));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.fta));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.oreb));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.dreb));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.assist));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.steal));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.block));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.turnover));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.fouls));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.plus_minus));
+        mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.points));
 
         vector<string> R_Queries{};
 
-        for (unsigned i = 0; i < mean_and_stdev_pairs.size(); i++) {
+        for (unsigned i = 0; i < mean_sd_pairs.size(); i++) {
             string R_Query = "pnorm(" + single_game_data[i + 1] + ", mean = " +
-                             to_string(mean_and_stdev_pairs[i].first) + ", sd = " +
-                             to_string(mean_and_stdev_pairs[i].second) + ")";
+                             to_string(mean_sd_pairs[i].first) + ", sd = " +
+                             to_string(mean_sd_pairs[i].second) + ")";
             R_Queries.emplace_back(R_Query);
         }
-        string R_Query = "pnorm(";
-        "pnorm(" + Single_Game[i] + ", mean = " + to_string(current_stats.mean) +
-            ", sd = " + to_string(current_stats.stdev) + ")";
 
         double variable_performance = R_Inside_Container->use(RInside_Query);
         game_performance += variable_performance;
