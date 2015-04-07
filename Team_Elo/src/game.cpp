@@ -95,7 +95,7 @@ vector<string> game::generate_performance_ratings(
             R_Queries.emplace_back(R_Query);
         }
         for (auto& RInside_Query : R_Queries) {
-            double variable_performance = R_Inside_Container->use(RInside_Query);
+            double variable_performance = RInside->use(RInside_Query);
             game_performance += variable_performance;
         }
 

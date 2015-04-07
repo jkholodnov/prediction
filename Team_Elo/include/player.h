@@ -11,7 +11,7 @@ class player {
     player(string playname);
     ~player();
     void add_game_record(vector<double> data_to_add);
-    pair<double, double> get_mean_sd();
+    pair<double, double> get_mean_sd(const vector<double>& data_vector);
 
     string name{};
     vector<double> minutes;
