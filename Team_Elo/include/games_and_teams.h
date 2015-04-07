@@ -3,6 +3,7 @@
 
 #include "team.h"
 #include "game.h"
+#include "RInside_Container.h"
 #include "Database.h"
 #include "dependencies.h"
 

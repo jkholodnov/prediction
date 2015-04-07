@@ -51,8 +51,8 @@ pair<int, string> game::generate_Team_ELO() {
     }
 }
 
-vector<string> game::generate_performance_ratings(unordered_map<player>* the_players,
-                                                  shared_ptr<RInside_Container> RInside) {
+vector<string> game::generate_performance_ratings(
+    unordered_map<string, player>* the_players, shared_ptr<RInside_Container> RInside) {
     Database* the_db = new Database("../predict.db");
     vector<string> result_set{};
     auto players_gamedata = the_db->query(
