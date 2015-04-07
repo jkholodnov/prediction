@@ -114,7 +114,7 @@ void games_and_teams::generate_Performance_Rating() {
         for (auto &game : day) {
             performance_rating_updates.emplace_back(
                 async(launch::async, &game::generate_performance_ratings, &game,
-                      player_ptr, R_Inside_Container))
+                      players_map, R_Inside_Container))
         }
 
         for (auto &async_thread : performance_rating_updates) {
