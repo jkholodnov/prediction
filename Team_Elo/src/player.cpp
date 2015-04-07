@@ -6,7 +6,7 @@ player::~player() {
     // dtor
 }
 
-double player::add_record(vector<string> data_to_add) {
+void player::add_record(vector<string> data_to_add) {
 #if TEST == 1
     if (data_to_add.size() != 17) {
         cout << "Not the correct number of data inputs." << endl;
@@ -33,6 +33,7 @@ double player::add_record(vector<string> data_to_add) {
 
 pair<double, double> player::get_mean_sd(const vector<double>& data_vector) {
     auto get_mean = [](const vector<double>& data) -> double {
+        double mean{0.0};
         for (auto& i : data) {
             mean += i;
         }
