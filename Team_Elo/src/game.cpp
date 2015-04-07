@@ -94,12 +94,14 @@ vector<string> game::generate_performance_ratings(
                              to_string(mean_sd_pairs[i].second) + ")";
             R_Queries.emplace_back(R_Query);
         }
+        for (auto& RInside_Query : R_Queries) {
+            double variable_performance = R_Inside_Container->use(RInside_Query);
+            game_performance += variable_performance;
+        }
 
-        double variable_performance = R_Inside_Container->use(RInside_Query);
-        game_performance += variable_performance;
         result_set.emplace_back("UPDATE gamedata SET performance_rating = " +
                                 to_string(game_performance) + " WHERE gameID = " +
-                                gameid + " AND Name = '" + players_gamedata[0] + "';");
+                                gameid + " AND Name = '" + single_game_data[0] + "';");
     }
 
     delete the_db;
