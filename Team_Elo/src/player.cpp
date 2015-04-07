@@ -43,7 +43,7 @@ pair<double, double> player::get_mean_sd(const vector<double>& data_vector) {
 
     double mean = get_mean(data_vector);
 
-    auto get_stdev = [](double mean, const vector<double>& data) {
+    auto get_stdev = [&get_mean](double mean, const vector<double>& data) {
         double value_minus_mean{0.0};
         vector<double> residuals{};
         for (auto& i : data_vector) {
