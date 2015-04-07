@@ -97,11 +97,9 @@ vector<string> game::generate_performance_ratings(
 
         double variable_performance = R_Inside_Container->use(RInside_Query);
         game_performance += variable_performance;
-        result_set.emplace_back(
-            "UPDATE gamedata SET performance_rating =
-            " + to_string(game_performance) +
-            " WHERE gameID = " +
-            gameid + " AND Name = '" + players_gamedata[0] + "';");
+        result_set.emplace_back("UPDATE gamedata SET performance_rating = " +
+                                to_string(game_performance) + " WHERE gameID = " +
+                                gameid + " AND Name = '" + players_gamedata[0] + "';");
     }
 
     delete the_db;
