@@ -43,14 +43,13 @@ int main(int argc, char** argv) {
         teams.emplace_back(team2);
     }
 
-    vector<future<vector<string>>> generate_team_workers;
+    vector<thread> generate_team_workers;
     size_t i;
 
     shared_ptr<RInside_Container> R_Inside_Container(new RInside_Container);
     for (i = 0; i < teams.size(); i++) {
-        generate_team_workers.emplace_back(async(launch::async,
-                                                 &team::generate_team_simulations,
-                                                 &teams[i], R_Inside_Container));
+        generate_team_workers.emplace_back(&team::generate_team_simulations, &teams[i],
+                                           R_Inside_Container);
     }
 
 #if TEST == 1
@@ -64,13 +63,8 @@ int main(int argc, char** argv) {
     // Aggregate the update queries into one vector, go through the vector and update the
     // database.
     vector<string> game_updates{};
-    for (i = 0; i < generate_team_workers.size(); i++) {
-        auto updates = generate_team_workers[i].get();
-        game_updates.insert(game_updates.end(), updates.begin(), updates.end());
-    }
-
-    for (auto& update : game_updates) {
-        predict_db->query(update);
+    for (auto& team_worker : generate_team_workers) {
+        team_worker.join();
     }
 
     auto team1simulated_values = teams[0].aggregate_player_scores();
