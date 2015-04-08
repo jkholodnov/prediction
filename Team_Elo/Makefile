@@ -8,7 +8,7 @@ SRC = src/
 OBJ = obj/
 
 ALL: main
-	$(CC) -o Team_Elo_Executable $(OBJ)main.o $(OBJ)games_and_teams.o $(OBJ)team.o $(OBJ)game.o $(OBJ)player.o $(LIBS)
+	$(CC) $(CFLAGS) -o Team_Elo_Executable $(OBJ)main.o $(OBJ)games_and_teams.o $(OBJ)team.o $(OBJ)game.o $(OBJ)player.o $(LIBS)
 
 main: main.o games_and_teams.o team.o game.o player.o
 	$
