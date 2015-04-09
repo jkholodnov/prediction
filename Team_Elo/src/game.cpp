@@ -89,15 +89,23 @@ vector<string> game::generate_performance_ratings(
         vector<string> R_Queries{};
 
         for (unsigned i = 0; i < mean_sd_pairs.size(); i++) {
+            double game_variable = atoi(single_game_data[i + 1].c_str());
+            double deviation = game_variable - mean_sd_pairs[i].first;
+            double num_sds = deviation / mean_sd_pairs[i].second;
+            game_performance += num_sds;
+            /*
             string R_Query = "pnorm(" + single_game_data[i + 1] + ", mean = " +
                              to_string(mean_sd_pairs[i].first) + ", sd = " +
                              to_string(mean_sd_pairs[i].second) + ")";
             R_Queries.emplace_back(R_Query);
+            */
         }
+        /*
         for (auto& RInside_Query : R_Queries) {
             double variable_performance = RInside->use(RInside_Query);
             game_performance += variable_performance;
         }
+        */
 
         result_set.emplace_back("UPDATE gamedata SET performance_rating = " +
                                 to_string(game_performance) + " WHERE gameID = " +
