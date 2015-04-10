@@ -120,6 +120,8 @@ vector<string> game::generate_performance_ratings(
             game_variable = atoi(single_game_data[i + 1].c_str());
             deviation = game_variable - mean_sd_pairs[i].first;
 
+            cout << "sd: " << mean_sd_pairs[i].second << endl;
+
             if (mean_sd_pairs[i].second != 0) {
                 num_sds = deviation / mean_sd_pairs[i].second;
             } else {
@@ -133,6 +135,7 @@ vector<string> game::generate_performance_ratings(
             R_Queries.emplace_back(R_Query);
             */
         }
+        cout << "Max mins: " << max_mins << endl;
         double percent_minutes = atoi(single_game_data[1].c_str()) / max_mins;
         game_performance *= percent_minutes;
         /*
