@@ -146,9 +146,12 @@ vector<string> game::generate_performance_ratings(
         }
         */
 
-        result_set.emplace_back("UPDATE gamedata SET performance_rating = " +
-                                to_string(game_performance) + " WHERE gameID = " +
-                                gameid + " AND Name = '" + single_game_data[0] + "';");
+        auto update_query = "UPDATE gamedata SET performance_rating = " +
+                            to_string(game_performance) + " WHERE gameID = " + gameid +
+                            " AND Name = '" + single_game_data[0] + "';";
+
+        cout << update_query << endl;
+        result_set.emplace_back(update_query);
     }
 
     delete the_db;
