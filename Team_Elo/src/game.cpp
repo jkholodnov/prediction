@@ -68,6 +68,14 @@ vector<string> game::generate_performance_ratings(
 
         current_player.add_record(single_game_data);
 
+        auto teamID =
+            the_db->query("SELECT distinct(teamID) from gamedata where name = '" +
+                          current_player.name + "';");
+
+        auto max_minutes =
+            the_db->query("SELECT max(minutes) FROM gamedata WHERE teamID = '" +
+                          teamID[0][0] + "' and gameID = " + gameid + ";");
+
         vector<pair<double, double>> mean_sd_pairs{};
         mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.minutes));
         mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.fgm));

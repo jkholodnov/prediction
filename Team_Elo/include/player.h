@@ -15,7 +15,6 @@ class player {
 
     string name{};
     vector<double> minutes;
-
     vector<double> fga;
     vector<double> fgm;
     vector<double> tpa;
