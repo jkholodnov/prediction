@@ -90,38 +90,36 @@ vector<string> game::generate_performance_ratings(
 
         double game_variable{0.0};
         double deviation{0.0};
-        double num_sds {
-            0.0;
-            for (unsigned i = 0; i < mean_sd_pairs.size(); i++) {
-                game_variable = atoi(single_game_data[i + 1].c_str());
-                deviation = game_variable - mean_sd_pairs[i].first;
+        double num_sds{0.0};
+        for (unsigned i = 0; i < mean_sd_pairs.size(); i++) {
+            game_variable = atoi(single_game_data[i + 1].c_str());
+            deviation = game_variable - mean_sd_pairs[i].first;
 
-                if (mean_sd_pairs[i].second != 0) {
-                    num_sds = deviation / mean_sd_pairs[i].second;
-                } else {
-                    num_sds = 0;
-                }
-                game_performance += num_sds;
-                /*
-                string R_Query = "pnorm(" + single_game_data[i + 1] + ", mean = " +
-                                 to_string(mean_sd_pairs[i].first) + ", sd = " +
-                                 to_string(mean_sd_pairs[i].second) + ")";
-                R_Queries.emplace_back(R_Query);
-                */
+            if (mean_sd_pairs[i].second != 0) {
+                num_sds = deviation / mean_sd_pairs[i].second;
+            } else {
+                num_sds = 0;
             }
+            game_performance += num_sds;
             /*
-            for (auto& RInside_Query : R_Queries) {
-                double variable_performance = RInside->use(RInside_Query);
-                game_performance += variable_performance;
-            }
+            string R_Query = "pnorm(" + single_game_data[i + 1] + ", mean = " +
+                             to_string(mean_sd_pairs[i].first) + ", sd = " +
+                             to_string(mean_sd_pairs[i].second) + ")";
+            R_Queries.emplace_back(R_Query);
             */
-
-            result_set.emplace_back("UPDATE gamedata SET performance_rating = " +
-                                    to_string(game_performance) + " WHERE gameID = " +
-                                    gameid + " AND Name = '" + single_game_data[0] +
-                                    "';");
         }
+        /*
+        for (auto& RInside_Query : R_Queries) {
+            double variable_performance = RInside->use(RInside_Query);
+            game_performance += variable_performance;
+        }
+        */
 
-        delete the_db;
-        return result_set;
+        result_set.emplace_back("UPDATE gamedata SET performance_rating = " +
+                                to_string(game_performance) + " WHERE gameID = " +
+                                gameid + " AND Name = '" + single_game_data[0] + "';");
     }
+
+    delete the_db;
+    return result_set;
+}
