@@ -61,6 +61,12 @@ vector<string> game::generate_performance_ratings(
         "fouls,plus_minus,points FROM gamedata WHERE gameID = " +
         gameid + " and injury = 'NULL';");
 
+#if TEST == 1
+    if (players_gamedata.size() == 0) {
+        cout << "Did not retrieve any gamedata for game: " << gameid << endl;
+    }
+#endif
+
     double game_performance{0.0};
     for (auto& single_game_data : players_gamedata) {
         player& current_player = the_players->at(single_game_data[0]);
@@ -68,13 +74,24 @@ vector<string> game::generate_performance_ratings(
 
         current_player.add_record(single_game_data);
 
-        auto teamID =
-            the_db->query("SELECT distinct(teamID) from gamedata where name = '" +
-                          current_player.name + "';");
+        auto teamID = the_db->query("SELECT max(teamID) from gamedata where name = '" +
+                                    current_player.name + "';");
+#if TEST == 1
+        if (teamID.size() == 0) {
+            cout << "Did not retrieve the TeamID." << endl;
+        }
+#endif
 
         auto max_minutes =
             the_db->query("SELECT max(minutes) FROM gamedata WHERE teamID = '" +
                           teamID[0][0] + "' and gameID = " + gameid + ";");
+
+#if TEST == 1
+        if (max_minutes.size() == 0) {
+            cout << "Did not retrieve the maximum number of minutes." << endl;
+        }
+#endif
+        int max_mins = atoi(max_minutes[0][0].c_str());
 
         vector<pair<double, double>> mean_sd_pairs{};
         mean_sd_pairs.emplace_back(current_player.get_mean_sd(current_player.minutes));
@@ -99,7 +116,7 @@ vector<string> game::generate_performance_ratings(
         double game_variable{0.0};
         double deviation{0.0};
         double num_sds{0.0};
-        for (unsigned i = 0; i < mean_sd_pairs.size(); i++) {
+        for (unsigned i = 1; i < mean_sd_pairs.size(); i++) {
             game_variable = atoi(single_game_data[i + 1].c_str());
             deviation = game_variable - mean_sd_pairs[i].first;
 
@@ -116,6 +133,8 @@ vector<string> game::generate_performance_ratings(
             R_Queries.emplace_back(R_Query);
             */
         }
+        double percent_minutes = atoi(single_game_data[1].c_str()) / max_mins;
+        game_performance *= percent_minutes;
         /*
         for (auto& RInside_Query : R_Queries) {
             double variable_performance = RInside->use(RInside_Query);

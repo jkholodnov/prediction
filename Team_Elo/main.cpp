@@ -1,7 +1,4 @@
-#include <iostream>
-#include <ctime>
-#include <ratio>
-#include <chrono>
+#include "include/dependencies.h"
 
 #include "include/games_and_teams.h"
 
@@ -12,9 +9,30 @@ int main() {
 
     high_resolution_clock::time_point t1 = high_resolution_clock::now();
     games_and_teams all_games{};
+
     all_games.initialize_teams();
+
+#if TEST == 1
+    if (all_games.the_teams.size() == 0) {
+        cout << "Did not initialize any teams." << endl;
+    }
+#endif
     all_games.load_in_games();
-    all_games.generate_ELO();
+
+#if TEST == 1
+    if (all_games.the_games.size() == 0) {
+        cout << "Did not initialize any games." << endl;
+    }
+#endif
+    int number_of_correct_predictions{0};
+    number_of_correct_predictions = all_games.generate_ELO();
+
+#if TEST == 1
+    if (number_of_correct_predictions == 0) {
+        cout << "Did not predict any games correctly... Something went wrong with "
+                "generate_ELO function." << endl;
+    }
+#endif
 
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     duration<double> time_span = duration_cast<duration<double>>(t2 - t1);

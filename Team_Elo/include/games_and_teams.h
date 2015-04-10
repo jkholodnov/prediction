@@ -15,15 +15,16 @@ class games_and_teams {
     ~games_and_teams();
     void initialize_teams();
     void load_in_games();
-    void generate_ELO();
+    int generate_ELO();
     void generate_Performance_Rating();
 
-   protected:
-   private:
     vector<vector<game>> the_games{};
     vector<team> the_teams{};
     vector<player> the_players{};
     Database* the_db;
+
+   protected:
+   private:
 };
 
 #endif  // GAMES_H

@@ -15,5 +15,9 @@
 #include <fstream>
 #include <algorithm>
 #include <chrono>
+#include <ctime>
+#include <ratio>
 
 #include <RInside.h>
+
+#define TEST 1

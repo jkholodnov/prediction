@@ -59,7 +59,7 @@ void games_and_teams::load_in_games() {
  * day into multiple threads, compares teams, passes back a DB update query,
  * updates sequentially.
  */
-void games_and_teams::generate_ELO() {
+int games_and_teams::generate_ELO() {
     size_t i;
 
     int Number_Correct_Ranking{0};
@@ -78,6 +78,7 @@ void games_and_teams::generate_ELO() {
         }
     }
     cout << Number_Correct_Ranking << endl;
+    return Number_Correct_Ranking;
 }
 
 /**
@@ -106,6 +107,12 @@ void games_and_teams::generate_Performance_Rating() {
         the_players.emplace(player[0], player[0]);
     }
 
+#if TEST == 1
+    if (the_players.size() == 0) {
+        cout << "Did not create any players. Check above function." << endl;
+    }
+#endif
+
     vector<string> update_queries{};
     unordered_map<string, player> *players_map = &the_players;
 
@@ -122,11 +129,16 @@ void games_and_teams::generate_Performance_Rating() {
             update_queries.insert(update_queries.end(), return_result.begin(),
                                   return_result.end());
         }
+#if TEST == 1
+        if (return_result.size() == 0) {
+            cout << "Generate_Performance_Ratings did not return anything." << endl;
+        }
+#endif
     }
 
 #if TEST == 1
     if (update_queries.size() == 0) {
-        cout << "Did not get any sql updates." << endl;
+        cout << "Did not get any sql update queries." << endl;
     }
 #endif
 
