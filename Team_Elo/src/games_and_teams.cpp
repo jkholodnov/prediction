@@ -128,12 +128,12 @@ void games_and_teams::generate_Performance_Rating() {
             auto return_result = async_thread.get();
             update_queries.insert(update_queries.end(), return_result.begin(),
                                   return_result.end());
-        }
 #if TEST == 1
-        if (return_result.size() == 0) {
-            cout << "Generate_Performance_Ratings did not return anything." << endl;
-        }
+            if (return_result.size() == 0) {
+                cout << "Generate_Performance_Ratings did not return anything." << endl;
+            }
 #endif
+        }
     }
 
 #if TEST == 1
