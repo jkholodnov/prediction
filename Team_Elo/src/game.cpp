@@ -82,9 +82,9 @@ vector<string> game::generate_performance_ratings(
         }
 #endif
 
-        auto max_minutes =
-            the_db->query("SELECT max(minutes) FROM gamedata WHERE teamID = '" +
-                          teamID[0][0] + "' and gameID = " + gameid + ";");
+        auto max_minutes = the_db->query(
+            "SELECT max(minutes) FROM gamedata WHERE teamID = '" + teamID[0][0] +
+            "' and gameID = " + gameid + " and minutes != 'NULL';");
 
 #if TEST == 1
         if (max_minutes.size() == 0) {
@@ -136,7 +136,11 @@ vector<string> game::generate_performance_ratings(
             */
         }
         cout << "Max mins: " << max_mins << endl;
-        double percent_minutes = atoi(single_game_data[1].c_str()) / max_mins;
+
+#if TEST == 1
+        if (max_mins)
+#endif
+            double percent_minutes = atoi(single_game_data[1].c_str()) / max_mins;
         game_performance *= percent_minutes;
         /*
         for (auto& RInside_Query : R_Queries) {
