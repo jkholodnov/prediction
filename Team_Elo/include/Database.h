@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <sqlite3.h>
-#define VERBOSE 0
+#define VERBOSE 1
 
 using namespace std;
 
