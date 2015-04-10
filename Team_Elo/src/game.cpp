@@ -137,10 +137,7 @@ vector<string> game::generate_performance_ratings(
         }
         cout << "Max mins: " << max_mins << endl;
 
-#if TEST == 1
-        if (max_mins)
-#endif
-            double percent_minutes = atoi(single_game_data[1].c_str()) / max_mins;
+        double percent_minutes = atoi(single_game_data[1].c_str()) / max_mins;
         game_performance *= percent_minutes;
         /*
         for (auto& RInside_Query : R_Queries) {
