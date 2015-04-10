@@ -90,9 +90,12 @@ vector<string> game::generate_performance_ratings(
 
         for (unsigned i = 0; i < mean_sd_pairs.size(); i++) {
             double game_variable = atoi(single_game_data[i + 1].c_str());
+            cout << game_variable << "#";
             double deviation = game_variable - mean_sd_pairs[i].first;
+            cout << deviation << "$";
             double num_sds = deviation / mean_sd_pairs[i].second;
             game_performance += num_sds;
+            cout << num_sds << endl;
             /*
             string R_Query = "pnorm(" + single_game_data[i + 1] + ", mean = " +
                              to_string(mean_sd_pairs[i].first) + ", sd = " +
