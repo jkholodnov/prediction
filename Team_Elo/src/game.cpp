@@ -155,7 +155,7 @@ vector<string> game::generate_performance_ratings(
     return result_set;
 }
 
-string game::generate_player_PIR() {
+vector<string> game::generate_player_PIR() {
     Database* the_db = new Database("../predict.db");
     vector<string> result_set{};
     auto players_gamedata = the_db->query(
