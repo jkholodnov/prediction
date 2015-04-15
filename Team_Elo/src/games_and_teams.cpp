@@ -89,8 +89,6 @@ int games_and_teams::generate_ELO() {
  * for each team: Get a list of players
  *      For each player: Get all gamedata they played
  *      Run through it sequentially, generating an update query for each player.
- *      Pass back that vector<string> of queries all the way back to this function.
- *      sequentially update the database here. LOOOOONG database query. LOOOONG runtime
  */
 void games_and_teams::generate_Performance_Rating() {
     shared_ptr<RInside_Container> R_Inside_Container(new RInside_Container);
