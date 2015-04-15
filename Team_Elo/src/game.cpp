@@ -158,11 +158,12 @@ vector<string> game::generate_performance_ratings(
     return result_set;
 }
 
-string generate_player_PIR() {
+string game::generate_player_PIR() {
     Database* the_db = new Database("../predict.db");
 
     auto players_gamedata = the_db->query(
-        "SELECT points, oreb, dreb, assist, steal, block, ftm, fta, turnover, fouls, "
+        "SELECT points, oreb, dreb, assist, steal, block, ftm, fta, fgm, fga, turnover, "
+        "fouls, "
         "name FROM "
         "gamedata WHERE gameID = " +
         gameid + " and injury = 'NULL';");
@@ -181,15 +182,17 @@ string generate_player_PIR() {
     auto block = atoi(players_gamedata[0][5].c_str());
     auto ftm = atoi(players_gamedata[0][6].c_str());
     auto fta = atoi(players_gamedata[0][7].c_str());
-    auto turnover = atoi(players_gamedata[0][8].c_str());
-    auto fouls = atoi(players_gamedata[0][9].c_str());
+    auto fgm = atoi(players_gamedata[0][8].c_str());
+    auto fga = atoi(players_gamedata[0][9].c_str());
+    auto turnover = atoi(players_gamedata[0][10].c_str());
+    auto fouls = atoi(players_gamedata[0][11].c_str());
 
     int game_performance = (points + oreb + dreb + assist + steal + block + (fta / 2)) -
                            ((fga - fgm) + (fta - ftm) + turnover + fouls);
 
     auto update_query = "UPDATE gamedata SET performance_rating = " +
                         to_string(game_performance) + " WHERE gameID = " + gameid +
-                        " AND Name = '" + players_gamedata[0][10] + "';";
+                        " AND Name = '" + players_gamedata[0][12] + "';";
 
     cout << update_Rating << "~" << endl;
     return update_query;
