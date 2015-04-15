@@ -194,6 +194,6 @@ string game::generate_player_PIR() {
                         to_string(game_performance) + " WHERE gameID = " + gameid +
                         " AND Name = '" + players_gamedata[0][12] + "';";
 
-    cout << update_Rating << "~" << endl;
+    cout << update_query << "~" << endl;
     return update_query;
 }
