@@ -11,7 +11,6 @@ game::game(const string& id, team* _team1, team* _team2, const int& team1Points,
 
 game::~game() {}
 
-// parallelize this call//
 pair<int, string> game::generate_Team_ELO() {
     auto t1_Rating = team1->get_Rating();
     auto t2_Rating = team2->get_Rating();
@@ -21,9 +20,7 @@ pair<int, string> game::generate_Team_ELO() {
 
     team1Expected = 1 / (1 + pow(10, ((t2_Rating - t1_Rating) / 400)));
     team2Expected = 1 / (1 + pow(10, ((t1_Rating - t2_Rating) / 400)));
-    // Calculating Expected Win Ratio based on standard ELO formula.
-    // cout << t1_Rating << "~" << team1Expected << "##" << t2_Rating << "~" <<
-    // team2Expected << endl;
+
     if (team1Score > team2Score) {
         team1->update_Rating(50 * (1 - team1Expected));
         team2->update_Rating(50 * (0 - team2Expected));
@@ -193,7 +190,9 @@ string game::generate_player_PIR() {
     auto update_query = "UPDATE gamedata SET performance_rating = " +
                         to_string(game_performance) + " WHERE gameID = " + gameid +
                         " AND Name = '" + players_gamedata[0][12] + "';";
-
-    cout << update_query << "~" << endl;
+    if (gameid == "400559378") {
+        cout << "YES" << endl;
+    }
+    delete the_db;
     return update_query;
 }
