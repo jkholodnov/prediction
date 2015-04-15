@@ -157,7 +157,7 @@ vector<string> game::generate_performance_ratings(
 
 string game::generate_player_PIR() {
     Database* the_db = new Database("../predict.db");
-
+    vector<string> result_set{};
     auto players_gamedata = the_db->query(
         "SELECT points, oreb, dreb, assist, steal, block, ftm, fta, fgm, fga, turnover, "
         "fouls, name FROM gamedata WHERE gameID = " +
@@ -169,29 +169,30 @@ string game::generate_player_PIR() {
     }
 #endif
 
-    auto points = atoi(players_gamedata[0][0].c_str());
-    auto oreb = atoi(players_gamedata[0][1].c_str());
-    auto dreb = atoi(players_gamedata[0][2].c_str());
-    auto assist = atoi(players_gamedata[0][3].c_str());
-    auto steal = atoi(players_gamedata[0][4].c_str());
-    auto block = atoi(players_gamedata[0][5].c_str());
-    auto ftm = atoi(players_gamedata[0][6].c_str());
-    auto fta = atoi(players_gamedata[0][7].c_str());
-    auto fgm = atoi(players_gamedata[0][8].c_str());
-    auto fga = atoi(players_gamedata[0][9].c_str());
-    auto turnover = atoi(players_gamedata[0][10].c_str());
-    auto fouls = atoi(players_gamedata[0][11].c_str());
+    for (auto& player : players_gamedata) {
+        auto points = atoi(player[0].c_str());
+        auto oreb = atoi(player[1].c_str());
+        auto dreb = atoi(player[2].c_str());
+        auto assist = atoi(player[3].c_str());
+        auto steal = atoi(player[4].c_str());
+        auto block = atoi(player[5].c_str());
+        auto ftm = atoi(player[6].c_str());
+        auto fta = atoi(player[7].c_str());
+        auto fgm = atoi(player[8].c_str());
+        auto fga = atoi(player[9].c_str());
+        auto turnover = atoi(player[10].c_str());
+        auto fouls = atoi(player[11].c_str());
 
-    int game_performance = (points + oreb + dreb + assist + steal + block + (fta / 2)) -
-                           ((fga - fgm) + (fta - ftm) + turnover + fouls);
+        int game_performance =
+            (points + oreb + dreb + assist + steal + block + (fta / 2)) -
+            ((fga - fgm) + (fta - ftm) + turnover + fouls);
 
-    auto update_query = "UPDATE gamedata SET performance_rating = " +
-                        to_string(game_performance) + " WHERE gameID = " + gameid +
-                        " AND Name = '" + players_gamedata[0][12] + "';";
-    if (gameid == "400559378") {
-        cout << "YES" << endl;
-        cout << game_performance << "~" << players_gamedata[0][12] << endl;
+        auto update_query = "UPDATE gamedata SET performance_rating = " +
+                            to_string(game_performance) + " WHERE gameID = " + gameid +
+                            " AND Name = '" + player[12] + "';";
+        result_set.emplace_back(update_query);
     }
+
     delete the_db;
-    return update_query;
+    return result_set;
 }
