@@ -160,9 +160,7 @@ string game::generate_player_PIR() {
 
     auto players_gamedata = the_db->query(
         "SELECT points, oreb, dreb, assist, steal, block, ftm, fta, fgm, fga, turnover, "
-        "fouls, "
-        "name FROM "
-        "gamedata WHERE gameID = " +
+        "fouls, name FROM gamedata WHERE gameID = " +
         gameid + " and injury = 'NULL';");
 
 #if TEST == 1
@@ -192,6 +190,7 @@ string game::generate_player_PIR() {
                         " AND Name = '" + players_gamedata[0][12] + "';";
     if (gameid == "400559378") {
         cout << "YES" << endl;
+        cout << game_performance << "~" << players_gamedata[0][12] << endl;
     }
     delete the_db;
     return update_query;
