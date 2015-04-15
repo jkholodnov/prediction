@@ -117,7 +117,7 @@ void games_and_teams::generate_Performance_Rating() {
     unordered_map<string, player> *players_map = &the_players;
 
     for (auto &day : the_games) {
-        vector<future<vector<string>>> performance_rating_updates;
+        vector<future<string>> performance_rating_updates;
         for (auto &game : day) {
             // performance_rating_updates.emplace_back(
             //    async(launch::async, &game::generate_performance_ratings, &game,

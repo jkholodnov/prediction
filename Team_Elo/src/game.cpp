@@ -160,7 +160,6 @@ vector<string> game::generate_performance_ratings(
 
 string generate_player_PIR() {
     Database* the_db = new Database("../predict.db");
-    vector<string> result_set{};
 
     auto players_gamedata = the_db->query(
         "SELECT points, oreb, dreb, assist, steal, block, ftm, fta, turnover, fouls, "
