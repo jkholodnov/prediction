@@ -119,15 +119,18 @@ void games_and_teams::generate_Performance_Rating() {
     for (auto &day : the_games) {
         vector<future<vector<string>>> performance_rating_updates;
         for (auto &game : day) {
+            // performance_rating_updates.emplace_back(
+            //    async(launch::async, &game::generate_performance_ratings, &game,
+            //          players_map, R_Inside_Container));
             performance_rating_updates.emplace_back(
-                async(launch::async, &game::generate_performance_ratings, &game,
-                      players_map, R_Inside_Container));
+                asynC(launch::async, &game::generate_player_PIR, &game));
         }
 
         for (auto &async_thread : performance_rating_updates) {
             auto return_result = async_thread.get();
-            update_queries.insert(update_queries.end(), return_result.begin(),
-                                  return_result.end());
+            update_queries.emplace_back(return_result);
+// update_queries.insert(update_queries.end(), return_result.begin(),
+//                      return_result.end());
 #if TEST == 1
             if (return_result.size() == 0) {
                 cout << "Generate_Performance_Ratings did not return anything." << endl;

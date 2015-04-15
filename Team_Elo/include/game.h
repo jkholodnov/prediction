@@ -18,6 +18,7 @@ class game {
     vector<string> generate_performance_ratings(
         unordered_map<string, player>* the_players,
         shared_ptr<RInside_Container> RInside);
+    string generate_player_PIR(unordered_map<string, player>* the_players);
 
    protected:
    private:
