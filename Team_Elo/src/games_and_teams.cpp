@@ -33,14 +33,13 @@ void games_and_teams::load_in_games() {
         auto games_on_day = the_db->query(_query);
         cout << games_on_day.size() << endl;
         for (auto &game : games_on_day) {
-            cout << game << endl;
-            int _score1, _score2;
-            team *team1;
-            team *team2;
+            cout << game[0] << endl;
             for (auto &stat : game) {
                 cout << stat << "~";
             }
-            cout << endl;
+            int _score1, _score2;
+            team *team1;
+            team *team2;
 
             for (auto &team : the_teams) {
                 if (team.getAbbr() == game[1]) {
