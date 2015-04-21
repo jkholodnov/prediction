@@ -28,6 +28,7 @@ void games_and_teams::load_in_games() {
             "SELECT gameId, Team1Abbr, Team2Abbr, Team1Score, Team2Score, "
             "Team1ELO, Team2ELO FROM games where day = '" +
             day[0] + "';";
+        cout << day[0] << endl;
         auto games_on_day = the_db->query(_query);
         for (auto &game : games_on_day) {
             int _score1, _score2;
