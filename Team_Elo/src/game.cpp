@@ -171,9 +171,8 @@ vector<string> game::generate_player_PIR() {
 
     cout << query << "######" << endl;
     auto players_gamedata = the_db->query(query);
-    cout <<
 #if TEST == 1
-        if (players_gamedata.size() == 0) {
+    if (players_gamedata.size() == 0) {
         cout << "Did not retrieve any gamedata for game: " << gameid << endl;
     }
 #endif
