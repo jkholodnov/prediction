@@ -163,10 +163,14 @@ vector<string> game::generate_performance_ratings(
 vector<string> game::generate_player_PIR() {
     Database* the_db = new Database("../predict.db");
     vector<string> result_set{};
-    auto players_gamedata = the_db->query(
+
+    string query =
         "SELECT points, oreb, dreb, assist, steal, block, ftm, fta, fgm, fga, turnover, "
         "fouls, name FROM gamedata WHERE gameID = " +
-        gameid + " and injury = 'NULL';");
+        gameid + " and injury = 'NULL';";
+
+    cout << query << "######" << endl;
+    auto players_gamedata = the_db->query(query);
 
 #if TEST == 1
     if (players_gamedata.size() == 0) {
