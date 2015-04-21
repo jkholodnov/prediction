@@ -130,23 +130,21 @@ vector<string> game::generate_NPR(unordered_map<string, player>* the_players,
                 num_sds = 0;
             }
             game_performance += num_sds;
-            /*
+
             string R_Query = "pnorm(" + single_game_data[i + 1] + ", mean = " +
                              to_string(mean_sd_pairs[i].first) + ", sd = " +
                              to_string(mean_sd_pairs[i].second) + ")";
             R_Queries.emplace_back(R_Query);
-            */
         }
-        cout << "Max mins: " << max_mins << endl;
 
-        double percent_minutes = atoi(single_game_data[1].c_str()) / max_mins;
-        game_performance *= percent_minutes;
-        /*
+        double percent_minutes = atoi(single_game_data[1].c_str()) / 48;
+
         for (auto& RInside_Query : R_Queries) {
             double variable_performance = RInside->use(RInside_Query);
             game_performance += variable_performance;
         }
-        */
+
+        game_performance *= percent_minutes;
 
         auto update_query = "UPDATE gamedata SET npr = " + to_string(game_performance) +
                             " WHERE gameID = " + gameid + " AND Name = '" +
