@@ -285,10 +285,10 @@ def db_Update(i,Queries):
                     if(input_set[0] == "Players"):
                         cur.executemany("INSERT OR IGNORE INTO players VALUES(?,?,?,?,?,?)",input_set[1])
                     if(input_set[0] == "GameData"):
-                        cur.executemany("INSERT OR IGNORE INTO gameData VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",input_set[1])
+                        cur.executemany("INSERT OR IGNORE INTO gameData VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'NULL','NULL')",input_set[1])
                     if(input_set[0] == "Games"):
                         gameid = input_set[1][0]
-                        cur.execute("INSERT INTO games VALUES(?,?,?,?,?,?, NULL,NULL)",input_set[1])
+                        cur.execute("INSERT INTO games VALUES(?,?,?,?,?,?, 'NULL','NULL')",input_set[1])
                 con.commit()
                 print("Inserted Game with ID : " + str(gameid))
             except Exception as e:
@@ -446,7 +446,7 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
                 if(len(temporary_player.game_data) > 0 and len(temporary_player.game_data) < 5):
                     query.append(temporary_player.game_data[0])
                     
-                    sqlformat = "?,?,?,?,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,?"
+                    sqlformat = "?,?,?,?,'NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL',?"
                     sqlupdate = sqlupdate = convert_Str_To_Tuple(sqlformat,query)
                     gameData_Insert_Queries.append(sqlupdate)
 
@@ -455,12 +455,12 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
                         query.append(data)
                     
                     if(len(query) == 20):
-                        sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,-1,?,-1"
+                        sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'NULL',?,'NULL'"
                         sqlupdate = convert_Str_To_Tuple(sqlformat,query)
                         gameData_Insert_Queries.append(sqlupdate)
                     
                     elif(len(query) == 21):
-                        sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,-1"
+                        sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'NULL'"
                         sqlupdate = sqlupdate = convert_Str_To_Tuple(sqlformat,query)
                         gameData_Insert_Queries.append(sqlupdate)
                         
