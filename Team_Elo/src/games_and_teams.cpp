@@ -19,6 +19,9 @@ void games_and_teams::load_in_games() {
     string _query = "SELECT DISTINCT day FROM games order by day asc;";
     auto game_days = the_db->query(_query);
 
+#if TEST == 1
+    cout << "Pulled " << game_days.size() << " days where games were played." << endl;
+#endif
     for (auto &day : game_days) {
         vector<game> games_on_this_day;
         _query =
