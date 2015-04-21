@@ -52,6 +52,7 @@ vector<string> game::generate_performance_ratings(
     unordered_map<string, player>* the_players, shared_ptr<RInside_Container> RInside) {
     Database* the_db = new Database("../2015.db");
     vector<string> result_set{};
+    cout << gameid << endl;
     auto players_gamedata = the_db->query(
         "SELECT Name, minutes,fgm, fga, tpm, tpa, ftm, fta, oreb, dreb, assist, steal, "
         "block, turnover, fouls, plus_minus, points FROM gamedata WHERE gameID "
