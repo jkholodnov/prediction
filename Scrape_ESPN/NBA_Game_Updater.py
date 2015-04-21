@@ -1,4 +1,4 @@
-import urllib.request, urllib.error, urllib.parse
+from urllib.request import urlopen
 import sys
 from queue import *
 from threading import Thread
@@ -114,7 +114,7 @@ def main(): #Get the page that holds all team url pages
 
         for teamAbbrev in team_Abbreviations:
             timestart = time.time()
-            thread=Thread(target=get_gameIDs, args=(teamAbbrev,result,0))
+            thread=Thread(target=get_gameIDs, args=(teamAbbrev,result,0,[2014]))
             thread.daemon = True
             thread.start()
             threads.append(thread)
@@ -195,16 +195,10 @@ def main(): #Get the page that holds all team url pages
 ###############################################################################################################################
 ###############################################################################################################################
 
-def get_gameIDs(teamABBR,the_Game_IDs,attempt,the_year):
+def scrape_season(teamABBR,the_Game_IDs,attempt,year):
     try:
-        baseurl = "http://espn.go.com/nba/team/_/name/"
-        ################################################
-        #               Scrape pre-season              #
-        ################################################
+        toscrape = "http://espn.go.com/nba/team/schedule/_/name/"+ teamABBR + "/year/ " + str(year) + "/"
 
-        # the_year must be a 4 digit integer
-
-        toscrape = "http://espn.go.com/nba/team/schedule/_/name/"+ teamABBR + "/year/ " + str(the_year) + "/"
         soup = BeautifulSoup(urllib.request.urlopen(toscrape, timeout = 150).read())
         for link in soup.find_all('a'):
             thelink = str(link.get('href'))
@@ -242,13 +236,13 @@ def get_gameIDs(teamABBR,the_Game_IDs,attempt,the_year):
     #THREAD EXCEPTION HANDLING
     except timeout:
         print("URL timeout. Restarting.")
-        get_gameIDs(teamABBR,the_Game_IDs,attempt+1, the_year)
+        scrape_season(teamABBR,the_Game_IDs,attempt+1, year)
     except urllib.error.URLError as e:
         print("URL Timeout Error. Restarting")
-        get_gameIDs(teamABBR,the_Game_IDs,attempt+1, the_year)
+        scrape_season(teamABBR,the_Game_IDs,attempt+1, year)
     except ConnectionResetError as e:
         print("Connection got reset. Calling back.")
-        get_gameIDs(teamABBR,the_Game_IDs,attempt+1, the_year)
+        scrape_season(teamABBR,the_Game_IDs,attempt+1, year)
 
     except OSError as e:
         if(e.errno == errno.EHOSTUNREACH):
@@ -264,6 +258,19 @@ def get_gameIDs(teamABBR,the_Game_IDs,attempt,the_year):
         print("idk what just happened.")
         print(e.arg)
 
+
+def get_gameIDs(teamABBR,the_Game_IDs,attempt,the_years):
+    try:
+        baseurl = "http://espn.go.com/nba/team/_/name/"
+        ################################################
+        #               Scrape pre-season              #
+        ################################################
+        # the_year must be a 4 digit integer
+        for year in the_years:
+            scrape_season(teamABBR,the_Game_IDs,attempt,year)
+
+    except:
+        pass
 
 ##############################################################################################
 #                                                                                            #
