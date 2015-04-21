@@ -34,6 +34,10 @@ void games_and_teams::load_in_games() {
             int _score1, _score2;
             team *team1;
             team *team2;
+            for (auto &stat : game) {
+                cout << stat << "~";
+            }
+            cout << endl;
 
             for (auto &team : the_teams) {
                 if (team.getAbbr() == game[1]) {
@@ -43,6 +47,7 @@ void games_and_teams::load_in_games() {
                 }
             }
 
+            cout << game[3] << endl;
             _score1 = atoi(game[3].c_str());
             _score2 = atoi(game[4].c_str());
 
