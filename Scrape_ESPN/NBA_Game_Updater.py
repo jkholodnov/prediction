@@ -446,7 +446,7 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
                 if(len(temporary_player.game_data) > 0 and len(temporary_player.game_data) < 5):
                     query.append(temporary_player.game_data[0])
                     
-                    sqlformat = "?,?,?,?,'NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL','NULL',?"
+                    sqlformat = "?,?,?,?,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,?"
                     sqlupdate = sqlupdate = convert_Str_To_Tuple(sqlformat,query)
                     gameData_Insert_Queries.append(sqlupdate)
 
@@ -455,12 +455,12 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
                         query.append(data)
                     
                     if(len(query) == 20):
-                        sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'NULL',?,'NULL'"
+                        sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NULL,?,NULL"
                         sqlupdate = convert_Str_To_Tuple(sqlformat,query)
                         gameData_Insert_Queries.append(sqlupdate)
                     
                     elif(len(query) == 21):
-                        sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'NULL'"
+                        sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NULL"
                         sqlupdate = sqlupdate = convert_Str_To_Tuple(sqlformat,query)
                         gameData_Insert_Queries.append(sqlupdate)
                         
