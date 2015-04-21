@@ -13,6 +13,7 @@ int main() {
     all_games.initialize_teams();
 
 #if TEST == 1
+    cout << "Initialize Teams : Completed" << endl;
     if (all_games.the_teams.size() == 0) {
         cout << "Did not initialize any teams." << endl;
     }
@@ -20,6 +21,7 @@ int main() {
     all_games.load_in_games();
 
 #if TEST == 1
+    cout << "Load in games : Completed" << endl;
     if (all_games.the_games.size() == 0) {
         cout << "Did not initialize any games." << endl;
     }
@@ -28,6 +30,7 @@ int main() {
     number_of_correct_predictions = all_games.generate_ELO();
 
 #if TEST == 1
+    cout << "Generate ELO : Completed" << endl;
     if (number_of_correct_predictions == 0) {
         cout << "Did not predict any games correctly... Something went wrong with "
                 "generate_ELO function." << endl;
