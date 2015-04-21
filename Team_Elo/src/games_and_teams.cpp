@@ -30,6 +30,7 @@ void games_and_teams::load_in_games() {
             day[0] + "';";
         cout << day[0] << endl;
         auto games_on_day = the_db->query(_query);
+        cout << games_on_day.size() << endl;
         for (auto &game : games_on_day) {
             int _score1, _score2;
             team *team1;
