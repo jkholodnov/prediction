@@ -48,8 +48,8 @@ pair<int, string> game::generate_Team_ELO() {
     }
 }
 
-vector<string> game::generate_performance_ratings(
-    unordered_map<string, player>* the_players, shared_ptr<RInside_Container> RInside) {
+vector<string> game::generate_NPR(unordered_map<string, player>* the_players,
+                                  shared_ptr<RInside_Container> RInside) {
     Database* the_db = new Database("../2015.db");
     vector<string> result_set{};
     cout << gameid << endl;
@@ -148,9 +148,9 @@ vector<string> game::generate_performance_ratings(
         }
         */
 
-        auto update_query = "UPDATE gamedata SET performance_rating = " +
-                            to_string(game_performance) + " WHERE gameID = " + gameid +
-                            " AND Name = '" + single_game_data[0] + "';";
+        auto update_query = "UPDATE gamedata SET npr = " + to_string(game_performance) +
+                            " WHERE gameID = " + gameid + " AND Name = '" +
+                            single_game_data[0] + "';";
 
         cout << update_query << endl;
         result_set.emplace_back(update_query);
@@ -160,7 +160,7 @@ vector<string> game::generate_performance_ratings(
     return result_set;
 }
 
-vector<string> game::generate_player_PIR() {
+vector<string> game::generate_PIR() {
     Database* the_db = new Database("../2015.db");
     vector<string> result_set{};
 
@@ -169,7 +169,6 @@ vector<string> game::generate_player_PIR() {
         "fouls, name FROM gamedata WHERE gameID = " +
         gameid + " and injury = 'NULL';";
 
-    cout << query << "######" << endl;
     auto players_gamedata = the_db->query(query);
 #if TEST == 1
     if (players_gamedata.size() == 0) {
@@ -195,9 +194,9 @@ vector<string> game::generate_player_PIR() {
             (points + oreb + dreb + assist + steal + block + (fta / 2)) -
             ((fga - fgm) + (fta - ftm) + turnover + fouls);
 
-        auto update_query = "UPDATE gamedata SET performance_rating = " +
-                            to_string(game_performance) + " WHERE gameID = " + gameid +
-                            " AND Name = '" + player[12] + "';";
+        auto update_query = "UPDATE gamedata SET pir = " + to_string(game_performance) +
+                            " WHERE gameID = " + gameid + " AND Name = '" + player[12] +
+                            "';";
         result_set.emplace_back(update_query);
     }
 

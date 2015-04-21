@@ -15,10 +15,9 @@ class game {
          const int& team2Points);
     ~game();
     pair<int, string> generate_Team_ELO();
-    vector<string> generate_performance_ratings(
-        unordered_map<string, player>* the_players,
-        shared_ptr<RInside_Container> RInside);
-    vector<string> generate_player_PIR();
+    vector<string> generate_NPR(unordered_map<string, player>* the_players,
+                                shared_ptr<RInside_Container> RInside);
+    vector<string> generate_PIR();
 
    protected:
    private:

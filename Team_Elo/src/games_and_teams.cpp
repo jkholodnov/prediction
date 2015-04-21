@@ -135,7 +135,7 @@ void games_and_teams::generate_Performance_Rating() {
             //    async(launch::async, &game::generate_performance_ratings, &game,
             //          players_map, R_Inside_Container));
             performance_rating_updates.emplace_back(
-                async(launch::async, &game::generate_player_PIR, &game));
+                async(launch::async, &game::generate_PIR, &game));
         }
 
         for (auto &async_thread : performance_rating_updates) {
