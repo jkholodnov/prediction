@@ -132,8 +132,7 @@ void games_and_teams::generate_Performance_Rating() {
     for (auto &day : the_games) {
         vector<future<vector<string>>> NPR_PIR_Updates;
         for (auto &game : day) {
-            NPR_PIR_Updates.emplace_back(async(launch::async,
-                                               &game::generate_performance_ratings, &game,
+            NPR_PIR_Updates.emplace_back(async(launch::async, &game::generate_NPR, &game,
                                                players_map, R_Inside_Container));
             NPR_PIR_Updates.emplace_back(
                 async(launch::async, &game::generate_PIR, &game));
