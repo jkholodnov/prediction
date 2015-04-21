@@ -53,11 +53,15 @@ vector<string> game::generate_performance_ratings(
     Database* the_db = new Database("../2015.db");
     vector<string> result_set{};
     cout << gameid << endl;
-    auto players_gamedata = the_db->query(
+
+    string query =
         "SELECT Name, minutes,fgm, fga, tpm, tpa, ftm, fta, oreb, dreb, assist, steal, "
         "block, turnover, fouls, plus_minus, points FROM gamedata WHERE gameID "
         "= " +
-        gameid + " and injury = 'NULL';");
+        gameid + " and injury = 'NULL';";
+
+    cout << query << "######" << endl;
+    auto players_gamedata = the_db->query(query);
 
 #if TEST == 1
     if (players_gamedata.size() == 0) {
