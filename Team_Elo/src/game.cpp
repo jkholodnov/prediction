@@ -130,7 +130,7 @@ vector<string> game::generate_NPR(unordered_map<string, player>* the_players,
             */
         }
 
-        double percent_minutes = atoi(single_game_data[1].c_str()) / 48;
+        double percent_minutes = atoi(single_game_data[1].c_str()) / 48.0;
         game_performance *= percent_minutes;
         cout << game_performance << "#" << endl;
 
