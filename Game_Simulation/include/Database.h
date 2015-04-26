@@ -6,6 +6,8 @@
 #include <iostream>
 #include <sqlite3.h>
 
+#define VERBOSE 1
+
 using namespace std;
 
 class Database
@@ -65,8 +67,10 @@ public:
 	    }
 
 	    string error = sqlite3_errmsg(database);
-	    if(error != "not an error") cout << query << " " << error << endl;
 
+	    #if VERBOSE == 1
+	    	if(error != "not an error") cout << query << " " << error << endl;
+	    #endif
 	    return results;
 	}
     void close(){

@@ -19,7 +19,5 @@
 
 #include <RInside.h>
 #include <math.h>
-#include <assert.h>
-
 
 #endif
