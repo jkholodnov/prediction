@@ -82,6 +82,7 @@ int games_and_teams::generate_ELO() {
             auto returned_pair = game.get();
             the_db->query(returned_pair.second);
             Number_Correct_Ranking += returned_pair.first;
+            cout << Number_Correct_Ranking << endl;
         }
     }
     cout << Number_Correct_Ranking << endl;
