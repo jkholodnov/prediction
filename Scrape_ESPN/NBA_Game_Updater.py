@@ -326,11 +326,18 @@ def roster_Update(Queries, rosterURL, year):
             playerID = playerID[:pos]
 
             Name = data[1].getText()
+
+            playerPosition = data[2].getText()
+
             teamID = rosterURL.replace(
                 "http://espn.go.com/nba/team/roster/_/name/", "")
             teamID = teamID.replace("/", "")
             teamID = teamID.replace("nor", "no")
             teamID = teamID.replace("uth", "utah")
+            teamID = teamID.replace("gsw", "gs")
+            teamID = teamID.replace("was", "wsh")
+            teamID = teamID.replace("sac", "sa")
+            teamID = teamID.replace("pho", "phx")
 
             preformatted_ht = str(data[4].getText())
             ftpos = preformatted_ht.find("-")
@@ -342,6 +349,7 @@ def roster_Update(Queries, rosterURL, year):
             salary = salary.replace(",", "")
 
             player_Info.append(playerID)
+            player_Info.append(playerPosition)
             player_Info.append(teamID)
             player_Info.append(Name)
             player_Info.append(inches)
@@ -349,7 +357,7 @@ def roster_Update(Queries, rosterURL, year):
             player_Info.append(salary)
             player_Info.append(year)
 
-            sqlformat = "?,?,?,?,?,?,?"
+            sqlformat = "?,?,?,?,?,?,?,?"
             sqlupdate = convert_Str_To_Tuple(sqlformat, player_Info)
 
             player_infos.append(player_Info)
@@ -374,9 +382,8 @@ def db_Update(i, Queries):
                 break
             try:
                 if(data[0] == "Players"):
-
                     cur.executemany(
-                        "INSERT OR IGNORE INTO players VALUES(?,?,?,?,?,?,?)", data[1])
+                        "INSERT OR IGNORE INTO players VALUES(?,?,?,?,?,?,?,?)", data[1])
                 if(data[0] == "GameData"):
                     cur.executemany(
                         "INSERT OR IGNORE INTO gameData VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'NULL','NULL')", data[1])

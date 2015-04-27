@@ -10,7 +10,7 @@ with con:
                             "Team2Score INT, Team1ELO INT, Team2ELO INT)")
     cur.execute(
         "CREATE TABLE players(playerID INTEGER PRIMARY KEY NOT NULL, " +
-                            "teamID TEXT, Name TEXT, height INT, "+
+                            "position TEXT, teamID TEXT, Name TEXT, height INT, "+
                             "weight INT, salary INT, season INT)")
     cur.execute(
         "CREATE TABLE gameData(gameID INT, teamID TEXT, playerID INT, "+
