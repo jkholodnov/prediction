@@ -106,7 +106,7 @@ def main():  # Get the page that holds all team url pages
 
     rosters = []
 
-    the_Year = 2015
+    the_Year = 2014
 
     def getTeamIDs(result, rosters, the_Year):
         baseurl = "http://espn.go.com/nba/teams"
@@ -236,8 +236,7 @@ def get_gameIDs(teamABBR, the_Game_IDs, roster_URLS, attempt, the_year):
         # the_year must be a 4 digit integer
         rosters = "http://espn.go.com/nba/team/roster/_/name/" + teamABBR
         roster_URLS.append(rosters)
-        schedules = "http://espn.go.com/nba/team/schedule/_/name/" + \
-            teamABBR + "/year/ " + str(the_year) + "/"
+        schedules = "http://espn.go.com/nba/team/schedule/_/name/" + teamABBR + "/year/ " + str(the_year) + "/"
         soup = BeautifulSoup(
             urllib.request.urlopen(schedules, timeout=150).read())
         for link in soup.find_all('a'):
