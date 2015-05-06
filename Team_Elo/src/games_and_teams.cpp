@@ -93,8 +93,6 @@ void games_and_teams::load_in_games() {
  * updates sequentially.
  */
 int games_and_teams::compute_ELO() {
-    size_t i;
-
     int Number_Correct_Ranking{0};
 
     for (auto &game_day : the_games) {
@@ -103,7 +101,7 @@ int games_and_teams::compute_ELO() {
             game &current_game = games_map.at(_game);
 
             this_days_games.emplace_back(
-                async(launch::async, &game::generate_Team_ELO, &current_game);
+                async(launch::async, &game::generate_Team_ELO, &current_game));
         }
 
         for (auto &game : this_days_games) {
