@@ -15,9 +15,12 @@ class games_and_teams {
     ~games_and_teams();
     void initialize_teams();
     void load_in_games();
-    int generate_ELO();
+    int compute_ELO();
+    void compute_NPR();
+    void compute_PIR();
     void generate_Performance_Rating();
 
+    unordered_map<string, player> the_players;
     vector<vector<game>> the_games{};
     vector<team> the_teams{};
     vector<player> the_players{};
