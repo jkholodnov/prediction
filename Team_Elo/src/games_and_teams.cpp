@@ -126,7 +126,7 @@ void games_and_teams::compute_NPR() {
         vector<future<vector<string>>> NPR_updates;
         for (auto &game : day) {
             NPR_updates.emplace_back(async(launch::async, &game::generate_NPR, &game,
-                                           &players_map, R_Inside_Container));
+                                           players_map, R_Inside_Container));
         }
 
         for (auto &async_thread : NPR_updates) {
@@ -167,7 +167,6 @@ void games_and_teams::compute_PIR() {
 
     // Send off async tasks to get database update queries.//
 
-    unordered_map<string, player> *players_map = &the_players;
     for (auto &day : the_games) {
         vector<future<vector<string>>> PIR_updates;
         for (auto &game : day) {
