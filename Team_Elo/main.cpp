@@ -13,9 +13,9 @@ int main(int argc, char** argv) {
     high_resolution_clock::time_point t1, t2, t3;
     duration<double> time_span;
 
-    bool elo = (argv[1] == "1");
-    bool npr = (argv[2] == "1");
-    bool pir = (argv[3] == "1");
+    bool elo = (string(argv[1]) == "1");
+    bool npr = (string(argv[2]) == "1");
+    bool pir = (string(argv[3]) == "1");
 
     games_and_teams all_games{};
     all_games.initialize_teams();
