@@ -4,6 +4,10 @@ games_and_teams::games_and_teams() { the_db = new Database("../2015.db"); }
 
 games_and_teams::~games_and_teams() { delete the_db; }
 
+/**
+ * @brief Initializes teams vector, as well as players map with team abbreviations and
+ * player names.
+ */
 void games_and_teams::initialize_teams() {
     string _query = "SELECT distinct Team1Abbr FROM games;";
     auto team_abbreviations = the_db->query(_query);
@@ -11,7 +15,30 @@ void games_and_teams::initialize_teams() {
     for (auto &team_abbreviation : team_abbreviations) {
         the_teams.emplace_back(team_abbreviation[0]);
     }
+
+    auto player_names = the_db->query("SELECT DISTINCT(name) from gamedata;");
+#if TEST == 1
+    if (player_names.size() == 0) {
+        cout << "Did not retrieve any player names from database. Check db path." << endl;
+    }
+#endif
+
+    // this will probably throw an error//
+    for (auto &player : player_names) {
+        the_players.emplace(player[0], player[0]);
+    }
+
+#if TEST == 1
+    if (the_players.size() == 0) {
+        cout << "Did not create any players. Check above function." << endl;
+    }
+#endif
 }
+
+/**
+ * @brief Get game metadata, team names, team scores, elos, days. Breaks up all days into
+ * parallelizable chunks.
+ */
 void games_and_teams::load_in_games() {
     string _query = "SELECT DISTINCT day FROM games order by day asc;";
     auto game_days = the_db->query(_query);
@@ -66,7 +93,7 @@ void games_and_teams::load_in_games() {
  * day into multiple threads, compares teams, passes back a DB update query,
  * updates sequentially.
  */
-int games_and_teams::generate_ELO() {
+int games_and_teams::compute_ELO() {
     size_t i;
 
     int Number_Correct_Ranking{0};
@@ -89,7 +116,44 @@ int games_and_teams::generate_ELO() {
     return Number_Correct_Ranking;
 }
 
-/**
+void games_and_teams::compute_NPR() {
+    shared_ptr<RInside_Container> R_Inside_Container(new RInside_Container);
+    vector<string> update_queries{};
+
+    // Send off async tasks to get database update queries.//
+
+    unordered_map<string, player> *players_map = &the_players;
+    for (auto &day : the_games) {
+        vector<future<vector<string>>> NPR_updates;
+        for (auto &game : day) {
+            NPR_updates.emplace_back(async(launch::async, &game::generate_NPR, &game,
+                                           &players_map, R_Inside_Container));
+        }
+
+        for (auto &async_thread : NPR_updates) {
+            auto return_result = async_thread.get();
+
+            update_queries.insert(update_queries.end(), return_result.begin(),
+                                  return_result.end());
+
+#if TEST == 1
+            if (return_result.size() == 0) {
+                cout << "generate_NPR did not return anything." << endl;
+            }
+#endif
+        }
+    }
+
+#if TEST == 1
+    if (update_queries.size() == 0) {
+        cout << "Did not get any sql update queries." << endl;
+    }
+#endif
+
+    for (auto &update : update_queries) {
+        the_db->query(update);
+    }
+}
 
 /**
  * @brief Gets all the performance ratings for each player for all games. Updates database
@@ -98,41 +162,20 @@ int games_and_teams::generate_ELO() {
  *      For each player: Get all gamedata they played
  *      Run through it sequentially, generating an update query for each player.
  */
-void games_and_teams::generate_Performance_Rating() {
+void games_and_teams::compute_PIR() {
     shared_ptr<RInside_Container> R_Inside_Container(new RInside_Container);
-    auto player_names = the_db->query("SELECT DISTINCT(name) from gamedata;");
-#if TEST == 1
-    if (player_names.size() == 0) {
-        cout << "Did not retrieve any player names from database. Check db path." << endl;
-    }
-#endif
-    unordered_map<string, player> the_players;
-
-    // this will probably throw an error//
-    for (auto &player : player_names) {
-        the_players.emplace(player[0], player[0]);
-    }
-
-#if TEST == 1
-    if (the_players.size() == 0) {
-        cout << "Did not create any players. Check above function." << endl;
-    }
-#endif
-
     vector<string> update_queries{};
-    unordered_map<string, player> *players_map = &the_players;
 
     // Send off async tasks to get database update queries.//
+
+    unordered_map<string, player> *players_map = &the_players;
     for (auto &day : the_games) {
-        vector<future<vector<string>>> NPR_PIR_Updates;
+        vector<future<vector<string>>> PIR_updates;
         for (auto &game : day) {
-            NPR_PIR_Updates.emplace_back(async(launch::async, &game::generate_NPR, &game,
-                                               players_map, R_Inside_Container));
-            NPR_PIR_Updates.emplace_back(
-                async(launch::async, &game::generate_PIR, &game));
+            PIR_updates.emplace_back(async(launch::async, &game::generate_PIR, &game));
         }
 
-        for (auto &async_thread : NPR_PIR_Updates) {
+        for (auto &async_thread : PIR_updates) {
             auto return_result = async_thread.get();
 
             update_queries.insert(update_queries.end(), return_result.begin(),
@@ -140,7 +183,7 @@ void games_and_teams::generate_Performance_Rating() {
 
 #if TEST == 1
             if (return_result.size() == 0) {
-                cout << "Generate_Performance_Ratings did not return anything." << endl;
+                cout << "generate_PIR did not return anything." << endl;
             }
 #endif
         }
