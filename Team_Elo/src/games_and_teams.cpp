@@ -132,8 +132,8 @@ void games_and_teams::compute_NPR() {
     unordered_map<string, player> *players_map = &the_players;
     for (auto &day : the_games) {
         vector<future<vector<string>>> NPR_updates;
-        for (auto &game : day) {
-            game &current_game = games_map.at(game);
+        for (auto &_game : day) {
+            game &current_game = games_map.at(_game);
             NPR_updates.emplace_back(async(launch::async, &game::generate_NPR,
                                            &current_game, players_map,
                                            R_Inside_Container));
