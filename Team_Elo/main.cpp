@@ -7,6 +7,7 @@ using namespace std;
 int main(int argc, char** argv) {
     if (argc != 4) {
         cout << "Correct usage: " << argv[0] << "<Elo 1/0> <NPR 1/0> <PIR 1/0>" << endl;
+        return 1;
     }
 
     using namespace std::chrono;

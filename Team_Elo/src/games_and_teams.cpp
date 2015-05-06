@@ -105,10 +105,11 @@ int games_and_teams::compute_ELO() {
             auto returned_pair = game.get();
             the_db->query(returned_pair.second);
             Number_Correct_Ranking += returned_pair.first;
-            cout << Number_Correct_Ranking << endl;
+            cout << "." << flush;
         }
     }
-    cout << Number_Correct_Ranking << endl;
+
+    cout << "\n" << Number_Correct_Ranking << endl;
     return Number_Correct_Ranking;
 }
 
@@ -147,8 +148,10 @@ void games_and_teams::compute_NPR() {
 #endif
 
     for (auto &update : update_queries) {
+        cout << "." << flush;
         the_db->query(update);
     }
+    cout << endl;
 }
 
 /**

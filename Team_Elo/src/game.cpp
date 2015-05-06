@@ -52,7 +52,6 @@ vector<string> game::generate_NPR(unordered_map<string, player>* the_players,
                                   shared_ptr<RInside_Container> RInside) {
     Database* the_db = new Database("../2015.db");
     vector<string> result_set{};
-    cout << gameid << endl;
 
     string query =
         "SELECT Name, minutes,fgm, fga, tpm, tpa, ftm, fta, oreb, dreb, assist, steal, "
@@ -60,7 +59,13 @@ vector<string> game::generate_NPR(unordered_map<string, player>* the_players,
         "= " +
         gameid + " and injury = 'NULL';";
 
-    cout << query << "######" << endl;
+    /**
+     * output .'s to demonstrate that the function hasn't halted.
+     */
+    if (atoi(gameid.c_str()) % 5 == 0) {
+        cout << "." << flush;
+    }
+
     auto players_gamedata = the_db->query(query);
 
 #if TEST == 1
