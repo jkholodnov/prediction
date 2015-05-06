@@ -182,17 +182,11 @@ void games_and_teams::compute_PIR() {
 
     auto games = the_db->query(games_to_update);
 
-    for (auto &game : games) {
-    }
-    // Send off async tasks to get database update queries.//
-
-    for (auto &day : the_games) {
-        vector<future<vector<string>>> PIR_updates;
-        for (auto &_game : day) {
-            game &current_game = games_map.at(_game);
-            PIR_updates.emplace_back(
-                async(launch::async, &game::generate_PIR, &current_game));
-        }
+    vector<future<vector<string>>> PIR_updates;
+    for (auto &_game : games) {
+        game &current_game = games_map.at(_game[0]);
+        PIR_updates.emplace_back(
+            async(launch::async, &game::generate_PIR, &current_game));
 
         for (auto &async_thread : PIR_updates) {
             auto return_result = async_thread.get();
@@ -207,6 +201,31 @@ void games_and_teams::compute_PIR() {
 #endif
         }
     }
+// Send off async tasks to get database update queries.//
+
+/*
+for (auto &day : the_games) {
+    vector<future<vector<string>>> PIR_updates;
+    for (auto &_game : day) {
+        game &current_game = games_map.at(_game);
+        PIR_updates.emplace_back(
+            async(launch::async, &game::generate_PIR, &current_game));
+    }
+
+    for (auto &async_thread : PIR_updates) {
+        auto return_result = async_thread.get();
+
+        update_queries.insert(update_queries.end(), return_result.begin(),
+                              return_result.end());
+
+#if TEST == 1
+        if (return_result.size() == 0) {
+            cout << "generate_PIR did not return anything." << endl;
+        }
+#endif
+    }
+}
+    */
 
 #if TEST == 1
     if (update_queries.size() == 0) {
