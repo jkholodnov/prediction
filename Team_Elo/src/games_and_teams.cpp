@@ -45,8 +45,9 @@ void games_and_teams::load_in_games() {
 #if TEST == 1
     cout << "Pulled " << game_days.size() << " days where games were played." << endl;
 #endif
+
     for (auto &day : game_days) {
-        vector<game> games_on_this_day;
+        vector<string> games_on_this_day;
         _query =
             "SELECT gameId, Team1Abbr, Team2Abbr, Team1Score, Team2Score, "
             "Team1ELO, Team2ELO FROM games where day = '" +
@@ -69,18 +70,19 @@ void games_and_teams::load_in_games() {
             _score1 = atoi(game[3].c_str());
             _score2 = atoi(game[4].c_str());
 
-            games_on_this_day.emplace_back(game[0], team1, team2, _score1, _score2);
+            pair<string, game> gamepair{game[0], game[0], team1, team2, _score1, _score2};
+            games_map.emplace(gamepair);
+
+            games_on_this_day.emplace_back(game[0]);
         }
         the_games.emplace_back(games_on_this_day);
     }
-    cout << "Pulled all games. There are " << the_games.size()
-         << " days of games to parse." << endl;
 
     int num_games{0};
     for (auto g : the_games) {
         num_games += g.size();
     }
-    cout << "Total of " << num_games << " games." << endl;
+    cout << "Total of " << num_games << " games to scrape." << endl;
 }
 
 /**
@@ -96,9 +98,11 @@ int games_and_teams::compute_ELO() {
 
     for (auto &game_day : the_games) {
         vector<future<pair<int, string>>> this_days_games;
-        for (i = 0; i < game_day.size(); i++) {
+        for (auto &_game : game_day) {
+            game &current_game = games_map.at(_game);
+
             this_days_games.emplace_back(
-                async(launch::async, &game::generate_Team_ELO, &game_day[i]));
+                async(launch::async, &game::generate_Team_ELO, &current_game);
         }
 
         for (auto &game : this_days_games) {
@@ -113,6 +117,13 @@ int games_and_teams::compute_ELO() {
     return Number_Correct_Ranking;
 }
 
+/**
+ * @brief Gets all the performance ratings for each player for all games. Updates database
+ * @details
+ * for each team: Get a list of players
+ *      For each player: Get all gamedata they played
+ *      Run through it sequentially, generating an update query for each player.
+ */
 void games_and_teams::compute_NPR() {
     shared_ptr<RInside_Container> R_Inside_Container(new RInside_Container);
     vector<string> update_queries{};
@@ -155,16 +166,23 @@ void games_and_teams::compute_NPR() {
 }
 
 /**
- * @brief Gets all the performance ratings for each player for all games. Updates database
+ * @brief Updates database to include PIR
  * @details
- * for each team: Get a list of players
- *      For each player: Get all gamedata they played
- *      Run through it sequentially, generating an update query for each player.
+ *      -Find all games where PIR is null
+ *      -Generate update queries for these games
+ *      -Update database with the generated queries
  */
 void games_and_teams::compute_PIR() {
     shared_ptr<RInside_Container> R_Inside_Container(new RInside_Container);
     vector<string> update_queries{};
 
+    string games_to_update =
+        "select distinct(gameid) from gamedata where pir = 'NULL' and injury = 'NULL';";
+
+    auto games = the_db->query(games_to_update);
+
+    for (auto &game : games) {
+    }
     // Send off async tasks to get database update queries.//
 
     for (auto &day : the_games) {
@@ -194,6 +212,7 @@ void games_and_teams::compute_PIR() {
 #endif
 
     for (auto &update : update_queries) {
+        cout << "." << flush;
         the_db->query(update);
     }
 }
