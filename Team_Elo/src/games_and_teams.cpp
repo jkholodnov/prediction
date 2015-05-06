@@ -188,8 +188,10 @@ void games_and_teams::compute_PIR() {
 
     for (auto &day : the_games) {
         vector<future<vector<string>>> PIR_updates;
-        for (auto &game : day) {
-            PIR_updates.emplace_back(async(launch::async, &game::generate_PIR, &game));
+        for (auto &_game : day) {
+            game &current_game = games_map.at(_game);
+            PIR_updates.emplace_back(
+                async(launch::async, &game::generate_PIR, &current_game));
         }
 
         for (auto &async_thread : PIR_updates) {
