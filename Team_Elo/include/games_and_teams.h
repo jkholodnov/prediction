@@ -23,7 +23,6 @@ class games_and_teams {
     unordered_map<string, player> the_players;
     vector<vector<game>> the_games{};
     vector<team> the_teams{};
-    vector<player> the_players{};
     Database* the_db;
 
    protected:

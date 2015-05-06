@@ -23,7 +23,6 @@ void games_and_teams::initialize_teams() {
     }
 #endif
 
-    // this will probably throw an error//
     for (auto &player : player_names) {
         the_players.emplace(player[0], player[0]);
     }
