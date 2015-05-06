@@ -62,7 +62,7 @@ vector<string> game::generate_NPR(unordered_map<string, player>* the_players,
     /**
      * output .'s to demonstrate that the function hasn't halted.
      */
-    if (atoi(gameid.c_str()) % 5 == 0) {
+    if (atoi(gameid.c_str()) % 3 == 0) {
         cout << "." << flush;
     }
 

@@ -31,7 +31,6 @@ int main(int argc, char** argv) {
     all_games.load_in_games();
 
 #if TEST == 1
-    cout << "Load in games : Completed" << endl;
     if (all_games.the_games.size() == 0) {
         cout << "Did not initialize any games." << endl;
     }
@@ -39,11 +38,12 @@ int main(int argc, char** argv) {
     int number_of_correct_predictions{0};
 
     if (elo) {
+        cout << "Computing ELO ratings for teams." << endl;
         t1 = high_resolution_clock::now();
         number_of_correct_predictions = all_games.compute_ELO();
         t2 = high_resolution_clock::now();
         time_span = duration_cast<duration<double>>(t2 - t1);
-        cout << "Took " << time_span.count() << " seconds to generate ELO." << endl;
+        cout << "Took " << time_span.count() << " seconds to compute ELO." << endl;
     }
 
 #if TEST == 1
@@ -53,21 +53,21 @@ int main(int argc, char** argv) {
     }
 #endif
 
-    if (npr) {
-        t1 = high_resolution_clock::now();
-        all_games.compute_NPR();
-        t2 = high_resolution_clock::now();
-        time_span = duration_cast<duration<double>>(t2 - t1);
-        cout << "Took " << time_span.count() << " seconds to generate PIR and Elo."
-             << endl;
-    }
-
     if (pir) {
+        cout << "Computing PIR ratings for players." << endl;
         t1 = high_resolution_clock::now();
         all_games.compute_PIR();
         t2 = high_resolution_clock::now();
         time_span = duration_cast<duration<double>>(t2 - t1);
-        cout << "Took " << time_span.count() << " seconds to generate PIR and Elo."
-             << endl;
+        cout << "Took " << time_span.count() << " seconds to compute PIR" << endl;
+    }
+
+    if (npr) {
+        cout << "Computing NPR ratings for players." << endl;
+        t1 = high_resolution_clock::now();
+        all_games.compute_NPR();
+        t2 = high_resolution_clock::now();
+        time_span = duration_cast<duration<double>>(t2 - t1);
+        cout << "Took " << time_span.count() << " seconds to generate NPR" << endl;
     }
 }

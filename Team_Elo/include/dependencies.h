@@ -20,4 +20,4 @@
 
 #include <RInside.h>
 
-#define TEST 1
+#define TEST 0
