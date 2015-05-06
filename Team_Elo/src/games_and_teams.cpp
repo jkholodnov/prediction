@@ -54,8 +54,6 @@ void games_and_teams::load_in_games() {
 
         auto games_on_day = the_db->query(_query);
         for (auto &game : games_on_day) {
-            cout << game[0] << endl;
-
             int _score1, _score2;
             team *team1;
             team *team2;
@@ -68,7 +66,6 @@ void games_and_teams::load_in_games() {
                 }
             }
 
-            cout << game[3] << endl;
             _score1 = atoi(game[3].c_str());
             _score2 = atoi(game[4].c_str());
 
