@@ -54,26 +54,27 @@ void games_and_teams::load_in_games() {
             day[0] + "';";
 
         auto games_on_day = the_db->query(_query);
-        for (auto &game : games_on_day) {
+        for (auto &_game : games_on_day) {
             int _score1, _score2;
             team *team1;
             team *team2;
 
             for (auto &team : the_teams) {
-                if (team.getAbbr() == game[1]) {
+                if (team.getAbbr() == _game[1]) {
                     team1 = &team;
-                } else if (team.getAbbr() == game[2]) {
+                } else if (team.getAbbr() == _game[2]) {
                     team2 = &team;
                 }
             }
 
-            _score1 = atoi(game[3].c_str());
-            _score2 = atoi(game[4].c_str());
+            _score1 = atoi(_game[3].c_str());
+            _score2 = atoi(_game[4].c_str());
 
-            pair<string, game> gamepair{game[0], game[0], team1, team2, _score1, _score2};
+            pair<string, game> gamepair{_game[0],
+                                        {_game[0], team1, team2, _score1, _score2}};
             games_map.emplace(gamepair);
 
-            games_on_this_day.emplace_back(game[0]);
+            games_on_this_day.emplace_back(_game[0]);
         }
         the_games.emplace_back(games_on_this_day);
     }
