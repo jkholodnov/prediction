@@ -83,7 +83,7 @@ void games_and_teams::load_in_games() {
     for (auto g : the_games) {
         num_games += g.size();
     }
-    cout << "Total of " << num_games << " games to scrape." << endl;
+    cout << "Total of " << num_games << " games loaded into memory." << endl;
 }
 
 /**
@@ -94,6 +94,9 @@ void games_and_teams::load_in_games() {
  */
 int games_and_teams::compute_ELO() {
     int Number_Correct_Ranking{0};
+
+    string elo_games_to_update =
+        "SELECT DISTINCT gameid FROM games WHERE team1elo = 'NULL' or team2elo = 'NULL';";
 
     for (auto &game_day : the_games) {
         vector<future<pair<int, string>>> this_days_games;
@@ -187,19 +190,19 @@ void games_and_teams::compute_PIR() {
         game &current_game = games_map.at(_game[0]);
         PIR_updates.emplace_back(
             async(launch::async, &game::generate_PIR, &current_game));
+    }
 
-        for (auto &async_thread : PIR_updates) {
-            auto return_result = async_thread.get();
+    for (auto &async_thread : PIR_updates) {
+        auto return_result = async_thread.get();
 
-            update_queries.insert(update_queries.end(), return_result.begin(),
-                                  return_result.end());
+        update_queries.insert(update_queries.end(), return_result.begin(),
+                              return_result.end());
 
 #if TEST == 1
-            if (return_result.size() == 0) {
-                cout << "generate_PIR did not return anything." << endl;
-            }
-#endif
+        if (return_result.size() == 0) {
+            cout << "generate_PIR did not return anything." << endl;
         }
+#endif
     }
 // Send off async tasks to get database update queries.//
 
