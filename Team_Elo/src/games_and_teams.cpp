@@ -120,8 +120,8 @@ int games_and_teams::compute_ELO() {
             Number_Correct_Ranking += returned_pair.first;
         }
 
-        for (auto &query : db_elo_update_queries) {
-            the_db->query(returned_pair.second);
+        for (auto &_query : db_elo_update_queries) {
+            the_db->query(_query.second);
             cout << "." << flush;
         }
     }
