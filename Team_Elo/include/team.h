@@ -16,13 +16,14 @@ class team {
     void update_Rating(double update_by);
     string getAbbr();
 
-   protected:
-   private:
     string team_Abbreviation{};
     int gamescore{};
     double bonus_Rating{0.0};
     double base_Rating{1500.0};
     vector<player> players_on_team{};
+
+   protected:
+   private:
 };
 
-#endif  // TEAM_Hŝ
+#endif  // TEAM_H
