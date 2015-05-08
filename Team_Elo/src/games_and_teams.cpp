@@ -209,7 +209,7 @@ void games_and_teams::compute_PIR() {
     vector<string> update_queries{};
 
     string games_to_update =
-        "SELECT DISTINCT(gameid) FROM games WHERE pir = 'NULL' and injury = 'NULL';";
+        "SELECT DISTINCT(gameid) FROM gamedata WHERE pir = 'NULL' and injury = 'NULL';";
 
     auto games = the_db->query(games_to_update);
 
