@@ -107,7 +107,6 @@ int games_and_teams::compute_ELO() {
         auto games_without_elo = the_db->query(
             "SELECT DISTINCT(gameid) FROM games where day = '" + day[0] + "';");
 
-        cout << games_without_elo[0][0] << endl;
         for (auto &gameid : games_without_elo) {
             cout << gameid[0] << '\t' << flush;
             game &current_game = games_map.at(gameid[0]);
