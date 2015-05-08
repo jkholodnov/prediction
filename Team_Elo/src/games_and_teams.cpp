@@ -113,11 +113,15 @@ int games_and_teams::compute_ELO() {
             this_days_games.emplace_back(
                 async(launch::async, &game::generate_Team_ELO, &current_game));
         }
-
+        vector<string> db_elo_update_queries{};
         for (auto &game : this_days_games) {
             auto returned_pair = game.get();
-            the_db->query(returned_pair.second);
+            db_elo_update_queries.emplace_back(returned_pair.second);
             Number_Correct_Ranking += returned_pair.first;
+        }
+
+        for (auto &query : db_elo_update_queries) {
+            the_db->query(returned_pair.second);
             cout << "." << flush;
         }
     }
