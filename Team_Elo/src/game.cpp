@@ -19,6 +19,7 @@ pair<int, string> game::generate_Team_ELO() {
     Database* the_db = new Database("../2015.db");
     cout << "entered teamelo" << endl;
     if (team1->bonus_Rating == 0) {
+        cout << "case: team1" << endl;
         // This is the first time the team has played a game, or we are starting to update
         // elo mid-season.
         string elo_counts = "SELECT COUNT(day) FROM games WHERE (team1abbr = '" +
@@ -73,6 +74,8 @@ pair<int, string> game::generate_Team_ELO() {
     }
 
     if (team2->bonus_Rating == 0) {
+        cout << "case: team2" << endl;
+
         // This is the first time the team has played a game, or we are starting to update
         // elo mid-season.
         // This is the first time the team has played a game, or we are starting to update
