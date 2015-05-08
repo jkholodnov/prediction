@@ -27,7 +27,7 @@ pair<int, string> game::generate_Team_ELO() {
                             team1->team_Abbreviation + "') and team1elo != 'NULL';";
 
         auto counts = the_db->query(elo_counts);
-        if (counts[0][0] != "0") {
+        if (counts[0][0] == "0") {
             // There are no games where Elo was developed.
         } else {
             // We are starting to analyze midway through the season. Get the team's
@@ -85,7 +85,7 @@ pair<int, string> game::generate_Team_ELO() {
                             team2->team_Abbreviation + "') and team1elo != 'NULL';";
 
         auto counts = the_db->query(elo_counts);
-        if (counts[0][0] != "0") {
+        if (counts[0][0] == "0") {
             // There are no games where Elo was developed.
         } else {
             // We are starting to analyze midway through the season. Get the team's
