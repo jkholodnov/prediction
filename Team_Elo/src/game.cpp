@@ -12,8 +12,129 @@ game::game(const string& id, team* _team1, team* _team2, const int& team1Points,
 game::~game() {}
 
 pair<int, string> game::generate_Team_ELO() {
+    /**
+     * @brief Determine the team's previous elo, account for that game's performance, then
+     * look at this game's results.
+     */
+    Database* the_db = new Database("../2015.db");
+    if (team1->bonus_Rating == 0) {
+        // This is the first time the team has played a game, or we are starting to update
+        // elo mid-season.
+        string elo_counts = "SELECT COUNT(day) FROM games WHERE (team1abbr = '" +
+                            team1->team_Abbreviation + "' OR team2abbr = '" +
+                            team1->team_Abbreviation + "') and team1elo != 'NULL';";
+
+        auto counts = the_db->query(elo_counts);
+        if (counts[0][0] != "0") {
+            // There are no games where Elo was developed.
+        } else {
+            // We are starting to analyze midway through the season. Get the team's
+            // previous Elo, adjust for that game's results, update db.
+            string elo_query =
+                "SELECT team1abbr, team2abbr, team1elo, team2elo, "
+                "team1score, team2score, MAX(day) FROM games WHERE (team1abbr = '" +
+                team1->team_Abbreviation + "' OR team2abbr = '" +
+                team1->team_Abbreviation + "') and team1elo != 'NULL';";
+
+            auto last_game = the_db->query(elo_query);
+
+            if (last_game[0][1] == team1->team_Abbreviation) {
+                auto team1elo = stod(last_game[0][3]);
+                auto team2elo = stod(last_game[0][5]);
+
+                team1Expected = 1 / (1 + pow(10, ((team2elo - team1elo) / 400)));
+
+                if (team1Score > team2Score) {
+                    team1elo += (50 * (1 - team1Expected));
+                } else {
+                    team1elo += (50 * (0 - team1Expected));
+                }
+
+                auto bonus_elo = team1elo - 1500.00;
+                team1->bonus_Rating = bonus_elo;
+
+            } else {
+                auto team1elo = stod(last_game[0][5]);
+                auto team2elo = stod(last_game[0][3]);
+
+                team1Expected = 1 / (1 + pow(10, ((team2elo - team1elo) / 400)));
+
+                if (team1Score > team2Score) {
+                    team1elo += (50 * (1 - team1Expected));
+                } else {
+                    team1elo += (50 * (0 - team1Expected));
+                }
+
+                auto bonus_elo = team1elo - 1500.00;
+                team1->bonus_Rating = bonus_elo;
+            }
+        }
+    }
+
+    if (team2->bonus_Rating == 0) {
+        // This is the first time the team has played a game, or we are starting to update
+        // elo mid-season.
+        // This is the first time the team has played a game, or we are starting to update
+        // elo mid-season.
+        string elo_counts = "SELECT COUNT(day) FROM games WHERE (team1abbr = '" +
+                            team2->team_Abbreviation + "' OR team2abbr = '" +
+                            team2->team_Abbreviation + "') and team1elo != 'NULL';";
+
+        auto counts = the_db->query(elo_counts);
+        if (counts[0][0] != "0") {
+            // There are no games where Elo was developed.
+        } else {
+            // We are starting to analyze midway through the season. Get the team's
+            // previous Elo, adjust for that game's results, update db.
+            string elo_query =
+                "SELECT team1abbr, team2abbr, team1elo, team2elo, "
+                "team1score, team2score, MAX(day) FROM games WHERE (team1abbr = '" +
+                team2->team_Abbreviation + "' OR team2abbr = '" +
+                team2->team_Abbreviation + "') and team1elo != 'NULL';";
+
+            auto last_game = the_db->query(elo_query);
+
+            if (last_game[0][1] == team2->team_Abbreviation) {
+                auto team1elo = stod(last_game[0][3]);
+                auto team2elo = stod(last_game[0][5]);
+
+                team1Expected = 1 / (1 + pow(10, ((team2elo - team1elo) / 400)));
+
+                if (team1Score > team2Score) {
+                    team1elo += (50 * (1 - team1Expected));
+                } else {
+                    team1elo += (50 * (0 - team1Expected));
+                }
+
+                auto bonus_elo = team1elo - 1500.00;
+                team1->bonus_Rating = bonus_elo;
+
+            } else {
+                auto team1elo = stod(last_game[0][5]);
+                auto team2elo = stod(last_game[0][3]);
+
+                team1Expected = 1 / (1 + pow(10, ((team2elo - team1elo) / 400)));
+
+                if (team1Score > team2Score) {
+                    team1elo += (50 * (1 - team1Expected));
+                } else {
+                    team1elo += (50 * (0 - team1Expected));
+                }
+
+                auto bonus_elo = team1elo - 1500.00;
+                team2->bonus_Rating = bonus_elo;
+            }
+        }
+    }
+
+    delete the_db;
+
+    /**
+     * @brief We now have the Elo rating of each team correctly updated in memory.
+     */
     auto t1_Rating = team1->get_Rating();
     auto t2_Rating = team2->get_Rating();
+
     string _query = "UPDATE games SET team1ELO = " + to_string(t1_Rating) +
                     ", team2ELO = " + to_string(t2_Rating) + " WHERE gameid = '" +
                     gameid + "';";

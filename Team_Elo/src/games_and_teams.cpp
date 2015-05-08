@@ -95,8 +95,32 @@ void games_and_teams::load_in_games() {
 int games_and_teams::compute_ELO() {
     int Number_Correct_Ranking{0};
 
-    string elo_games_to_update =
-        "SELECT DISTINCT gameid FROM games WHERE team1elo = 'NULL' or team2elo = 'NULL';";
+    string days_query =
+        "SELECT DISTINCT(day) FROM games WHERE team1elo = 'NULL' or team2elo = 'NULL' "
+        "order by day ASC;";
+
+    auto days_needing_elo_updates = the_db->query(days_query);
+
+    for (auto &day : days_needing_elo_updates) {
+        vector<future<pair<int, string>>> this_days_games;
+        auto games_without_elo = the_db->query(
+            "SELECT DISTINCT(gameid) FROM games where day = " + day[0] + ";");
+
+        for (auto &gameid : games_without_elo) {
+            game &current_game = games_map.at(gameid[0]);
+            this_days_games.emplace_back(
+                async(launch::async, &game::generate_Team_ELO, &current_game));
+        }
+
+        for (auto &game : this_days_games) {
+            auto returned_pair = game.get();
+            the_db->query(returned_pair.second);
+            Number_Correct_Ranking += returned_pair.first;
+            cout << "." << flush;
+        }
+    }
+
+    /*
 
     for (auto &game_day : the_games) {
         vector<future<pair<int, string>>> this_days_games;
@@ -114,7 +138,7 @@ int games_and_teams::compute_ELO() {
             cout << "." << flush;
         }
     }
-
+    */
     cout << "\n" << Number_Correct_Ranking << endl;
     return Number_Correct_Ranking;
 }
@@ -181,10 +205,11 @@ void games_and_teams::compute_PIR() {
     vector<string> update_queries{};
 
     string games_to_update =
-        "select distinct(gameid) from gamedata where pir = 'NULL' and injury = 'NULL';";
+        "SELECT DISTINCT(gameid) FROM games WHERE pir = 'NULL' and injury = 'NULL';";
 
     auto games = the_db->query(games_to_update);
 
+    // Send off async tasks to get database update queries.//
     vector<future<vector<string>>> PIR_updates;
     for (auto &_game : games) {
         game &current_game = games_map.at(_game[0]);
@@ -204,31 +229,6 @@ void games_and_teams::compute_PIR() {
         }
 #endif
     }
-// Send off async tasks to get database update queries.//
-
-/*
-for (auto &day : the_games) {
-    vector<future<vector<string>>> PIR_updates;
-    for (auto &_game : day) {
-        game &current_game = games_map.at(_game);
-        PIR_updates.emplace_back(
-            async(launch::async, &game::generate_PIR, &current_game));
-    }
-
-    for (auto &async_thread : PIR_updates) {
-        auto return_result = async_thread.get();
-
-        update_queries.insert(update_queries.end(), return_result.begin(),
-                              return_result.end());
-
-#if TEST == 1
-        if (return_result.size() == 0) {
-            cout << "generate_PIR did not return anything." << endl;
-        }
-#endif
-    }
-}
-    */
 
 #if TEST == 1
     if (update_queries.size() == 0) {
@@ -240,4 +240,5 @@ for (auto &day : the_games) {
         cout << "." << flush;
         the_db->query(update);
     }
+    cout << endl;
 }
