@@ -121,7 +121,7 @@ int games_and_teams::compute_ELO() {
         }
 
         for (auto &_query : db_elo_update_queries) {
-            the_db->query(_query.second);
+            the_db->query(_query);
             cout << "." << flush;
         }
     }
