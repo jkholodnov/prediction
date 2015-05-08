@@ -102,13 +102,11 @@ int games_and_teams::compute_ELO() {
     auto days_needing_elo_updates = the_db->query(days_query);
 
     for (auto &day : days_needing_elo_updates) {
-        cout << day[0] << "\t" << flush;
         vector<future<pair<int, string>>> this_days_games;
         auto games_without_elo = the_db->query(
             "SELECT DISTINCT(gameid) FROM games where day = '" + day[0] + "';");
 
         for (auto &gameid : games_without_elo) {
-            cout << gameid[0] << '\t' << flush;
             game &current_game = games_map.at(gameid[0]);
             this_days_games.emplace_back(
                 async(launch::async, &game::generate_Team_ELO, &current_game));

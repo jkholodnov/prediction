@@ -17,9 +17,7 @@ pair<int, string> game::generate_Team_ELO() {
      * look at this game's results.
      */
     Database* the_db = new Database("../2015.db");
-    cout << "entered teamelo" << endl;
     if (team1->bonus_Rating == 0) {
-        cout << "case: team1" << endl;
         // This is the first time the team has played a game, or we are starting to update
         // elo mid-season.
         string elo_counts = "SELECT COUNT(day) FROM games WHERE (team1abbr = '" +
@@ -40,42 +38,41 @@ pair<int, string> game::generate_Team_ELO() {
 
             auto last_game = the_db->query(elo_query);
 
-            if (last_game[0][1] == team1->team_Abbreviation) {
-                auto team1elo = stod(last_game[0][3]);
-                auto team2elo = stod(last_game[0][5]);
+            if (last_game[0][0] == team1->team_Abbreviation) {
+                auto current_team = stod(last_game[0][2]);
+                auto other_team = stod(last_game[0][3]);
 
-                team1Expected = 1 / (1 + pow(10, ((team2elo - team1elo) / 400)));
+                team1Expected = 1 / (1 + pow(10, ((other_team - current_team) / 400)));
 
                 if (team1Score > team2Score) {
-                    team1elo += (50 * (1 - team1Expected));
+                    current_team += (50 * (1 - team1Expected));
                 } else {
-                    team1elo += (50 * (0 - team1Expected));
+                    current_team += (50 * (0 - team1Expected));
                 }
 
-                auto bonus_elo = team1elo - 1500.00;
+                auto bonus_elo = current_team - 1500.00;
                 team1->bonus_Rating = bonus_elo;
 
             } else {
-                auto team1elo = stod(last_game[0][5]);
-                auto team2elo = stod(last_game[0][3]);
+                auto current_team = stod(last_game[0][3]);
+                auto other_team = stod(last_game[0][2]);
 
-                team1Expected = 1 / (1 + pow(10, ((team2elo - team1elo) / 400)));
+                team1Expected = 1 / (1 + pow(10, ((other_team - current_team) / 400)));
 
                 if (team1Score > team2Score) {
-                    team1elo += (50 * (1 - team1Expected));
+                    current_team += (50 * (1 - team1Expected));
                 } else {
-                    team1elo += (50 * (0 - team1Expected));
+                    current_team += (50 * (0 - team1Expected));
                 }
 
-                auto bonus_elo = team1elo - 1500.00;
+                auto bonus_elo = current_team - 1500.00;
+                cout << "Bonus: " << bonus_elo << endl;
                 team1->bonus_Rating = bonus_elo;
             }
         }
     }
 
     if (team2->bonus_Rating == 0) {
-        cout << "case: team2" << endl;
-
         // This is the first time the team has played a game, or we are starting to update
         // elo mid-season.
         // This is the first time the team has played a game, or we are starting to update
@@ -98,34 +95,34 @@ pair<int, string> game::generate_Team_ELO() {
 
             auto last_game = the_db->query(elo_query);
 
-            if (last_game[0][1] == team2->team_Abbreviation) {
-                auto team1elo = stod(last_game[0][3]);
-                auto team2elo = stod(last_game[0][5]);
+            if (last_game[0][0] == team2->team_Abbreviation) {
+                auto current_team = stod(last_game[0][2]);
+                auto other_team = stod(last_game[0][3]);
 
-                team1Expected = 1 / (1 + pow(10, ((team2elo - team1elo) / 400)));
+                team1Expected = 1 / (1 + pow(10, ((other_team - current_team) / 400)));
 
-                if (team1Score > team2Score) {
-                    team1elo += (50 * (1 - team1Expected));
+                if (last_game[0][4] < last_game[0][5]) {
+                    current_team += (50 * (1 - team1Expected));
                 } else {
-                    team1elo += (50 * (0 - team1Expected));
+                    current_team += (50 * (0 - team1Expected));
                 }
 
-                auto bonus_elo = team1elo - 1500.00;
+                auto bonus_elo = current_team - 1500.00;
                 team1->bonus_Rating = bonus_elo;
 
             } else {
-                auto team1elo = stod(last_game[0][5]);
-                auto team2elo = stod(last_game[0][3]);
+                auto current_team = stod(last_game[0][3]);
+                auto other_team = stod(last_game[0][2]);
 
-                team1Expected = 1 / (1 + pow(10, ((team2elo - team1elo) / 400)));
+                team1Expected = 1 / (1 + pow(10, ((other_team - current_team) / 400)));
 
-                if (team1Score > team2Score) {
-                    team1elo += (50 * (1 - team1Expected));
+                if (last_game[0][4] > last_game[0][5]) {
+                    current_team += (50 * (1 - team1Expected));
                 } else {
-                    team1elo += (50 * (0 - team1Expected));
+                    current_team += (50 * (0 - team1Expected));
                 }
 
-                auto bonus_elo = team1elo - 1500.00;
+                auto bonus_elo = current_team - 1500.00;
                 team2->bonus_Rating = bonus_elo;
             }
         }
