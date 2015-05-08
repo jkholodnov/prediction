@@ -17,6 +17,7 @@ pair<int, string> game::generate_Team_ELO() {
      * look at this game's results.
      */
     Database* the_db = new Database("../2015.db");
+    cout << "entered teamelo" << endl;
     if (team1->bonus_Rating == 0) {
         // This is the first time the team has played a game, or we are starting to update
         // elo mid-season.
