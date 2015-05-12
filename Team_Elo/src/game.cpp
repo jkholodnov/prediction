@@ -135,13 +135,10 @@ pair<int, string> game::generate_Team_ELO() {
             }
         }
     }
-    auto difference =
-        the_db->query("select avg(abs(team1score - team2score)) from games;");
-    double average_game_diff = stod(difference[0][0]);
     delete the_db;
 
-    cout << team1->bonus_Rating << team1->team_Abbreviation << "#"
-         << team2->team_Abbreviation << team2->bonus_Rating << endl;
+    // cout << team1->bonus_Rating << team1->team_Abbreviation << "#"
+    << team2->team_Abbreviation << team2->bonus_Rating << endl;
     /**
      * @brief We now have the Elo rating of each team correctly updated in memory.
      */
@@ -156,10 +153,8 @@ pair<int, string> game::generate_Team_ELO() {
     team2Expected = 1 / (1 + pow(10, ((t1_Rating - t2_Rating) / 400)));
 
     if (team1Score > team2Score) {
-        team1->update_Rating((50 * (1 - team1Expected)) *
-                             ((team1Score - team2Score) / average_game_diff));
-        team2->update_Rating((50 * (0 - team2Expected)) *
-                             ((team1Score - team2Score) / average_game_diff));
+        team1->update_Rating(50 * (1 - team1Expected));
+        team2->update_Rating(50 * (0 - team2Expected));
 
         if (t1_Rating > t2_Rating) {
             // number_correct++;
@@ -170,10 +165,8 @@ pair<int, string> game::generate_Team_ELO() {
             return pair;
         }
     } else {
-        team1->update_Rating((50 * (0 - team1Expected)) *
-                             ((team1Score - team2Score) / average_game_diff));
-        team2->update_Rating((50 * (1 - team2Expected)) *
-                             ((team1Score - team2Score) / average_game_diff));
+        team1->update_Rating(50 * (0 - team1Expected));
+        team2->update_Rating(50 * (1 - team2Expected));
 
         if (t2_Rating > t1_Rating) {
             // number_correct++;
