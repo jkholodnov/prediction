@@ -157,9 +157,9 @@ pair<int, string> game::generate_Team_ELO() {
 
     if (team1Score > team2Score) {
         team1->update_Rating((50 * (1 - team1Expected)) *
-                             ((team1Score - team2score) / average_game_diff));
+                             ((team1Score - team2Score) / average_game_diff));
         team2->update_Rating((50 * (0 - team2Expected)) *
-                             ((team1Score - team2score) / average_game_diff));
+                             ((team1Score - team2Score) / average_game_diff));
 
         if (t1_Rating > t2_Rating) {
             // number_correct++;
@@ -171,9 +171,9 @@ pair<int, string> game::generate_Team_ELO() {
         }
     } else {
         team1->update_Rating((50 * (0 - team1Expected)) *
-                             ((team1Score - team2score) / average_game_diff));
+                             ((team1Score - team2Score) / average_game_diff));
         team2->update_Rating((50 * (1 - team2Expected)) *
-                             ((team1Score - team2score) / average_game_diff));
+                             ((team1Score - team2Score) / average_game_diff));
 
         if (t2_Rating > t1_Rating) {
             // number_correct++;
