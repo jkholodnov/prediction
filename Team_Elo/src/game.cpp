@@ -39,12 +39,14 @@ pair<int, string> game::generate_Team_ELO() {
             auto last_game = the_db->query(elo_query);
 
             if (last_game[0][0] == team1->team_Abbreviation) {
+                // team1 in our query is the team we need
+
                 auto current_team = stod(last_game[0][2]);
                 auto other_team = stod(last_game[0][3]);
 
                 team1Expected = 1 / (1 + pow(10, ((other_team - current_team) / 400)));
 
-                if (team1Score > team2Score) {
+                if (last_game[0][4] > last_game[0][5]) {
                     current_team += (50 * (1 - team1Expected));
                 } else {
                     current_team += (50 * (0 - team1Expected));
@@ -54,12 +56,14 @@ pair<int, string> game::generate_Team_ELO() {
                 team1->bonus_Rating = bonus_elo;
 
             } else {
+                // team2 in our query is the team we need
+
                 auto current_team = stod(last_game[0][3]);
                 auto other_team = stod(last_game[0][2]);
 
                 team1Expected = 1 / (1 + pow(10, ((other_team - current_team) / 400)));
 
-                if (team1Score > team2Score) {
+                if (last_game[0][4] < last_game[0][5]) {
                     current_team += (50 * (1 - team1Expected));
                 } else {
                     current_team += (50 * (0 - team1Expected));
@@ -96,23 +100,9 @@ pair<int, string> game::generate_Team_ELO() {
             auto last_game = the_db->query(elo_query);
 
             if (last_game[0][0] == team2->team_Abbreviation) {
+                // team1 in our query is the team we need
                 auto current_team = stod(last_game[0][2]);
                 auto other_team = stod(last_game[0][3]);
-
-                team1Expected = 1 / (1 + pow(10, ((other_team - current_team) / 400)));
-
-                if (last_game[0][4] < last_game[0][5]) {
-                    current_team += (50 * (1 - team1Expected));
-                } else {
-                    current_team += (50 * (0 - team1Expected));
-                }
-
-                auto bonus_elo = current_team - 1500.00;
-                team1->bonus_Rating = bonus_elo;
-
-            } else {
-                auto current_team = stod(last_game[0][3]);
-                auto other_team = stod(last_game[0][2]);
 
                 team1Expected = 1 / (1 + pow(10, ((other_team - current_team) / 400)));
 
@@ -123,11 +113,27 @@ pair<int, string> game::generate_Team_ELO() {
                 }
 
                 auto bonus_elo = current_team - 1500.00;
+                team1->bonus_Rating = bonus_elo;
+
+            } else {
+                // team2 in our query is the team we need
+
+                auto current_team = stod(last_game[0][3]);
+                auto other_team = stod(last_game[0][2]);
+
+                team1Expected = 1 / (1 + pow(10, ((other_team - current_team) / 400)));
+
+                if (last_game[0][4] < last_game[0][5]) {
+                    current_team += (50 * (1 - team1Expected));
+                } else {
+                    current_team += (50 * (0 - team1Expected));
+                }
+
+                auto bonus_elo = current_team - 1500.00;
                 team2->bonus_Rating = bonus_elo;
             }
         }
     }
-
     delete the_db;
 
     /**
@@ -313,6 +319,7 @@ vector<string> game::generate_PIR() {
         auto update_query = "UPDATE gamedata SET pir = " + to_string(game_performance) +
                             " WHERE gameID = " + gameid + " AND Name = '" + player[12] +
                             "';";
+
         result_set.emplace_back(update_query);
     }
 
