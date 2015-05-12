@@ -18,6 +18,7 @@ pair<int, string> game::generate_Team_ELO() {
      */
     Database* the_db = new Database("../2015.db");
     if (team1->bonus_Rating == 0) {
+        cout << "TRUE1" << endl;
         // This is the first time the team has played a game, or we are starting to update
         // elo mid-season.
         string elo_counts = "SELECT COUNT(day) FROM games WHERE (team1abbr = '" +
@@ -70,13 +71,13 @@ pair<int, string> game::generate_Team_ELO() {
                 }
 
                 auto bonus_elo = current_team - 1500.00;
-                cout << "Bonus: " << bonus_elo << endl;
                 team1->bonus_Rating = bonus_elo;
             }
         }
     }
 
     if (team2->bonus_Rating == 0) {
+        cout << "TRUE2" << endl;
         // This is the first time the team has played a game, or we are starting to update
         // elo mid-season.
         // This is the first time the team has played a game, or we are starting to update
@@ -136,8 +137,8 @@ pair<int, string> game::generate_Team_ELO() {
     }
     delete the_db;
 
-    cout << team1->bonus_rating << endl;
-    cout << team2->bonus_rating << endl;
+    cout << team1->bonus_Rating << endl;
+    cout << team2->bonus_Rating << endl;
     /**
      * @brief We now have the Elo rating of each team correctly updated in memory.
      */
