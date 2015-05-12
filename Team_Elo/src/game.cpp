@@ -114,7 +114,7 @@ pair<int, string> game::generate_Team_ELO() {
                 }
 
                 auto bonus_elo = current_team - 1500.00;
-                team1->bonus_Rating = bonus_elo;
+                team2->bonus_Rating = bonus_elo;
 
             } else {
                 // team2 in our query is the team we need
