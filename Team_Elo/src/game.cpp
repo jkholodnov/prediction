@@ -138,7 +138,7 @@ pair<int, string> game::generate_Team_ELO() {
     delete the_db;
 
     // cout << team1->bonus_Rating << team1->team_Abbreviation << "#"
-    << team2->team_Abbreviation << team2->bonus_Rating << endl;
+    // << team2->team_Abbreviation << team2->bonus_Rating << endl;
     /**
      * @brief We now have the Elo rating of each team correctly updated in memory.
      */
