@@ -23,6 +23,9 @@ with con:
                                 "injury TEXT, pir FLOAT, npr FLOAT, "+
                                 "UNIQUE(gameID, playerID))")
 
+    cur.execute(
+        "CREATE TABLE teams(teamID TEXT, currentELO FLOAT)"
+        )
 
 
 con.commit()
