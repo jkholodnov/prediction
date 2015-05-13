@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
     double x = stod(all_games_within_elo_range[0][0]);
     double y = stod(correct_games_within_elo_range[0][0]);
 
-    double percent_win = x / y;
+    double percent_win = y / x;
 
     if (team1elo > team2elo) {
         cout << argv[1] << " has a " << percent_win << " chance to win.";
