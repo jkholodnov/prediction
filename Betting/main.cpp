@@ -39,13 +39,9 @@ int main(int argc, char** argv) {
     auto correct_games_within_elo_range = the_db->query(correctly_predicted_games);
 
     double x = stod(all_games_within_elo_range[0][0]);
-    cout << x << endl;
+    double y = stod(correct_games_within_elo_range[0][0]);
 
-/*
-    double val1 = stod(all_games_within_elo_range[0][0]);
-    double val2 = stod(correctly_predicted_games[0][0]);
-  */
-    double percent_win = 1 / 2;
+    double percent_win = x / y;
 
     if (team1elo > team2elo) {
         cout << argv[1] << " has a " << percent_win << " chance to win.";
