@@ -16,8 +16,10 @@ void games_and_teams::initialize_teams() {
         the_teams.emplace_back(team_abbreviation[0]);
     }
 
+    cout << "initialized teams vector" << endl;
     // initialize the team rating for mid-season runs.
     for (auto &_team : the_teams) {
+        cout << _team.team_Abbreviation << endl;
         auto curr_elo = the_db->query("SELECT currentELO FROM teams WHERE teamid = '" +
                                       _team.team_Abbreviation + "';");
         _team.rating = stod(curr_elo[0][0]);
