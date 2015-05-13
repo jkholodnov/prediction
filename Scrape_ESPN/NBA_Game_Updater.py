@@ -135,7 +135,7 @@ def main():  # Get the page that holds all team url pages
             teamabbr.replace("uth", "utah")
             teamabbr.replace("gsw", "gs")
             teamabbr.replace("was", "wsh")
-            teamabbr.replace("sac", "sa")
+            teamabbr.replace("sas", "sa")
             teamabbr.replace("pho", "phx")
             cur.execute("INSERT OR IGNORE INTO teams VALUES(\'" + str(teamabbr) + "\',1500.0)")
             timestart = time.time()
@@ -343,7 +343,7 @@ def roster_Update(Queries, rosterURL, year):
             teamID = teamID.replace("uth", "utah")
             teamID = teamID.replace("gsw", "gs")
             teamID = teamID.replace("was", "wsh")
-            teamID = teamID.replace("sac", "sa")
+            teamID = teamID.replace("sas", "sa")
             teamID = teamID.replace("pho", "phx")
 
             preformatted_ht = str(data[4].getText())

@@ -10,13 +10,13 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    using namespace std::chrono;
-    high_resolution_clock::time_point t1, t2, t3;
-    duration<double> time_span;
-
     bool elo = (string(argv[1]) == "1");
     bool npr = (string(argv[2]) == "1");
     bool pir = (string(argv[3]) == "1");
+
+    using namespace std::chrono;
+    high_resolution_clock::time_point t1, t2, t3;
+    duration<double> time_span;
 
     games_and_teams all_games{};
     all_games.initialize_teams();
@@ -41,22 +41,24 @@ int main(int argc, char** argv) {
         cout << "Computing ELO ratings for teams." << endl;
         t1 = high_resolution_clock::now();
         number_of_correct_predictions = all_games.compute_ELO();
+
         t2 = high_resolution_clock::now();
         time_span = duration_cast<duration<double>>(t2 - t1);
         cout << "Took " << time_span.count() << " seconds to compute ELO." << endl;
-    }
 
 #if TEST == 1
-    if (number_of_correct_predictions == 0) {
-        cout << "Did not predict any games correctly... Something went wrong with "
-                "generate_ELO function." << endl;
-    }
+        if (number_of_correct_predictions == 0) {
+            cout << "Did not predict any games correctly... Something went wrong with "
+                    "generate_ELO function." << endl;
+        }
 #endif
+    }
 
     if (pir) {
         cout << "Computing PIR ratings for players." << endl;
         t1 = high_resolution_clock::now();
         all_games.compute_PIR();
+
         t2 = high_resolution_clock::now();
         time_span = duration_cast<duration<double>>(t2 - t1);
         cout << "Took " << time_span.count() << " seconds to compute PIR" << endl;
@@ -66,6 +68,7 @@ int main(int argc, char** argv) {
         cout << "Computing NPR ratings for players." << endl;
         t1 = high_resolution_clock::now();
         all_games.compute_NPR();
+
         t2 = high_resolution_clock::now();
         time_span = duration_cast<duration<double>>(t2 - t1);
         cout << "Took " << time_span.count() << " seconds to generate NPR" << endl;
