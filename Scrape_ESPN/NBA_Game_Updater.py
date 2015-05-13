@@ -130,6 +130,12 @@ def main():  # Get the page that holds all team url pages
         start_of_first_parallel = time.time()
 
         for teamAbbrev in team_Abbreviations:
+            teamAbbrev.replace("nor", "no")
+            teamAbbrev.replace("uth", "utah")
+            teamAbbrev.replace("gsw", "gs")
+            teamAbbrev.replace("was", "wsh")
+            teamAbbrev.replace("sac", "sa")
+            teamAbbrev.replace("pho", "phx")
             cur.execute("INSERT OR IGNORE INTO teams VALUES(\'" + str(teamAbbrev) + "\',1500.0)")
             timestart = time.time()
             thread = Thread(
