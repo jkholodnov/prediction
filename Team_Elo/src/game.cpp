@@ -16,6 +16,8 @@ pair<int, string> game::generate_Team_ELO() {
      * @brief Determine the team's previous elo, account for that game's performance, then
      * look at this game's results.
      */
+
+    /*
     Database* the_db = new Database("../2015.db");
     if (team1->bonus_Rating == 0) {
         cout << "TRUE1" << endl;
@@ -136,7 +138,7 @@ pair<int, string> game::generate_Team_ELO() {
         }
     }
     delete the_db;
-
+    */
     // cout << team1->bonus_Rating << team1->team_Abbreviation << "#"
     // << team2->team_Abbreviation << team2->bonus_Rating << endl;
     /**

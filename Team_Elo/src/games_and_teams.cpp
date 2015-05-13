@@ -16,6 +16,13 @@ void games_and_teams::initialize_teams() {
         the_teams.emplace_back(team_abbreviation[0]);
     }
 
+    // initialize the team rating for mid-season runs.
+    for (auto &_team : the_teams) {
+        auto curr_elo = the_db->query("SELECT currentELO FROM teams WHERE teamid = '" +
+                                      _team.team_Abbreviation + "';");
+        _team.rating = stod(curr_elo[0][0]);
+    }
+
     auto player_names = the_db->query("SELECT DISTINCT(name) from gamedata;");
 #if TEST == 1
     if (player_names.size() == 0) {
