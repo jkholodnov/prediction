@@ -8,8 +8,8 @@ team::~team() {
 
 void team::init(string abbr) { team_Abbreviation = abbr; }
 
-double team::get_Rating() { return base_Rating + bonus_Rating; }
+double team::get_Rating() { return rating; }
 
-void team::update_Rating(double update_by) { bonus_Rating += update_by; }
+void team::update_Rating(double update_by) { rating += update_by; }
 
 string team::getAbbr() { return team_Abbreviation; }

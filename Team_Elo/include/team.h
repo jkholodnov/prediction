@@ -17,9 +17,7 @@ class team {
     string getAbbr();
 
     string team_Abbreviation{};
-    int gamescore{};
-    double bonus_Rating{0.0};
-    double base_Rating{1500.0};
+    double rating{1500.0};
     vector<player> players_on_team{};
 
    protected:
