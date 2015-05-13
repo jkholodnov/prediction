@@ -129,7 +129,10 @@ def main():  # Get the page that holds all team url pages
         threads = []
         start_of_first_parallel = time.time()
 
+        cur.execute("INSERT OR IGNORE INTO teams VALUES(" + str(teamAbbrev) + ",1500.0")
+
         for teamAbbrev in team_Abbreviations:
+            cur.execute("INSERT OR IGNORE INTO teams VALUES(" + str(teamAbbrev) + ",1500.0")
             timestart = time.time()
             thread = Thread(
                 target=get_gameIDs, args=(teamAbbrev, result, rosters, 0, the_Year))
