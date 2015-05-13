@@ -124,26 +124,15 @@ int games_and_teams::compute_ELO() {
         }
     }
 
-    /*
-
-    for (auto &game_day : the_games) {
-        vector<future<pair<int, string>>> this_days_games;
-        for (auto &_game : game_day) {
-            game &current_game = games_map.at(_game);
-
-            this_days_games.emplace_back(
-                async(launch::async, &game::generate_Team_ELO, &current_game));
-        }
-
-        for (auto &game : this_days_games) {
-            auto returned_pair = game.get();
-            the_db->query(returned_pair.second);
-            Number_Correct_Ranking += returned_pair.first;
-            cout << "." << flush;
-        }
-    }
-    */
     cout << "\n" << Number_Correct_Ranking << endl;
+
+    for (auto &_team : the_teams) {
+        double team_rating = _team.get_Rating();
+        string update_elo = "UPDATE teams SET currentELO = " + to_string(team_rating) +
+                            " WHERE teamid = '" + _team.team_abbreviation + "';";
+
+        the_db->query(update_elo);
+    }
     return Number_Correct_Ranking;
 }
 
