@@ -129,7 +129,7 @@ int games_and_teams::compute_ELO() {
     for (auto &_team : the_teams) {
         double team_rating = _team.get_Rating();
         string update_elo = "UPDATE teams SET currentELO = " + to_string(team_rating) +
-                            " WHERE teamid = '" + _team.team_abbreviation + "';";
+                            " WHERE teamid = '" + _team.team_Abbreviation + "';";
 
         the_db->query(update_elo);
     }
