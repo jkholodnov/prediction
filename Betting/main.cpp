@@ -4,6 +4,7 @@
 using namespace std;
 
 int main(int argc, char** argv) {
+    vector<string> databases{"2014.db","2015.db"};
     if (argc != 3) {
         cout << "Usage: " << argv[0] << " <Team1> <Team2>" << endl;
     }
@@ -49,7 +50,5 @@ int main(int argc, char** argv) {
         cout << argv[2] << " has a " << percent_win << " chance to win.";
     }
 
-    cout << all_games << endl;
-    cout << correctly_predicted_games << endl;
     delete the_db;
 }
