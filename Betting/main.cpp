@@ -49,6 +49,12 @@ int main(int argc, char** argv) {
     double team1winpercent = ((team1elo > team2elo) ? percent_win : 1 - percent_win);
     double team2winpercent = 1 - team1winpercent;
 
+    double fractional_odd = (100 / team1winpercent) - 1;
+    cout << fractional_odd << endl;
+
+    /*
+
+
     auto compute_required_win_returns = [](double winpct) -> double {
         double num_wins = 100 * winpct;
         double num_losses = 100 - num_wins;
@@ -86,4 +92,5 @@ int main(int argc, char** argv) {
          << ((team2elo > team1elo) ? percent_win : 1 - percent_win) << endl;
     // cout << num_wins << "\t" << num_losses << "\t" << money_lost << "\t" <<
     // win_requirement << endl;
+         */
 }
