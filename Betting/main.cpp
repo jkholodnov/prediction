@@ -68,5 +68,6 @@ int main(int argc, char** argv) {
     cout << compute_required_win_returns(team1winpercent);
     cout << compute_required_win_returns(team2winpercent);
 
-    cout << num_wins << "\t" << num_losses << "\t" << money_lost << "\t" << win_requirement << endl;
+    // cout << num_wins << "\t" << num_losses << "\t" << money_lost << "\t" <<
+    // win_requirement << endl;
 }
