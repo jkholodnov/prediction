@@ -44,13 +44,6 @@ int main(int argc, char** argv) {
 
     double percent_win = y / x;
 
-    cout << "The difference in team ratings is: " << elo_difference << endl;
-
-    cout << argv[1] << "\t" << team1elo << "\t"
-         << ((team1elo > team2elo) ? percent_win : 1 - percent_win) << endl;
-    cout << argv[2] << "\t" << team2elo << "\t"
-         << ((team2elo > team1elo) ? percent_win : 1 - percent_win) << endl;
-
     delete the_db;
 
     double team1winpercent = ((team1elo > team2elo) ? percent_win : 1 - percent_win);
@@ -66,9 +59,23 @@ int main(int argc, char** argv) {
         return win_requirement;
     };
 
-    cout << compute_required_win_returns(team1winpercent) << endl;
-    cout << compute_required_win_returns(team2winpercent) << endl;
+    auto team1_needed = compute_required_win_returns(team1winpercent);
+    auto team2_needed = compute_required_win_returns(team2winpercent);
 
+    if (team1_needed > 100) {
+        cout << "The money line on " << argv[1] << " must be at least: +" << team1_needed
+             << "\t";
+    } else {
+        cout << "The money line on " << argv[2] << " must be at least: -"
+             << 10000 / team1_needed << "\t";
+    }
+
+    cout << "The difference in team ratings is: " << elo_difference << endl;
+
+    cout << argv[1] << "\t" << team1elo << "\t"
+         << ((team1elo > team2elo) ? percent_win : 1 - percent_win) << endl;
+    cout << argv[2] << "\t" << team2elo << "\t"
+         << ((team2elo > team1elo) ? percent_win : 1 - percent_win) << endl;
     // cout << num_wins << "\t" << num_losses << "\t" << money_lost << "\t" <<
     // win_requirement << endl;
 }
