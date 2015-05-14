@@ -52,6 +52,7 @@ int main(int argc, char** argv) {
     double fractional_odd = (100 / team1winpercent) - 1;
     cout << fractional_odd << endl;
 
+    cout << team1winpercent << endl;
     /*
 
 
