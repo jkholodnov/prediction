@@ -7,6 +7,7 @@ int main(int argc, char** argv) {
     vector<string> databases{"2014.db", "2015.db"};
     if (argc != 3) {
         cout << "Usage: " << argv[0] << " <Team1> <Team2>" << endl;
+        return -1;
     }
 
     Database* the_db = new Database("../2015.db");
