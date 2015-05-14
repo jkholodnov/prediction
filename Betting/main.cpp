@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     delete the_db;
 
     double team1winpercent = ((team1elo > team2elo) ? percent_win : 1 - percent_win);
-    double team2winpercent = ((team2elo > team1elo) ? percent_win : 1 - percent_win);
+    double team2winpercent = 1 - team1winpercent;
 
     auto compute_required_win_returns = [](double winpct) -> double {
         int num_wins = 100 * winpct;
