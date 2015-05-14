@@ -53,17 +53,16 @@ int main(int argc, char** argv) {
 
     delete the_db;
 
-    double team1winpercent = ((team1elo > team2elo) ? percent_win : 1-percent_win;
-    double team2winpercent = ((team2elo > team1elo) ? percent_win : 1-percent_win;
+    double team1winpercent = ((team1elo > team2elo) ? percent_win : 1 - percent_win);
+    double team2winpercent = ((team2elo > team1elo) ? percent_win : 1 - percent_win);
 
-
-    auto compute_required_win_returns = [](double winpct) -> double{
+    auto compute_required_win_returns = [](double winpct) -> double {
         int num_wins = 100 * winpct;
         int num_losses = 100 - num_wins;
         double money_lost = num_losses * 100.0;
         double win_requirement = money_lost / num_wins;
         return win_requirement;
-    }
+    };
 
     cout << compute_required_win_returns(team1winpercent);
     cout << compute_required_win_returns(team2winpercent);
