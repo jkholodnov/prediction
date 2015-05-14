@@ -64,10 +64,18 @@ int main(int argc, char** argv) {
 
     if (team1_needed > 100) {
         cout << "The money line on " << argv[1] << " must be at least: +" << team1_needed
-             << "\t";
+             << endl;
+    } else {
+        cout << "The money line on " << argv[1] << " must be at least: -"
+             << 10000 / team1_needed << endl;
+    }
+
+    if (team2_needed > 100) {
+        cout << "The money line on " << argv[2] << " must be at least: +" << team2_needed
+             << endl;
     } else {
         cout << "The money line on " << argv[2] << " must be at least: -"
-             << 10000 / team1_needed << "\t";
+             << 10000 / team2_needed << endl;
     }
 
     cout << "The difference in team ratings is: " << elo_difference << endl;
