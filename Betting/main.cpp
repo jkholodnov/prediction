@@ -48,13 +48,10 @@ int main(int argc, char** argv) {
     cout << argv[1] << "\t" << team1elo << "\t" << ((team1elo > team2elo) ? percent_win : 1-percent_win) << endl;
     cout << argv[2] << "\t" << team2elo << "\t" << ((team2elo > team1elo) ? percent_win : 1-percent_win) << endl;
 
-
-    cout << 1.0/percent_win << endl;
-
     delete the_db;
 
 
-    double bet_price = 50.0;
+    double bet_price = 100.0;
     int num_wins = 100*percent_win;
     int num_losses = 100-num_wins;
     double money_lost = num_losses*bet_price;
