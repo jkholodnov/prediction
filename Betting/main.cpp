@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
     double team1winpercent = ((team1elo > team2elo) ? percent_win : 1 - percent_win);
     double team2winpercent = 1 - team1winpercent;
 
-    double fractional_odd = (100 / team1winpercent * 100) - 1;
+    double fractional_odd = (100 / (team1winpercent * 100)) - 1;
     cout << fractional_odd << endl;
 
     cout << team1winpercent << endl;
