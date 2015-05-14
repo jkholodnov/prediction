@@ -52,4 +52,13 @@ int main(int argc, char** argv) {
     cout << 1.0/percent_win << endl;
 
     delete the_db;
+
+
+    double bet_price = 50.0;
+    int num_wins = 100*percent_win;
+    int num_losses = 100-num_wins;
+    double money_lost = num_losses*bet_price;
+    double win_requirement = num_wins/money_lost;
+
+    cout << num_wins << "\t" << num_losses << "\t" << money_lost << "\t" << win_requirement << endl;
 }
