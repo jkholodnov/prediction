@@ -58,6 +58,14 @@ int main(int argc, char** argv) {
         //<< win_requirement << endl;
         return win_requirement;
     };
+    cout << "The difference in team ratings is: " << elo_difference << endl;
+
+    cout << argv[1] << "\t" << team1elo << "\t"
+         << ((team1elo > team2elo) ? percent_win : 1 - percent_win) << endl;
+    cout << argv[2] << "\t" << team2elo << "\t"
+         << ((team2elo > team1elo) ? percent_win : 1 - percent_win) << endl;
+    // cout << num_wins << "\t" << num_losses << "\t" << money_lost << "\t" <<
+    // win_requirement << endl;
 
     auto team1_needed = compute_required_win_returns(team1winpercent);
     auto team2_needed = compute_required_win_returns(team2winpercent);
@@ -77,13 +85,4 @@ int main(int argc, char** argv) {
         cout << "The money line on " << argv[2] << " must be at least: -"
              << 10000 / team2_needed << endl;
     }
-
-    cout << "The difference in team ratings is: " << elo_difference << endl;
-
-    cout << argv[1] << "\t" << team1elo << "\t"
-         << ((team1elo > team2elo) ? percent_win : 1 - percent_win) << endl;
-    cout << argv[2] << "\t" << team2elo << "\t"
-         << ((team2elo > team1elo) ? percent_win : 1 - percent_win) << endl;
-    // cout << num_wins << "\t" << num_losses << "\t" << money_lost << "\t" <<
-    // win_requirement << endl;
 }
