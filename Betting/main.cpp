@@ -44,6 +44,9 @@ int main(int argc, char** argv) {
 
     double percent_win = y / x;
 
+    cout << "The difference in team ratings is: " << elo_difference << endl;
+    cout << argv[1] << " " << ((team1elo > team2elo) ? percent_win : 1-percent_win);
+    cout << argv[2] << " " << ((team2elo > team1elo) ? percent_win : 1-percent_win);
     if (team1elo > team2elo) {
         cout << argv[1] << " has a " << percent_win << " chance to win.";
     } else {
