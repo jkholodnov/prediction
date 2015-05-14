@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
     int num_wins = 100*percent_win;
     int num_losses = 100-num_wins;
     double money_lost = num_losses*bet_price;
-    double win_requirement = num_wins/money_lost;
+    double win_requirement = money_lost/num_wins;
 
     cout << num_wins << "\t" << num_losses << "\t" << money_lost << "\t" << win_requirement << endl;
 }
