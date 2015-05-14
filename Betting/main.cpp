@@ -50,8 +50,8 @@ int main(int argc, char** argv) {
     double team2winpercent = 1 - team1winpercent;
 
     auto compute_required_win_returns = [](double winpct) -> double {
-        int num_wins = 100 * winpct;
-        int num_losses = 100 - num_wins;
+        double num_wins = 100 * winpct;
+        double num_losses = 100 - num_wins;
         double money_lost = num_losses * 100.0;
         double win_requirement = money_lost / num_wins;
         cout << num_wins << "\t" << num_losses << "\t" << money_lost << "\t"
