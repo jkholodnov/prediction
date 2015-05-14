@@ -61,6 +61,8 @@ int main(int argc, char** argv) {
         int num_losses = 100 - num_wins;
         double money_lost = num_losses * 100.0;
         double win_requirement = money_lost / num_wins;
+        cout << num_wins << "\t" << num_losses << "\t" << money_lost << "\t"
+             << win_requirement << endl;
         return win_requirement;
     };
 
