@@ -139,8 +139,8 @@ def main():  # Get the page that holds all team url pages
             teamabbr.replace("pho", "phx")
             cur.execute("SELECT count(*) FROM teams WHERE teamid = \'" + str(teamabbr) + "\';")
             rows = cur.fetchall()
-            print(rows)
             if(rows[0][0] == 0):
+                print(rows)
                 cur.execute("INSERT INTO teams VALUES(\'" + str(teamabbr) + "\',1500.0)")
                 
             timestart = time.time()
