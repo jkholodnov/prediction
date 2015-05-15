@@ -1,10 +1,6 @@
 #include "../include/games_and_teams.h"
 
-games_and_teams::games_and_teams() {
-    cout << "doing stuff" << endl;
-    the_db = new Database("../2015.db");
-    cout << "doing stuff" << endl;
-}
+games_and_teams::games_and_teams() { the_db = new Database("../2015.db"); }
 
 games_and_teams::~games_and_teams() { delete the_db; }
 
