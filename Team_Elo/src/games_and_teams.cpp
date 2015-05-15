@@ -24,6 +24,7 @@ void games_and_teams::initialize_teams() {
     }
 
     auto player_names = the_db->query("SELECT DISTINCT(name) from gamedata;");
+
 #if TEST == 1
     if (player_names.size() == 0) {
         cout << "Did not retrieve any player names from database. Check db path." << endl;
@@ -138,7 +139,7 @@ int games_and_teams::compute_ELO() {
         string update_elo = "UPDATE teams SET currentELO = " + to_string(team_rating) +
                             " WHERE teamid = '" + _team.team_Abbreviation + "';";
 
-        cout << update_elo << endl;
+        // cout << update_elo << endl;
         the_db->query(update_elo);
     }
     return Number_Correct_Ranking;

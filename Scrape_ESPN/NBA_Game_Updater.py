@@ -137,7 +137,12 @@ def main():  # Get the page that holds all team url pages
             teamabbr.replace("was", "wsh")
             teamabbr.replace("sas", "sa")
             teamabbr.replace("pho", "phx")
-            cur.execute("INSERT OR IGNORE INTO teams VALUES(\'" + str(teamabbr) + "\',1500.0)")
+            cur.execute("SELECT count(*) FROM teams WHERE teamid = \'" + str(teamabbr) + "\';")
+            rows = cur.fetchall()
+            print(rows)
+            if(row[0][0] == 0):
+                cur.execute("INSERT INTO teams VALUES(\'" + str(teamabbr) + "\',1500.0)")
+                
             timestart = time.time()
             thread = Thread(
                 target=get_gameIDs, args=(teamAbbrev, result, rosters, 0, the_Year))
