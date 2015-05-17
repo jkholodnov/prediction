@@ -18,6 +18,7 @@ void games_and_teams::initialize_teams() {
 
     // initialize the team rating for mid-season runs.
     for (auto &_team : the_teams) {
+        cout << _team << endl;
         auto curr_elo = the_db->query("SELECT currentELO FROM teams WHERE teamid = '" +
                                       _team.team_Abbreviation + "';");
         _team.rating = stod(curr_elo[0][0]);
