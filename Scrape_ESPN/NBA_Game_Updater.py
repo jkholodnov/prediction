@@ -12,17 +12,21 @@ import re
 from socket import timeout
 import errno
 
+YEAR = str(sys.argv[1])
+print("The year being scraped is: ",YEAR)
 
 def get_Response_Time_of_URL(num_pings, url):
-
     response_times = []
     for i in range(num_pings):
+        sys.stdout.write(".")
+        sys.stdout.flush()
         starttime = time.time()
         urllib.request.urlopen("http://www.espn.go.com")
         endtime = time.time()
         response_time = endtime - starttime
         response_times.append(response_time)
     MRT = response_times[int(len(response_times) / 2)]
+    print("]")
     return MRT
 
 
@@ -106,9 +110,7 @@ def main():  # Get the page that holds all team url pages
 
     rosters = []
 
-    the_Year = 2014
-
-    def getTeamIDs(result, rosters, the_Year):
+    def getTeamIDs(result, rosters):
         baseurl = "http://espn.go.com/nba/teams"
         content = urllib.request.urlopen(baseurl).read()
         soup = BeautifulSoup(content)
@@ -121,8 +123,8 @@ def main():  # Get the page that holds all team url pages
                 teamABBR = url.replace(y, "")
                 team_Abbreviations.append(teamABBR)
 
-        print("There are: " + str(len(team_Abbreviations)) +
-              " teams to get games from.")
+        sys.stdout.write("Acquiring MRT: [")
+        sys.stdout.flush()
         MRT = get_Response_Time_of_URL(
             50, "http://espn.go.com/nba/team/_/name/mia")
 
@@ -145,7 +147,7 @@ def main():  # Get the page that holds all team url pages
                 
             timestart = time.time()
             thread = Thread(
-                target=get_gameIDs, args=(teamAbbrev, result, rosters, 0, the_Year))
+                target=get_gameIDs, args=(teamAbbrev, result, rosters, 0))
             thread.daemon = True
             thread.start()
             threads.append(thread)
@@ -158,9 +160,9 @@ def main():  # Get the page that holds all team url pages
         print("Acquired gameIDs and Roster Urls in : " +
               str(end_of_first_parallel - start_of_first_parallel) + " seconds.")
 
-    getTeamIDs(result, rosters, the_Year)
+    getTeamIDs(result, rosters)
 
-    def scrape_Games(rosters, year):
+    def scrape_Games(rosters):
         retrievedGameIDs = set({})
         while not result.empty():
             gameId = result.get()
@@ -178,10 +180,11 @@ def main():  # Get the page that holds all team url pages
 
         newGameIDs = retrievedGameIDs.difference(databaseGameIDs)
 
-        print("Pinging ESPN to check MRT........")
+        sys.stdout.write("Acquiring MRT [")
+        sys.stdout.flush()
+
         MRT = get_Response_Time_of_URL(
             50, "http://espn.go.com/ncb/boxscore?gameId=400498718")
-        print("MRT = " + str(MRT))
 
         Queries = Queue()
 
@@ -191,13 +194,14 @@ def main():  # Get the page that holds all team url pages
             thread = Thread(target=db_Update, args=(i, Queries))
             db_updater_Threads.append(thread)
             thread.start()
+        print("Database Updater Threads have been initialized.")
 
         print("The number of rosters to scrape is: " + str(len(rosters)))
         roster_Scraper_Threads = []
         for rosterURL in rosters:
             starttime = time.time()
             thread = Thread(
-                target=roster_Update, args=(Queries, rosterURL, year))
+                target=roster_Update, args=(Queries, rosterURL))
             thread.start()
             roster_Scraper_Threads.append(thread)
             while(time.time() - starttime < MRT):
@@ -228,7 +232,8 @@ def main():  # Get the page that holds all team url pages
         for thread in db_updater_Threads:
             thread.join()
 
-    scrape_Games(rosters, the_Year)
+        print("Database Updater Threads have been terminated.")
+    scrape_Games(rosters)
 
 
 ##########################################################################
@@ -240,7 +245,7 @@ def main():  # Get the page that holds all team url pages
 ##########################################################################
 
 
-def get_gameIDs(teamABBR, the_Game_IDs, roster_URLS, attempt, the_year):
+def get_gameIDs(teamABBR, the_Game_IDs, roster_URLS, attempt):
     try:
         baseurl = "http://espn.go.com/nba/team/_/name/"
         ################################################
@@ -249,9 +254,16 @@ def get_gameIDs(teamABBR, the_Game_IDs, roster_URLS, attempt, the_year):
         # the_year must be a 4 digit integer
         rosters = "http://espn.go.com/nba/team/roster/_/name/" + teamABBR
         roster_URLS.append(rosters)
-        schedules = "http://espn.go.com/nba/team/schedule/_/name/" + teamABBR + "/year/ " + str(the_year) + "/"
+        schedules = "http://espn.go.com/nba/team/schedule/_/name/" + teamABBR + "/year/" + YEAR + "/"
+
+
+
+        ################################################
+        #               Scrape pre season              #
+        ################################################
+        pre_season = schedules + "seasontype/1/"
         soup = BeautifulSoup(
-            urllib.request.urlopen(schedules, timeout=150).read())
+            urllib.request.urlopen(pre_season, timeout=150).read())
         for link in soup.find_all('a'):
             thelink = str(link.get('href'))
             y = "/nba/recap?id="
@@ -290,13 +302,13 @@ def get_gameIDs(teamABBR, the_Game_IDs, roster_URLS, attempt, the_year):
     # THREAD EXCEPTION HANDLING
     except timeout:
         print("URL timeout. Restarting.")
-        get_gameIDs(teamABBR, the_Game_IDs, rosterIDs, attempt + 1, the_year)
+        get_gameIDs(teamABBR, the_Game_IDs, rosterIDs, attempt + 1)
     except urllib.error.URLError as e:
         print("URL Timeout Error. Restarting")
-        get_gameIDs(teamABBR, the_Game_IDs, rosterIDs, attempt + 1, the_year)
+        get_gameIDs(teamABBR, the_Game_IDs, rosterIDs, attempt + 1)
     except ConnectionResetError as e:
         print("Connection got reset. Calling back.")
-        get_gameIDs(teamABBR, the_Game_IDs, rosterIDs, attempt + 1, the_year)
+        get_gameIDs(teamABBR, the_Game_IDs, rosterIDs, attempt + 1)
 
     except OSError as e:
         if(e.errno == errno.EHOSTUNREACH):
@@ -319,7 +331,7 @@ def get_gameIDs(teamABBR, the_Game_IDs, roster_URLS, attempt, the_year):
 #               We have 15 db updater threads and numGameIDs scraper threads                 #
 #                                                                                            #
 ##########################################################################
-def roster_Update(Queries, rosterURL, year):
+def roster_Update(Queries, rosterURL):
     try:
         soup = BeautifulSoup(
             urllib.request.urlopen(rosterURL, timeout=250).read())
@@ -367,7 +379,7 @@ def roster_Update(Queries, rosterURL, year):
             player_Info.append(inches)
             player_Info.append(weight)
             player_Info.append(salary)
-            player_Info.append(year)
+            player_Info.append(YEAR)
 
             sqlformat = "?,?,?,?,?,?,?,?"
             sqlupdate = convert_Str_To_Tuple(sqlformat, player_Info)
@@ -378,9 +390,7 @@ def roster_Update(Queries, rosterURL, year):
     except:
         pass
 
-
 def db_Update(i, Queries):
-    print("Database Updater thread " + str(i) + " has began.")
     con = lite.connect('predict.db', isolation_level=None)
     cur = con.cursor()
     while(True):
@@ -402,18 +412,16 @@ def db_Update(i, Queries):
                 if(data[0] == "Games"):
                     gameid = data[1][0]
                     cur.execute(
-                        "INSERT INTO games VALUES(?,?,?,?,?,?, 'NULL','NULL')", data[1])
+                        "INSERT OR IGNORE INTO games VALUES(?,?,?,?,?,?, 'NULL','NULL')", data[1])
                 con.commit()
-                print("Inserted Game with ID : " + str(gameid))
+                sys.stdout.write(".")
+                sys.stdout.flush()
+
+
             except Exception as e:
                 Queries.put(data)
-                # print("Error handling database update. " + str(e) + " " +
-                # repr(data))
-
 
 def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
-    #print(str(i) + " " + str(gameID) + " " + repr(result) + " " +
-    #      repr(players) + " " + str(attempt) + " " + repr(Queries))
     gameData_Insert_Queries = []
     games_Insert_Queries = []
     players_Insert_Queries = []
@@ -421,6 +429,7 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
     if(attempt == 4):
         print("Tried 4 times. It ain't working bro. " + str(gameID))
         return 0
+
     try:
         url = "http://espn.go.com/nba/boxscore?gameId=" + str(gameID)
         soup = BeautifulSoup(urllib.request.urlopen(url, timeout=250).read())
@@ -477,6 +486,8 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
 
         date_of_game = str(year) + "-" + themonth + "-" + day
 
+        team1abbr = ""
+        team2abbr = ""
         g = "http://espn.go.com/nba/team/_/name/"
         if not team1link:
             team1Name = (firstinfo.find('h3')).getText()
@@ -488,6 +499,7 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
             x = team1href.find("/")
             team1abbr = team1href[:x]
 
+
         if not team2link:
             team2Name = (secondinfo.find('h3')).getText()
             if(team2Name.find("Bobcats") != -1):
@@ -497,6 +509,7 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
             team2href = team2href.replace(g, "")
             y = team2href.find("/")
             team2abbr = team2href[:y]
+           
 
         tbodies = soup.find_all('tbody')
 
@@ -514,55 +527,55 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
             trs = body.find_all('tr')
             for tr in trs:
                 playerLink = tr.find('a')
-                playerLink = str(playerLink.get('href'))
+                if playerLink is not None:
+                    playerLink = str(playerLink.get('href'))
+                    base_href = "http://espn.go.com/nba/player/_/id/"
+                    uniques = playerLink.replace(base_href, "")
+                    breakpoint = uniques.find("/")
+                    playerID = uniques[:breakpoint]
+                    tds = tr.find_all('td')
+                    temporary_player = player()
+                    temporary_player.add_ID(playerID)
+                    for td in tds:
+                        temporary_player.add_data(td.getText())
+                    temporary_player.fix_gameData()
+                    # we are on the first team
+                    if(body_count < 2):
+                        temporary_player.teamAbbr = team1abbr
+                    else:
+                        temporary_player.teamAbbr = team2abbr
 
-                base_href = "http://espn.go.com/nba/player/_/id/"
-                uniques = playerLink.replace(base_href, "")
-                breakpoint = uniques.find("/")
-                playerID = uniques[:breakpoint]
-                tds = tr.find_all('td')
-                temporary_player = player()
-                temporary_player.add_ID(playerID)
-                for td in tds:
-                    temporary_player.add_data(td.getText())
-                temporary_player.fix_gameData()
-                # we are on the first team
-                if(body_count < 2):
-                    temporary_player.teamAbbr = team1abbr
-                else:
-                    temporary_player.teamAbbr = team2abbr
+                    query = []
+                    query.append(gameID)
+                    query.append(temporary_player.teamAbbr)
+                    query.append(temporary_player.id)
+                    query.append(temporary_player.name)
 
-                query = []
-                query.append(gameID)
-                query.append(temporary_player.teamAbbr)
-                query.append(temporary_player.id)
-                query.append(temporary_player.name)
+                    player_key = []
+                    player_key.append(gameID)
+                    player_key.append(temporary_player.id)
 
-                player_key = []
-                player_key.append(gameID)
-                player_key.append(temporary_player.id)
+                    if(len(temporary_player.game_data) > 0 and len(temporary_player.game_data) < 5):
+                        query.append(temporary_player.game_data[0])
 
-                if(len(temporary_player.game_data) > 0 and len(temporary_player.game_data) < 5):
-                    query.append(temporary_player.game_data[0])
-
-                    sqlformat = "?,?,?,?,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,?"
-                    sqlupdate = sqlupdate = convert_Str_To_Tuple(
-                        sqlformat, query)
-                    gameData_Insert_Queries.append(sqlupdate)
-
-                else:
-                    for data in temporary_player.game_data:
-                        query.append(data)
-
-                    if(len(query) == 20):
-                        sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NULL,?,NULL"
-                        sqlupdate = convert_Str_To_Tuple(sqlformat, query)
+                        sqlformat = "?,?,?,?,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,?"
+                        sqlupdate = sqlupdate = convert_Str_To_Tuple(
+                            sqlformat, query)
                         gameData_Insert_Queries.append(sqlupdate)
 
-                    elif(len(query) == 21):
-                        sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NULL"
-                        sqlupdate = convert_Str_To_Tuple(sqlformat, query)
-                        gameData_Insert_Queries.append(sqlupdate)
+                    else:
+                        for data in temporary_player.game_data:
+                            query.append(data)
+
+                        if(len(query) == 20):
+                            sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NULL,?,NULL"
+                            sqlupdate = convert_Str_To_Tuple(sqlformat, query)
+                            gameData_Insert_Queries.append(sqlupdate)
+
+                        elif(len(query) == 21):
+                            sqlformat = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NULL"
+                            sqlupdate = convert_Str_To_Tuple(sqlformat, query)
+                            gameData_Insert_Queries.append(sqlupdate)
 
             body_count += 1
 
@@ -578,13 +591,15 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
 
         Queries.put(['GameData', gameData_Insert_Queries])
         Queries.put(['Games', to_insert])
+
     # Thread Exception Handling
     except timeout:
         print("Timeout.")
         scrape_GameData_in_parallel(
             i, gameID, result, players, attempt + 1, Queries)
     except urllib.error.URLError as e:
-        print("URL Timeout." + str())
+        print(e.reason)
+        #print("URL Timeout." + str())
         scrape_GameData_in_parallel(
             i, gameID, result, players, attempt + 1, Queries)
     except ConnectionResetError as e:

@@ -45,13 +45,6 @@ int main(int argc, char** argv) {
         t2 = high_resolution_clock::now();
         time_span = duration_cast<duration<double>>(t2 - t1);
         cout << "Took " << time_span.count() << " seconds to compute ELO." << endl;
-
-#if TEST == 1
-        if (number_of_correct_predictions == 0) {
-            cout << "Did not predict any games correctly... Something went wrong with "
-                    "generate_ELO function." << endl;
-        }
-#endif
     }
 
     if (pir) {
