@@ -30,77 +30,6 @@ def get_Response_Time_of_URL(num_pings, url):
     return MRT
 
 
-def convert_Str_To_Tuple(str_format, data):
-    unformatted_string = str_format.replace("?", "{}")
-    formatted_string = unformatted_string.format(*data)
-    parameters = formatted_string.split(",")
-    return tuple(parameters)
-
-
-class team(object):
-
-    def __init__(self):
-        self.players = []
-        self.abbreviation = None
-        self.score = None
-
-    def add_player(self, x):
-        self.players.append(x)
-
-    def length(self):
-        return len(self.players)
-
-
-class player(object):
-
-    def __init__(self):
-        self.name = None
-        self.position = None
-        self.id = None
-        self.salary = None
-        self.height = None
-        self.weight = None
-        self.teamAbbr = None
-        self.game_data = []
-
-    def add_ID(self, x):
-        self.id = x
-
-    def add_data(self, x):
-        self.game_data.append(x)
-
-    def change_name(self, name):
-        self.name = name
-
-    def height_and_weight(self, ht, wt):
-        self.weight = wt
-
-    def fix_gameData(self):
-        # This function takes the raw TD data and extracts the name and
-        # position from it.
-        newData = []
-        for i in range(len(self.game_data)):
-            position = str(self.game_data[i]).find(",")
-            # fix the name and position
-            if(position != -1):
-                if(self.position == None):
-                    pos = str(self.game_data[i])[position + 1:]
-                    temp_name = str(self.game_data[i])[:position]
-                    temp_name = temp_name.replace("'", "")
-                    temp_name = temp_name.replace("-", "")
-                    self.name = temp_name
-                    self.position = pos.replace(" ", "")
-            # put rest of data into dataset.
-            else:
-                g = self.game_data[i].find("-")
-                if(g != -1 and g > 0):
-                    newData.append(self.game_data[i][:g])
-                    newData.append(self.game_data[i][g + 1:])
-                else:
-                    newData.append(self.game_data[i])
-        self.game_data = newData
-
-
 def main():  # Get the page that holds all team url pages
     con = lite.connect('predict.db', isolation_level=None)
     cur = con.cursor()
@@ -216,8 +145,8 @@ def main():  # Get the page that holds all team url pages
         i = 1
         game_Scraper_Threads = []
         for gameID in newGameIDs:
-            thread = Thread(target=scrape_GameData_in_parallel, args=(
-                i, gameID, result, players, 0, Queries))
+            print(gameID)
+            thread = Thread(target=scrape_GameData_in_parallel, args=(gameID, 0, Queries))
             thread.start()
             game_Scraper_Threads.append(thread)
             while(time.time() - starttime < MRT):
@@ -421,22 +350,73 @@ def db_Update(i, Queries):
             except Exception as e:
                 Queries.put(data)
 
-def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
+def scrape_GameData_in_parallel(gameID, attempt, Queries):
+    print(gameID)
+    class player(object):
+        def __init__(self):
+            self.name = None
+            self.position = None
+            self.id = None
+            self.salary = None
+            self.height = None
+            self.weight = None
+            self.teamAbbr = None
+            self.game_data = []
+
+        def add_ID(self, x):
+            self.id = x
+
+        def add_data(self, x):
+            self.game_data.append(x)
+
+        def change_name(self, name):
+            self.name = name
+
+        def height_and_weight(self, ht, wt):
+            self.weight = wt
+
+        def sanitize_data(self):
+            # This function takes the raw TD data and extracts the name and
+            # position from it.
+            newData = []
+            for i in range(len(self.game_data)):
+                position = str(self.game_data[i]).find(",")
+                # fix the name and position
+                if(position != -1):
+                    if(self.position == None):
+                        pos = str(self.game_data[i])[position + 1:]
+                        temp_name = str(self.game_data[i])[:position]
+                        temp_name = temp_name.replace("'", "")
+                        temp_name = temp_name.replace("-", "")
+                        self.name = temp_name
+                        self.position = pos.replace(" ", "")
+                # put rest of data into dataset.
+                else:
+                    g = self.game_data[i].find("-")
+                    if(g != -1 and g > 0):
+                        newData.append(self.game_data[i][:g])
+                        newData.append(self.game_data[i][g + 1:])
+                    else:
+                        newData.append(self.game_data[i])
+            self.game_data = newData
+
+    def convert_Str_To_Tuple(str_format, data):
+        unformatted_string = str_format.replace("?", "{}")
+        formatted_string = unformatted_string.format(*data)
+        parameters = formatted_string.split(",")
+        return tuple(parameters)
+
     gameData_Insert_Queries = []
     games_Insert_Queries = []
-    players_Insert_Queries = []
 
     if(attempt == 4):
-        print("Tried 4 times. It ain't working bro. " + str(gameID))
+        print("Maximum attempts reached for game id: " + str(gameID))
         return 0
 
     try:
         url = "http://espn.go.com/nba/boxscore?gameId=" + str(gameID)
         soup = BeautifulSoup(urllib.request.urlopen(url, timeout=250).read())
         # print(soup.getText())
-
-        team1 = team()
-        team2 = team()
 
         matchup = soup.find('div', {"class": "matchup"})
         if(not matchup):
@@ -491,8 +471,12 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
         g = "http://espn.go.com/nba/team/_/name/"
         if not team1link:
             team1Name = (firstinfo.find('h3')).getText()
-            if(team1Name.find("Bobcats") != -1):
+            if team1Name.find("Bobcats") != -1:
                 team1abbr = "cha"
+            elif team1Name.find("Nets") != -1:
+                team1abbr = "bkn"
+            elif team1Name.find("Hornets") != -1:
+                team1abbr = "no"
         else:
             team1href = team1link.get('href')
             team1href = team1href.replace(g, "")
@@ -502,8 +486,12 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
 
         if not team2link:
             team2Name = (secondinfo.find('h3')).getText()
-            if(team2Name.find("Bobcats") != -1):
+            if team2Name.find("Bobcats") != -1:
                 team2abbr = "cha"
+            elif team2Name.find("Nets") != -1:
+                team2abbr = "bkn"
+            elif team2Name.find("Hornets") != -1:
+                team2abbr = "no"
         else:
             team2href = team2link.get('href')
             team2href = team2href.replace(g, "")
@@ -538,7 +526,7 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
                     temporary_player.add_ID(playerID)
                     for td in tds:
                         temporary_player.add_data(td.getText())
-                    temporary_player.fix_gameData()
+                    temporary_player.sanitize_data()
                     # we are on the first team
                     if(body_count < 2):
                         temporary_player.teamAbbr = team1abbr
@@ -595,33 +583,32 @@ def scrape_GameData_in_parallel(i, gameID, result, players, attempt, Queries):
     # Thread Exception Handling
     except timeout:
         print("Timeout.")
-        scrape_GameData_in_parallel(
-            i, gameID, result, players, attempt + 1, Queries)
+        scrape_GameData_in_parallel(gameID, attempt + 1, Queries)
+
     except urllib.error.URLError as e:
         print(e.reason)
         #print("URL Timeout." + str())
-        scrape_GameData_in_parallel(
-            i, gameID, result, players, attempt + 1, Queries)
+        scrape_GameData_in_parallel(gameID, attempt + 1, Queries)
+
     except ConnectionResetError as e:
         print("Connection Reset by Host.")
-        scrape_GameData_in_parallel(
-            i, gameID, result, players, attempt + 1, Queries)
+        scrape_GameData_in_parallel(gameID, attempt + 1, Queries)
+
     except OSError as e:
         if(e.errno == errno.EHOSTUNREACH):
             print("Host Unreachable. Trying again.")
-            scrape_GameData_in_parallel(
-                i, gameID, result, players, attempt + 1, Queries)
+            scrape_GameData_in_parallel(gameID, attempt + 1, Queries)
+
         if(e.errno == errno.ECONNRESET):
             print("Host hung up. Calling back.")
-            scrape_GameData_in_parallel(
-                i, gameID, result, players, attempt + 1, Queries)
+            scrape_GameData_in_parallel(gameID, attempt + 1, Queries)
     except IndexError as e:
         print(str(e) + " " + str(gameID))
 
 ##########################################################################
-#                                                                                            #
-#                       Scrape Player Webpages for Weight+Height                             #
-#                                                                                            #
+#                                                                        #
+#             Scrape Player Webpages for Weight+Height                   #
+#                                                                        #
 ##########################################################################
 if __name__ == '__main__':
     main()

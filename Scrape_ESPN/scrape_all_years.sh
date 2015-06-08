@@ -1,0 +1,11 @@
+#!/bin/bash
+years=('2003' '2004' '2005' '2006' '2007' '2008' '2009' '2010' '2011' '2012' '2013' '2014' '2015');
+for i in "${years[@]}"
+do
+	:
+	echo Beginning to scrape season $i
+	python3 NBA_Game_Updater.py $i > /dev/null
+	mv predict.db ../$i.db
+	python3 create_tables_nba.py
+	mpg123 ../alarm.mp3 > /dev/null
+done

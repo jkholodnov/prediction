@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     duration<double> time_span;
 
     games_and_teams all_games{};
-    cout << "asdf" << endl;
+
     all_games.initialize_teams();
 
 #if TEST == 1
