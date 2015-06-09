@@ -141,6 +141,8 @@ def main():  # Get the page that holds all team url pages
         print("The number of games to scrape is: " + str(len(newGameIDs)))
 
         #spawn a ton of game scraper threads#
+
+        start = time.time()
         i = 1
         game_Scraper_Threads = []
         for gameID in newGameIDs:
@@ -156,13 +158,20 @@ def main():  # Get the page that holds all team url pages
             i += 1
 
 
+
         for thread in game_Scraper_Threads:
             thread.join()
+
+        end = time.time()
+        print("It took " + str(end - start) + " to scrape games.")
 
         Queries.put("TERMINATE")
 
         for thread in db_updater_Threads:
             thread.join()
+
+        print("It took " + str(end - start) + " to scrape games and finish DB updates.")
+
 
         print("Database Updater Threads have been terminated.")
     scrape_Games(rosters)
