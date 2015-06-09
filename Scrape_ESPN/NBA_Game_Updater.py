@@ -129,13 +129,11 @@ def main():  # Get the page that holds all team url pages
         print("The number of rosters to scrape is: " + str(len(rosters)))
         roster_Scraper_Threads = []
         for rosterURL in rosters:
-            starttime = time.time()
             thread = Thread(
                 target=roster_Update, args=(Queries, rosterURL))
             thread.start()
             roster_Scraper_Threads.append(thread)
-            while(time.time() - starttime < MRT):
-                pass
+            time.sleep(MRT)
 
         for thread in roster_Scraper_Threads:
             thread.join()
@@ -146,13 +144,14 @@ def main():  # Get the page that holds all team url pages
         i = 1
         game_Scraper_Threads = []
         for gameID in newGameIDs:
+            print("Launching gameid: " + str(gameID) + ".", end="\r")
             print(gameID)
             thread = Thread(target=scrape_GameData_in_parallel, args=(gameID, 0, Queries))
             thread.start()
             game_Scraper_Threads.append(thread)
-            while(time.time() - starttime < MRT):
-                pass
+            time.sleep(MRT)
             i += 1
+
 
         for thread in game_Scraper_Threads:
             thread.join()
@@ -352,7 +351,7 @@ def db_Update(i, Queries):
                 Queries.put(data)
 
 def scrape_GameData_in_parallel(gameID, attempt, Queries):
-    print(gameID)
+    #print(gameID)
     class player(object):
         def __init__(self):
             self.name = None
