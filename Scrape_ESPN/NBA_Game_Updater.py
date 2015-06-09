@@ -39,6 +39,10 @@ def main():  # Get the page that holds all team url pages
 
     rosters = []
 
+
+    sys.stdout.write("Acquiring MRT [")
+    sys.stdout.flush()
+
     MRT = get_Response_Time_of_URL(
             50, "http://espn.go.com/nba/team/_/name/mia")
     print ("MRT Acquired: " + str(MRT))
@@ -111,10 +115,6 @@ def main():  # Get the page that holds all team url pages
 
         newGameIDs = retrievedGameIDs.difference(databaseGameIDs)
 
-        sys.stdout.write("Acquiring MRT [")
-        sys.stdout.flush()
-
-
         Queries = Queue()
 
         #spawn 10 database updater threads#
@@ -132,7 +132,7 @@ def main():  # Get the page that holds all team url pages
                 target=roster_Update, args=(Queries, rosterURL))
             thread.start()
             roster_Scraper_Threads.append(thread)
-            time.sleep(MRT/2)
+            time.sleep(MRT/4)
 
         for thread in roster_Scraper_Threads:
             thread.join()
@@ -145,15 +145,11 @@ def main():  # Get the page that holds all team url pages
         i = 1
         game_Scraper_Threads = []
         for gameID in newGameIDs:
-            #print("Launching gameid: " + str(gameID) + ".")
             sys.stdout.write("@")
-            #sys.stdout.write("\033[K")
-            #sys.stdout.write("\033[F")
-            #print(gameID)
             thread = Thread(target=scrape_GameData_in_parallel, args=(gameID, 0, Queries))
             thread.start()
             game_Scraper_Threads.append(thread)
-            time.sleep(MRT/2)
+            time.sleep(MRT/4)
             i += 1
 
 
@@ -274,7 +270,7 @@ def get_gameIDs(teamABBR, the_Game_IDs, roster_URLS, attempt):
 def roster_Update(Queries, rosterURL):
     try:
         soup = BeautifulSoup(
-            urllib.request.urlopen(rosterURL, timeout=250).read())
+            urllib.request.urlopen(rosterURL, timeout=100).read())
         player_rows = soup.find_all('tr', class_=re.compile('player-46-'))
         player_infos = []
         for row in player_rows:
