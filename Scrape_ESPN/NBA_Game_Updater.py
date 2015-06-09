@@ -41,7 +41,7 @@ def main():  # Get the page that holds all team url pages
 
     MRT = get_Response_Time_of_URL(
             50, "http://espn.go.com/nba/team/_/name/mia")
-        print ("MRT Acquired: " + str(MRT))
+    print ("MRT Acquired: " + str(MRT))
 
     def getTeamIDs(result, rosters):
         baseurl = "http://espn.go.com/nba/teams"
