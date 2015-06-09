@@ -11,6 +11,7 @@ import time
 import re
 from socket import timeout
 import errno
+import random
 
 YEAR = str(sys.argv[1])
 print("The year being scraped is: ",YEAR)
