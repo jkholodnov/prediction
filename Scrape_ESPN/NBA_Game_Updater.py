@@ -144,7 +144,10 @@ def main():  # Get the page that holds all team url pages
         i = 1
         game_Scraper_Threads = []
         for gameID in newGameIDs:
-            print("Launching gameid: " + str(gameID) + ".", end="\r")
+            #print("Launching gameid: " + str(gameID) + ".")
+            sys.stdout.write("Launching gameid: " + str(gameID) + ".")
+            sys.stdout.write("\033[K")
+            sys.stdout.write("\033[F")
             #print(gameID)
             thread = Thread(target=scrape_GameData_in_parallel, args=(gameID, 0, Queries))
             thread.start()
