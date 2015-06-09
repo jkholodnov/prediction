@@ -39,6 +39,10 @@ def main():  # Get the page that holds all team url pages
 
     rosters = []
 
+    MRT = get_Response_Time_of_URL(
+            50, "http://espn.go.com/nba/team/_/name/mia")
+        print ("MRT Acquired: " + str(MRT))
+
     def getTeamIDs(result, rosters):
         baseurl = "http://espn.go.com/nba/teams"
         content = urllib.request.urlopen(baseurl).read()
@@ -54,9 +58,7 @@ def main():  # Get the page that holds all team url pages
 
         sys.stdout.write("Acquiring MRT: [")
         sys.stdout.flush()
-        MRT = get_Response_Time_of_URL(
-            50, "http://espn.go.com/nba/team/_/name/mia")
-        print ("MRT Acquired: " + str(MRT))
+        
         threads = []
         start_of_first_parallel = time.time()
 
@@ -112,15 +114,12 @@ def main():  # Get the page that holds all team url pages
         sys.stdout.write("Acquiring MRT [")
         sys.stdout.flush()
 
-        MRT = get_Response_Time_of_URL(
-            50, "http://espn.go.com/ncb/boxscore?gameId=400498718")
-        print ("MRT Acquired: " + str(MRT))
 
         Queries = Queue()
 
         #spawn 10 database updater threads#
         db_updater_Threads = []
-        for i in range(10):
+        for i in range(20):
             thread = Thread(target=db_Update, args=(i, Queries))
             db_updater_Threads.append(thread)
             thread.start()
@@ -133,7 +132,7 @@ def main():  # Get the page that holds all team url pages
                 target=roster_Update, args=(Queries, rosterURL))
             thread.start()
             roster_Scraper_Threads.append(thread)
-            time.sleep(MRT)
+            time.sleep(MRT/2)
 
         for thread in roster_Scraper_Threads:
             thread.join()

@@ -11,7 +11,7 @@ do
 
 	python3 create_tables_nba.py
 	echo Beginning to scrape season $i
-	python3 NBA_Game_Updater.py $i > /dev/null
-	mv predict.db ../databases/$i.db
+	python3 NBA_Game_Updater.py $i #> /dev/null
+	mv predict.db ../Databases/$i.db
 	#mpg123 ../alarm.mp3 > /dev/null
 done
