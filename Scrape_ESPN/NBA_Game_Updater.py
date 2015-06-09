@@ -14,6 +14,7 @@ import errno
 
 YEAR = str(sys.argv[1])
 print("The year being scraped is: ",YEAR)
+user_agents = ["Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko","Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)","Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)","NokiaE66/GoBrowser/2.0.297","Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:2.0) Treco/20110515 Fireweb Navigator/2.4", "Googlebot", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20130401 Firefox/31.0", "Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0",  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10; rv:33.0) Gecko/20100101 Firefox/33.0", ]
 
 def get_Response_Time_of_URL(num_pings, url):
     response_times = []
@@ -132,7 +133,7 @@ def main():  # Get the page that holds all team url pages
                 target=roster_Update, args=(Queries, rosterURL))
             thread.start()
             roster_Scraper_Threads.append(thread)
-            time.sleep(MRT/4)
+            time.sleep(MRT/2)
 
         for thread in roster_Scraper_Threads:
             thread.join()
@@ -427,7 +428,10 @@ def scrape_GameData_in_parallel(gameID, attempt, Queries):
 
     try:
         url = "http://espn.go.com/nba/boxscore?gameId=" + str(gameID)
-        soup = BeautifulSoup(urllib.request.urlopen(url, timeout=250).read())
+        UA_Header = {}
+        UA_Header["User-Agent"] = str(random.choice(user_agents))
+        request = urllib.request.Request(url, headers = UA_Header)
+        soup = BeautifulSoup(urllib.request.urlopen(request, timeout=100).read())
         # print(soup.getText())
 
         matchup = soup.find('div', {"class": "matchup"})
