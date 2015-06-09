@@ -56,7 +56,7 @@ def main():  # Get the page that holds all team url pages
         sys.stdout.flush()
         MRT = get_Response_Time_of_URL(
             50, "http://espn.go.com/nba/team/_/name/mia")
-
+        print ("MRT Acquired: " + str(MRT))
         threads = []
         start_of_first_parallel = time.time()
 
@@ -114,6 +114,7 @@ def main():  # Get the page that holds all team url pages
 
         MRT = get_Response_Time_of_URL(
             50, "http://espn.go.com/ncb/boxscore?gameId=400498718")
+        print ("MRT Acquired: " + str(MRT))
 
         Queries = Queue()
 
